@@ -9,6 +9,6 @@ import java.util.ResourceBundle;
 public class Controller {
 
     public void initialize(URL url, ResourceBundle resourceBundle){
-
+        System.out.println("hello world");
     }
 }
