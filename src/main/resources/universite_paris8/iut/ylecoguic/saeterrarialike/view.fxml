@@ -13,16 +13,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
+<BorderPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Pane>
-      <children>
-         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+    <center>
+        <ImageView fitHeight="151.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
             <image>
-               <Image url="@perso.gif"/>
+                <Image url="@perso.gif" ></Image>
             </image>
-         </ImageView>
-      </children></Pane>
-</VBox>
+        </ImageView>
+    </center>
+</BorderPane>

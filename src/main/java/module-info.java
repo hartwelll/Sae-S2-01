@@ -8,4 +8,6 @@ module universite_paris8.iut.ylecoguic.saeterrarialike {
     exports universite_paris8.iut.ylecoguic.saeterrarialike;
     exports universite_paris8.iut.ylecoguic.saeterrarialike.controller;
     opens universite_paris8.iut.ylecoguic.saeterrarialike.controller to javafx.fxml;
+    exports universite_paris8.iut.ylecoguic.saeterrarialike.modele;
+    opens universite_paris8.iut.ylecoguic.saeterrarialike.modele to javafx.fxml;
 }
