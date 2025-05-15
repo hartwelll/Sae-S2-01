@@ -14,14 +14,10 @@
 <?import javafx.scene.image.Image?>
 
 <BorderPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-    <center>
-        <ImageView fitHeight="151.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-            <image>
-                <Image url="@perso.gif" ></Image>
-            </image>
-        </ImageView>
-    </center>
+    <Pane fx:id="panneauDeJeu" BorderPane.alignment="CENTER">
+        <BorderPane.margin>
+            <Insets />
+        </BorderPane.margin>
+        <Button alignment="CENTER" mnemonicParsing="false" onAction="#sprite" text="Lancer" />
+    </Pane>
 </BorderPane>

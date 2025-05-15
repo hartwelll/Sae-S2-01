@@ -1,6 +1,5 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 
-import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -12,7 +11,7 @@ public class VueMap {
     }
 
     public void ajout(){
-        this.map.put(815, "@pierre.png");
-        this.map.put(816, "@caisse.png");
+        this.map.put(815, getClass().getResource("@pierre.png"));
+        this.map.put(816, getClass().getResource("@caisse.png"));
     }
 }
