@@ -34,7 +34,6 @@ public class Controller implements Initializable {
         joueur.translateXProperty().bind(j.getxProperty());
         joueur.translateYProperty().bind(j.getyProperty());
         panneauDeJeu.getChildren().add(joueur);
-
     }
 
     public static void seDeplace(){
