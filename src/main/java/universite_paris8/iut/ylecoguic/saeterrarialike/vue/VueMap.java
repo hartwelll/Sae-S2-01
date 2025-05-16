@@ -1,17 +1,25 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+
 import java.net.URL;
 import java.util.HashMap;
 
 public class VueMap {
-    private HashMap<Integer, URL> map;
+    private HashMap<Integer, URL> tile;
+    private Map map;
 
     public VueMap(){
-        this.map = new HashMap<>();
+        tile = new HashMap<>();
+        map = new Map();
     }
 
     public void ajout(){
-        this.map.put(815, getClass().getResource("@pierre.png"));
-        this.map.put(816, getClass().getResource("@caisse.png"));
+        tile.put(816, getClass().getResource("@caisse.png"));
+        tile.put(815, getClass().getResource("@pierre.png"));
+    }
+
+    public void affichage(){
+
     }
 }

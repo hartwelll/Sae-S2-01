@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.Objects;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 
 public class Controller implements Initializable{
 
@@ -32,6 +33,7 @@ public class Controller implements Initializable{
     private static Circle joueur;
     private static Joueur j;
     private Map map;
+    private VueMap map1;
     private static Scene scene;
 
     public void sprite(Joueur j){
@@ -91,7 +93,9 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         j = new Joueur(250, 100);
+        map1 = new VueMap();
         sprite(j);
         AnimationTimer();
+        map1.affichage();
     }
 }

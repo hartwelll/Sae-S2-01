@@ -3,6 +3,9 @@ module universite_paris8.iut.ylecoguic.saeterrarialike {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires java.desktop;
+    requires javafx.graphics;
+    requires javafx.base;
 
     opens universite_paris8.iut.ylecoguic.saeterrarialike to javafx.fxml;
     exports universite_paris8.iut.ylecoguic.saeterrarialike;

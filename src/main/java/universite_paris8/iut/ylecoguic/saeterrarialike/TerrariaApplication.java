@@ -9,11 +9,10 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller;
 import java.io.IOException;
 
 public class TerrariaApplication extends Application {
-    private Scene scene;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TerrariaApplication.class.getResource("view.fxml"));
-        scene = new Scene(fxmlLoader.load(), 512, 384);
+        Scene scene = new Scene(fxmlLoader.load(), 512, 384);
         Controller.setScene(scene);
         stage.setTitle("Hello!");
         stage.setScene(scene);
