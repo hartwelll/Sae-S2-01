@@ -2,12 +2,16 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller;
 
 public class Joueur {
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
     private int v;
+    private boolean marcheGauche = false;
+    private boolean marcheDroite = false;
+    private boolean saut = false;
 
     public Joueur(int x, int y){
         this.xProperty = new SimpleIntegerProperty(x);
@@ -16,11 +20,12 @@ public class Joueur {
     }
 
     public void deplacement(int dx, int dy){
-        int nposX=this.getX()+(this.v*dx);
-        int nposY=this.getY()+(this.v*dy);
+        xProperty.set(xProperty.getValue()+v*dx);
+        yProperty.set(yProperty.getValue()-v*dy);
+    }
 
-        this.xProperty.set(nposX);
-        this.yProperty.set(nposY);
+    public void MAJ(Map map){
+        Controller.seDeplace();
     }
 
     public IntegerProperty getxProperty() {
@@ -37,5 +42,17 @@ public class Joueur {
 
     public int getY(){
         return yProperty.getValue();
+    }
+
+    public void setMarcheGauche(boolean marcheGauche) {
+        this.marcheGauche = marcheGauche;
+    }
+
+    public void setMarcheDroite(boolean marcheDroite) {
+        this.marcheDroite = marcheDroite;
+    }
+
+    public void setSaut(boolean saut) {
+        this.saut = saut;
     }
 }
