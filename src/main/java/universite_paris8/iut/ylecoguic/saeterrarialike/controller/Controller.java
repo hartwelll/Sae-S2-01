@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -29,11 +30,10 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 public class Controller implements Initializable{
 
     @FXML
-    private Pane panneauDeJeu;
+    private TilePane panneauDeJeu;
     private static Circle joueur;
     private static Joueur j;
     private Map map;
-    private VueMap map1;
     private static Scene scene;
 
     public void sprite(Joueur j){
@@ -79,6 +79,7 @@ public class Controller implements Initializable{
                 if (now - lastUpdate >= frameInterval) {
 
                     j.MAJ(map);
+                    //vueMap.miseAJourAffichage();
                     lastUpdate = now;
                 }
             }
@@ -93,9 +94,8 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         j = new Joueur(250, 100);
-        map1 = new VueMap();
         sprite(j);
+        VueMap vueMap = new VueMap(panneauDeJeu);
         AnimationTimer();
-        map1.affichage();
     }
 }
