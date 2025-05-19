@@ -31,6 +31,8 @@ public class Controller implements Initializable{
 
     @FXML
     private TilePane panneauDeJeu;
+    @FXML
+    private TilePane panneauDeJeuJoueur;
     private static Circle joueur;
     private static Joueur j;
     private Map map;
@@ -42,7 +44,7 @@ public class Controller implements Initializable{
         joueur = new Circle(10, Color.PINK);
         joueur.translateXProperty().bind(j.getxProperty());
         joueur.translateYProperty().bind(j.getyProperty());
-        panneauDeJeu.getChildren().add(joueur);
+        panneauDeJeuJoueur.getChildren().add(joueur);
     }
 
     public static void seDeplace(){
@@ -93,9 +95,10 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        j = new Joueur(250, 100);
-        sprite(j);
+
         VueMap vueMap = new VueMap(panneauDeJeu);
+        j = new Joueur(0, 0);
+        sprite(j);
         AnimationTimer();
     }
 }

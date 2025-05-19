@@ -13,6 +13,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<TilePane fx:id="panneauDeJeu" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
 
+<TilePane fx:id="panneauDeJeu" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
+    <TilePane fx:id="panneauDeJeuJoueur" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40">
+
+    </TilePane>
 </TilePane>
