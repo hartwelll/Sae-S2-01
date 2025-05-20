@@ -16,7 +16,7 @@ public class VueJoueur {
 
     public VueJoueur(Pane pane){
         imagesJoueur = new HashMap<>();
-        joueur = new Joueur(0, 0);
+        joueur = new Joueur(500, 500);
         this.pane = pane;
         this.pane.setPrefHeight(32);
         this.pane.setPrefWidth(32);
