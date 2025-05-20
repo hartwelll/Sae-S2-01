@@ -50,11 +50,11 @@ public class VueMap {
             for (int j = 0; j < map.getColonne(); j++) {
                 int tileId = map.getCase(i, j); // getid
                 Image image = tileImages.get(tileId);
-                System.out.println("ID de la tile récupéré : " + tileId);
+                //System.out.println("ID de la tile récupéré : " + tileId);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
                     pane.getChildren().add(imageView);
-                    System.out.println("ID de tile connu : " + tileId + " à la position [" + i + ", " + j + "]");
+                    //System.out.println("ID de tile connu : " + tileId + " à la position [" + i + ", " + j + "]");
                 } else {
                     System.out.println("ID de tile inconnu : " + tileId + " à la position [" + i + ", " + j + "]"); // Gérer le cas où l'ID de la tile n'a pas d'image correspondante
                 }

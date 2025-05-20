@@ -36,6 +36,7 @@ public class Controller implements Initializable{
     private static Circle joueur;
     private static Joueur j;
     private Map map;
+    private VueMap vueMap;
     private static Scene scene;
 
     public void sprite(Joueur j){
@@ -66,6 +67,10 @@ public class Controller implements Initializable{
                             System.out.println("zebiii");
                             j.deplacement(1, 0);
                             break;
+                        case S:
+                            System.out.println("zebiiii");
+                            j.deplacement(0, -1);
+                            break;
                     }
                 }
 
@@ -81,7 +86,7 @@ public class Controller implements Initializable{
                 if (now - lastUpdate >= frameInterval) {
 
                     j.MAJ(map);
-                    //vueMap.miseAJourAffichage();
+                    vueMap.miseAJourAffichage();
                     lastUpdate = now;
                 }
             }
@@ -95,7 +100,7 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        VueMap vueMap = new VueMap(panneauDeJeu);
+        vueMap = new VueMap(panneauDeJeu);
         j = new Joueur(0, 0);
         sprite(j);
         AnimationTimer();
