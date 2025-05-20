@@ -44,7 +44,7 @@ public class Controller implements Initializable{
         joueur = new Circle(10, Color.PINK);
         joueur.translateXProperty().bind(j.getxProperty());
         joueur.translateYProperty().bind(j.getyProperty());
-        panneauDeJeuJoueur.getChildren().add(joueur);
+        panneauDeJeu.getChildren().add(joueur);
     }
 
     public static void seDeplace(){
@@ -95,7 +95,6 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-
         VueMap vueMap = new VueMap(panneauDeJeu);
         j = new Joueur(0, 0);
         sprite(j);
