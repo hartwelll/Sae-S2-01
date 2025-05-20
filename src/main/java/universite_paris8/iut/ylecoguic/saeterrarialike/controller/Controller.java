@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 import java.util.Objects;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 
 public class Controller implements Initializable{
@@ -33,8 +34,10 @@ public class Controller implements Initializable{
     private TilePane panneauDeJeu;
     @FXML
     private Pane panneauJoueur;
-    private static Circle joueur;
+
+    private Circle joueur;
     private static Joueur j;
+    private static VueJoueur vueJoueur;
     private Map map;
     private VueMap vueMap;
     private static Scene scene;
@@ -56,20 +59,17 @@ public class Controller implements Initializable{
 
                     switch(event.getCode()){
                         case Z:
-                            System.out.println("zebi");
-                            j.deplacement(0, 1);
+                            vueJoueur.getJoueur().deplacement(0, 1);
                             break;
                         case Q:
-                            System.out.println("zebii");
-                            j.deplacement(-1, 0);
+                            vueJoueur.getJoueur().deplacement(-1, 0);
                             break;
                         case D:
-                            System.out.println("zebiii");
-                            j.deplacement(1, 0);
+                            System.out.println("zebi");
+                            vueJoueur.getJoueur().deplacement(1, 0);
                             break;
                         case S:
-                            System.out.println("zebiiii");
-                            j.deplacement(0, -1);
+                            vueJoueur.getJoueur().deplacement(0, -1);
                             break;
                     }
                 }
@@ -85,7 +85,7 @@ public class Controller implements Initializable{
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
 
-                    j.MAJ(map);
+                    vueJoueur.getJoueur().MAJ(map);
                     //vueMap.miseAJourAffichage();
                     lastUpdate = now;
                 }
@@ -103,8 +103,11 @@ public class Controller implements Initializable{
         //panneauDeJeu.prefWidthProperty().bind(scene.widthProperty());
         //panneauDeJeu.prefHeightProperty().bind(scene.heightProperty());
         vueMap = new VueMap(panneauDeJeu);
-        j = new Joueur(100, -100);
-        sprite(j);
+        vueJoueur = new VueJoueur(panneauJoueur);
+        vueJoueur.getImageView().translateXProperty().bind(vueJoueur.getJoueur().getxProperty());
+        vueJoueur.getImageView().translateYProperty().bind(vueJoueur.getJoueur().getyProperty());
+        //j = new Joueur(100, -100);
+        //sprite(j);
         AnimationTimer();
     }
 }

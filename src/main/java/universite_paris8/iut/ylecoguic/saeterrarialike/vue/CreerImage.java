@@ -7,11 +7,12 @@ import javafx.scene.image.Image;
 import java.net.URL;
 
 public class CreerImage {
-
-    public ImageView creerImage(String chemin){
+    public Image creerImage(String chemin){
         URL url = getClass().getResource(chemin);
-        Image image = new Image(String.valueOf(url));
-        ImageView imageview = new ImageView((Element) image);
-        return imageview;
+        if (url == null) {
+            System.out.println("Image non trouvée : " + chemin);
+            return null;
+        }
+        return new Image(url.toString());
     }
 }
