@@ -32,7 +32,7 @@ public class Controller implements Initializable{
     @FXML
     private TilePane panneauDeJeu;
     @FXML
-    private TilePane panneauDeJeuJoueur;
+    private Pane panneauJoueur;
     private static Circle joueur;
     private static Joueur j;
     private Map map;
@@ -86,7 +86,7 @@ public class Controller implements Initializable{
                 if (now - lastUpdate >= frameInterval) {
 
                     j.MAJ(map);
-                    vueMap.miseAJourAffichage();
+                    //vueMap.miseAJourAffichage();
                     lastUpdate = now;
                 }
             }
@@ -100,8 +100,10 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        //panneauDeJeu.prefWidthProperty().bind(scene.widthProperty());
+        //panneauDeJeu.prefHeightProperty().bind(scene.heightProperty());
         vueMap = new VueMap(panneauDeJeu);
-        j = new Joueur(0, 0);
+        j = new Joueur(100, -100);
         sprite(j);
         AnimationTimer();
     }

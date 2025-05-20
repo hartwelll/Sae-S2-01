@@ -5,6 +5,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
 
+import java.awt.*;
+import java.awt.event.ComponentEvent;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -62,7 +64,6 @@ public class VueMap {
         }
     }
 
-    // Méthode pour mettre à jour l'affichage de la carte si le modèle change
     public void miseAJourAffichage(){
         affichage();
     }
