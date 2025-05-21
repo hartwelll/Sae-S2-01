@@ -1,28 +1,15 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Objects;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
@@ -34,47 +21,37 @@ public class Controller implements Initializable{
     private TilePane panneauDeJeu;
     @FXML
     private Pane panneauJoueur;
-
-    private Circle joueur;
-    private static Joueur j;
-    private static VueJoueur vueJoueur;
     private Map map;
     private VueMap vueMap;
-    private static Scene scene;
+    private Joueur joueur;
+    private VueJoueur vueJoueur;
+    private boolean droite = false;
+    private boolean gauche= false;
 
-    public void sprite(Joueur j){
-
-        //ImageView joueur = new ImageView(String.valueOf(getClass().getResource("perso.png")));
-        joueur = new Circle(10, Color.PINK);
-        joueur.translateXProperty().bind(j.getxProperty());
-        joueur.translateYProperty().bind(j.getyProperty());
-        panneauDeJeu.getChildren().add(joueur);
-    }
-
-    public static void seDeplace(){
-
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-
-                    switch(event.getCode()){
-                        case Z:
-                            vueJoueur.getJoueur().deplacement(0, 1);
+    public void gestionClavier() {
+        if (panneauJoueur.getScene() != null) {
+            System.out.println("scene n'est pas nulle");
+            panneauDeJeu.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    switch (event.getCode()) {
+                        case Z, UP, SPACE:
+                            if (joueur.getY() == 905) {
+                                joueur.saut(1);
+                            }
                             break;
-                        case Q:
-                            vueJoueur.getJoueur().deplacement(-1, 0);
+                        case Q, LEFT:
+                            gauche = true;
+                            droite = false;
                             break;
-                        case D:
-                            System.out.println("zebi");
-                            vueJoueur.getJoueur().deplacement(1, 0);
-                            break;
-                        case S:
-                            vueJoueur.getJoueur().deplacement(0, -1);
+                        case D, RIGHT:
+                            droite = true;
+                            gauche = false;
                             break;
                     }
                 }
-
-        });
+            });
+        }
     }
 
     public void AnimationTimer(){
@@ -83,31 +60,31 @@ public class Controller implements Initializable{
             private final long frameInterval = 16_666_666; // Conversion nano secondes en secondes = 60 FPS
             @Override
             public void handle(long now) {
-                if (now - lastUpdate >= frameInterval) {
-
-                    vueJoueur.getJoueur().MAJ(map);
-                    //vueMap.miseAJourAffichage();
-                    lastUpdate = now;
-                }
+              //  if (now - lastUpdate >= frameInterval) {
+                    if (gauche == true){
+                        joueur.deplacement(-1);
+                    }
+                    else if (droite== true) {
+                        joueur.deplacement(1);
+                    }
+                   // lastUpdate = now;
+               // }
             }
         };
         timer.start();
     }
 
-    public static void setScene(Scene scene) {
-        Controller.scene = scene;
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        //panneauDeJeu.prefWidthProperty().bind(scene.widthProperty());
-        //panneauDeJeu.prefHeightProperty().bind(scene.heightProperty());
-        vueMap = new VueMap(panneauDeJeu);
+        map = new Map();
+        vueMap = new VueMap(panneauDeJeu, map);
+        joueur = new Joueur(500, 905);
         vueJoueur = new VueJoueur(panneauJoueur);
-        vueJoueur.getImageView().translateXProperty().bind(vueJoueur.getJoueur().getxProperty());
-        vueJoueur.getImageView().translateYProperty().bind(vueJoueur.getJoueur().getyProperty());
-        //j = new Joueur(100, -100);
-        //sprite(j);
+        vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
+        vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+        gestionClavier();
         AnimationTimer();
     }
 }

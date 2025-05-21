@@ -4,9 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
-
-import java.awt.*;
-import java.awt.event.ComponentEvent;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -15,9 +12,9 @@ public class VueMap {
     private Map map;
     private TilePane pane;
 
-    public VueMap(TilePane pane){
+    public VueMap(TilePane pane, Map map){
         this.tileImages = new HashMap<>();
-        this.map = new Map();
+        this.map = map;
         this.pane = pane;
         this.pane.setPrefTileWidth(32);
         this.pane.setPrefTileHeight(32);
@@ -62,6 +59,10 @@ public class VueMap {
                 }
             }
         }
+    }
+
+    public Map GetMap() {
+        return map;
     }
 
     public void miseAJourAffichage(){
