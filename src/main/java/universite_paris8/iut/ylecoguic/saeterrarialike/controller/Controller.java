@@ -7,7 +7,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
@@ -27,6 +29,14 @@ public class Controller implements Initializable{
     private VueJoueur vueJoueur;
     private boolean droite = false;
     private boolean gauche= false;
+    @FXML
+    private TableView<Objet> inventaire;//nom table
+    @FXML
+    private TableColumn<Objet, String> col1;//nom colonne
+    @FXML
+    private TableColumn<Objet, String> col2;
+    @FXML
+    private TableColumn<Objet, String> col3;
 
     public void gestionClavier() {
         if (panneauJoueur.getScene() != null) {
@@ -73,8 +83,6 @@ public class Controller implements Initializable{
         };
         timer.start();
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){

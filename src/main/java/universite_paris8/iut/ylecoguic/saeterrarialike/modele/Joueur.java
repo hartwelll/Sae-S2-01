@@ -3,7 +3,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-
 public class Joueur {
 
     private IntegerProperty xProperty;

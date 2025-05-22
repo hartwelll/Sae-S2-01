@@ -36,7 +36,6 @@ public class Map {
     };
 
     public Map(){
-
     }
 
     public static int[][] getMap() {
