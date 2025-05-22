@@ -29,13 +29,27 @@ public class Joueur {
     public void deplacement(int dx, int dy){
         int nposx = getX() + v * dx;
         int nposy = getY() + v * dy;
+        collisionDetectee(dx, dy, nposx, nposy);
+    }
 
+    public void saut(int dx, int dy){
+        int nposx = getX() + v * dx;
+        int nposy = getY() - vSaut * dy;
+        collisionDetectee(dx, dy, nposx, nposy);
+    }
+
+    public void gravite(int dx, int dy){
+        int nposx = getX() + v * dx;
+        int nposy = getY() - vGravite * dy;
+        collisionDetectee(dx, dy, nposx, nposy);
+    }
+
+    public void collisionDetectee(int dx, int dy, int nposx, int nposy){
         Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
         boolean collisionDetectee = false;
-
-        //creer une nouvelle méthode pour opti la duplication de code et enlever le break parce que c'est moche
         for(Rectangle2D hitboxBloc : map.getHitboxList()) {
             if (hitboxJoueur.intersects(hitboxBloc)) {
+
                 collisionDetectee = true;
                 if (dx != 0) {
                     if (dx > 0) {
@@ -43,51 +57,18 @@ public class Joueur {
                     } else {
                         nposx = (int) (hitboxBloc.getMaxX());
                     }
+
+                } else if (dy != 0) {
+                    if (dy > 0) {
+                        nposy = (int) (hitboxBloc.getMinY());
+                    } else {
+                        nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
+                    }
+
                 }
-                break;//temporaire
             }
         }
         xProperty.set(nposx);
-    }
-
-    public void saut(int dx, int dy){
-        int nposx = getX() + v * dx;
-        int nposy = getY() - vSaut * dy;
-
-        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
-        boolean collisionDetectee = false;
-
-        //creer une nouvelle méthode pour opti la duplication de code et enlever le break parce que c'est moche
-        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
-                collisionDetectee = true;
-                if (dy != 0) {
-                    if (dy > 0) {
-                        nposy = (int) (hitboxBloc.getMinY());
-                    }
-                }
-                break;//temporaire
-            }
-        }
-        yProperty.set(nposy);
-    }
-
-    public void gravite(int dx, int dy){
-        int nposx = getX() + v * dx;
-        int nposy = getY() - vGravite * dy;
-
-        Rectangle2D nouvelleHitbox = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
-
-        boolean collisionDetectee = false;
-        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (nouvelleHitbox.intersects(hitboxBloc)) {
-                collisionDetectee = true;
-                if (dy < 0) {
-                    nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
-                }
-                break;
-            }
-        }
         yProperty.set(nposy);
     }
 

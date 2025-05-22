@@ -33,10 +33,7 @@ public class Controller implements Initializable{
             nouvelleScene.setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case Z, UP, SPACE:
-                        if (!enSaut) {
-                            joueur.saut(0, 1);
-                            enSaut = true;
-                        }
+                        enSaut = true;
                         break;
                     case Q, LEFT:
                         gauche = true;
@@ -50,6 +47,7 @@ public class Controller implements Initializable{
             nouvelleScene.setOnKeyReleased(event -> {
                 switch (event.getCode()) {
                     case Z, UP, SPACE:
+                        enSaut = false;
                         break;
                     case Q, LEFT:
                         droite = false;
@@ -69,21 +67,24 @@ public class Controller implements Initializable{
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
-                if (gauche == true){
-                    joueur.deplacement(-1, 0);
-                    gauche = false;
-                }
-                else if (droite== true) {
-                    joueur.deplacement(1, 0);
-                    droite = false;
-                }
-                if (!joueur.collision(joueur.getX(), joueur.getY() + joueur.getVGravite())){
-                    joueur.gravite(0, -1);
-                    enSaut = true;
-                }
-                else {
-                    enSaut = false;
-                }
+                    if (gauche == true){
+                        joueur.deplacement(-1, 0);
+                        gauche = false;
+                    }
+                    else if (droite== true) {
+                        joueur.deplacement(1, 0);
+                        droite = false;
+                    }
+                    if (!joueur.collision(joueur.getX(), joueur.getY() + joueur.getVGravite())){
+                        joueur.gravite(0, -1);
+                        enSaut = true;
+                    }
+                    else {
+                        if (!enSaut){
+                            joueur.saut(0, 1);
+                            enSaut = false;
+                        }
+                    }
                     lastUpdate = now;
                 }
             }
