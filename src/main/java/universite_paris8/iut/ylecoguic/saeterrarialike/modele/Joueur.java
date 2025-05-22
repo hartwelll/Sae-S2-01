@@ -2,7 +2,7 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
+import javafx.geometry.Rectangle2D;
 
 public class Joueur {
 
@@ -11,35 +11,94 @@ public class Joueur {
     private int v;
     private int vSaut;
     private int vGravite;
-    private boolean marcheGauche = false;
-    private boolean marcheDroite = false;
-    private boolean saut = false;
+    private Map map;
+    private int hauteurJoueur;
+    private int largeurJoueur;
 
-    public Joueur(int x, int y){
+    public Joueur(int x, int y, Map map){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
-        this.v = 10;
+        this.v = 8;
         this.vSaut = 100;
         this.vGravite = 4;
+        this.map = map;
+        hauteurJoueur = 64;
+        largeurJoueur = 32;
     }
 
-    public void deplacement(int dx){
-        xProperty.set(xProperty.getValue()+v*dx);
-    }
+    public void deplacement(int dx, int dy){
+        int nposx = getX() + v * dx;
+        int nposy = getY() + v * dy;
 
-    public void saut(int dy){
-        yProperty.set(yProperty.getValue()-vSaut*dy);
-    }
+        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
+        boolean collisionDetectee = false;
 
-    public void gravite(int dy){
-        yProperty.set(yProperty.getValue()-vGravite*dy);
-    }
-
-    public void MAJ(Map map){
-        //seDeplace();
-        if(getY() < 905){
-            gravite(-1);
+        //creer une nouvelle méthode pour opti la duplication de code et enlever le break parce que c'est moche
+        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
+            if (hitboxJoueur.intersects(hitboxBloc)) {
+                collisionDetectee = true;
+                if (dx != 0) {
+                    if (dx > 0) {
+                        nposx = (int) (hitboxBloc.getMinX() - largeurJoueur);
+                    } else {
+                        nposx = (int) (hitboxBloc.getMaxX());
+                    }
+                }
+                break;//temporaire
+            }
         }
+        xProperty.set(nposx);
+    }
+
+    public void saut(int dx, int dy){
+        int nposx = getX() + v * dx;
+        int nposy = getY() - vSaut * dy;
+
+        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
+        boolean collisionDetectee = false;
+
+        //creer une nouvelle méthode pour opti la duplication de code et enlever le break parce que c'est moche
+        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
+            if (hitboxJoueur.intersects(hitboxBloc)) {
+                collisionDetectee = true;
+                if (dy != 0) {
+                    if (dy > 0) {
+                        nposy = (int) (hitboxBloc.getMinY());
+                    }
+                }
+                break;//temporaire
+            }
+        }
+        yProperty.set(nposy);
+    }
+
+    public void gravite(int dx, int dy){
+        int nposx = getX() + v * dx;
+        int nposy = getY() - vGravite * dy;
+
+        Rectangle2D nouvelleHitbox = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
+
+        boolean collisionDetectee = false;
+        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
+            if (nouvelleHitbox.intersects(hitboxBloc)) {
+                collisionDetectee = true;
+                if (dy < 0) {
+                    nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
+                }
+                break;
+            }
+        }
+        yProperty.set(nposy);
+    }
+
+    public boolean collision(int nposx, int nposy){
+        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
+        for(Rectangle2D hitboxBloc : map.getHitboxList()) {
+            if (hitboxJoueur.intersects(hitboxBloc)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public IntegerProperty getxProperty() {
@@ -58,7 +117,11 @@ public class Joueur {
         return yProperty.getValue();
     }
 
-    public void setSaut(boolean saut) {
-        this.saut = saut;
+    public int getVGravite() {
+        return vGravite;
+    }
+
+    public void setV(int v) {
+        this.v = v;
     }
 }

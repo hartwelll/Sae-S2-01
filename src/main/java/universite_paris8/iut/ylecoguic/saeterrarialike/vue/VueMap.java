@@ -11,6 +11,7 @@ public class VueMap {
     private HashMap<Integer, Image> tileImages;
     private Map map;
     private TilePane pane;
+    private ImageView imageView;
 
     public VueMap(TilePane pane, Map map){
         this.tileImages = new HashMap<>();
@@ -51,7 +52,7 @@ public class VueMap {
                 Image image = tileImages.get(tileId);
                 //System.out.println("ID de la tile récupéré : " + tileId);
                 if (image != null) {
-                    ImageView imageView = new ImageView(image);
+                    imageView = new ImageView(image);
                     pane.getChildren().add(imageView);
                     //System.out.println("ID de tile connu : " + tileId + " à la position [" + i + ", " + j + "]");
                 } else {
@@ -61,8 +62,8 @@ public class VueMap {
         }
     }
 
-    public Map GetMap() {
-        return map;
+    public ImageView getImageView() {
+        return imageView;
     }
 
     public void miseAJourAffichage(){

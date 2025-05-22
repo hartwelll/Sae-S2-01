@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
@@ -26,32 +25,41 @@ public class Controller implements Initializable{
     private Joueur joueur;
     private VueJoueur vueJoueur;
     private boolean droite = false;
-    private boolean gauche= false;
+    private boolean gauche = false;
+    private boolean enSaut = false;
 
     public void gestionClavier() {
-        if (panneauJoueur.getScene() != null) {
-            System.out.println("scene n'est pas nulle");
-            panneauDeJeu.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                    switch (event.getCode()) {
-                        case Z, UP, SPACE:
-                            if (joueur.getY() == 905) {
-                                joueur.saut(1);
-                            }
-                            break;
-                        case Q, LEFT:
-                            gauche = true;
-                            droite = false;
-                            break;
-                        case D, RIGHT:
-                            droite = true;
-                            gauche = false;
-                            break;
-                    }
+        panneauDeJeu.sceneProperty().addListener((obs, ancienneScene, nouvelleScene) -> {
+            nouvelleScene.setOnKeyPressed(event -> {
+                switch (event.getCode()) {
+                    case Z, UP, SPACE:
+                        if (!enSaut) {
+                            joueur.saut(0, 1);
+                            enSaut = true;
+                        }
+                        break;
+                    case Q, LEFT:
+                        gauche = true;
+                        break;
+                    case D, RIGHT:
+                        droite = true;
+                        break;
                 }
             });
-        }
+
+            nouvelleScene.setOnKeyReleased(event -> {
+                switch (event.getCode()) {
+                    case Z, UP, SPACE:
+                        break;
+                    case Q, LEFT:
+                        droite = false;
+                        break;
+                    case D, RIGHT:
+                        gauche = false;
+                        break;
+                }
+            });
+        });
     }
 
     public void AnimationTimer(){
@@ -60,27 +68,34 @@ public class Controller implements Initializable{
             private final long frameInterval = 16_666_666; // Conversion nano secondes en secondes = 60 FPS
             @Override
             public void handle(long now) {
-              //  if (now - lastUpdate >= frameInterval) {
-                    if (gauche == true){
-                        joueur.deplacement(-1);
-                    }
-                    else if (droite== true) {
-                        joueur.deplacement(1);
-                    }
-                   // lastUpdate = now;
-               // }
+                if (now - lastUpdate >= frameInterval) {
+                if (gauche == true){
+                    joueur.deplacement(-1, 0);
+                    gauche = false;
+                }
+                else if (droite== true) {
+                    joueur.deplacement(1, 0);
+                    droite = false;
+                }
+                if (!joueur.collision(joueur.getX(), joueur.getY() + joueur.getVGravite())){
+                    joueur.gravite(0, -1);
+                    enSaut = true;
+                }
+                else {
+                    enSaut = false;
+                }
+                    lastUpdate = now;
+                }
             }
         };
         timer.start();
     }
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map);
-        joueur = new Joueur(500, 905);
+        joueur = new Joueur(500, 805, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
