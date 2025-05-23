@@ -61,7 +61,6 @@ public class Joueur {
                     } else {
                         nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
                     }
-
                 }
             }
         }
