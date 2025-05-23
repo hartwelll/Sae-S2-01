@@ -33,7 +33,7 @@ public class Controller implements Initializable{
             nouvelleScene.setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case Z, UP, SPACE:
-                        enSaut = true;
+                        enSaut = false;
                         break;
                     case Q, LEFT:
                         gauche = true;
@@ -47,7 +47,7 @@ public class Controller implements Initializable{
             nouvelleScene.setOnKeyReleased(event -> {
                 switch (event.getCode()) {
                     case Z, UP, SPACE:
-                        enSaut = false;
+                        enSaut = true;
                         break;
                     case Q, LEFT:
                         droite = false;
@@ -79,11 +79,8 @@ public class Controller implements Initializable{
                         joueur.gravite(0, -1);
                         enSaut = true;
                     }
-                    else {
-                        if (!enSaut){
-                            joueur.saut(0, 1);
-                            enSaut = false;
-                        }
+                    else if(!joueur.collision(joueur.getX(), joueur.getY() - joueur.getvSaut()) && !enSaut){
+                        joueur.saut(0, 1);
                     }
                     lastUpdate = now;
                 }

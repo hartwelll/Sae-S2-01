@@ -99,7 +99,7 @@ public class Joueur {
         return vGravite;
     }
 
-    public void setV(int v) {
-        this.v = v;
+    public int getvSaut() {
+        return vSaut;
     }
 }
