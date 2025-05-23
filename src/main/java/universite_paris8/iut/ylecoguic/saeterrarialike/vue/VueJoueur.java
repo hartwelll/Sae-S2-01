@@ -21,18 +21,12 @@ public class VueJoueur {
 
     public Image creerImage(String chemin){
         URL url = getClass().getResource(chemin);
-        if (url == null) {
-            System.out.println("Image non trouvée : " + chemin);
-            return null;
-        }
         return new Image(url.toString());
     }
 
     public void ajoutPoses(int id, String chemin){
         Image image = creerImage(chemin);
-        if (image != null) {
             imagesJoueur.put(id, image);
-        }
     }
 
     public void initializePlayer(){
@@ -41,12 +35,10 @@ public class VueJoueur {
 
     public void affichage(){
         Image image = imagesJoueur.get(0);
-        if (image != null) {
             imageView = new ImageView(image);
             imageView.setFitHeight(64);
             imageView.setFitWidth(32);
             pane.getChildren().add(imageView);
-        }
     }
 
     public ImageView getImageView() {
