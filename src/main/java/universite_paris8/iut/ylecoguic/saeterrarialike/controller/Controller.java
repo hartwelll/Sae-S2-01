@@ -3,6 +3,8 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -11,6 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 
@@ -27,13 +30,21 @@ public class Controller implements Initializable{
     private boolean droite = false;
     private boolean gauche = false;
     private boolean enSaut = false;
+    @FXML
+    private TableView<Objet> inventaire;//nom table
+    @FXML
+    private TableColumn<Objet, String> col1;//nom colonne
+    @FXML
+    private TableColumn<Objet, String> col2;
+    @FXML
+    private TableColumn<Objet, String> col3;
 
     public void gestionClavier() {
         panneauDeJeu.sceneProperty().addListener((obs, ancienneScene, nouvelleScene) -> {
             nouvelleScene.setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case Z, UP, SPACE:
-                        enSaut = true;
+                        enSaut = true ;
                         break;
                     case Q, LEFT:
                         gauche = true;

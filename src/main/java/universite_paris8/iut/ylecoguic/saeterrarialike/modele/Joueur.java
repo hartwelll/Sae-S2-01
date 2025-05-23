@@ -22,7 +22,7 @@ public class Joueur {
         this.vSaut = 100;
         this.vGravite = 4;
         this.map = map;
-        hauteurJoueur = 64;
+        hauteurJoueur = 63;
         largeurJoueur = 32;
     }
 
