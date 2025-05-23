@@ -19,10 +19,10 @@ public class Joueur {
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.v = 8;
-        this.vSaut = 100;
+        this.vSaut = 33;
         this.vGravite = 4;
         this.map = map;
-        hauteurJoueur = 63;
+        hauteurJoueur = 60;
         largeurJoueur = 32;
     }
 
@@ -98,7 +98,7 @@ public class Joueur {
         return vGravite;
     }
 
-    public int getvSaut() {
+    public int getVSaut() {
         return vSaut;
     }
 }

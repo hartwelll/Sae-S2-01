@@ -79,8 +79,9 @@ public class Controller implements Initializable{
                         joueur.gravite(0, -1);
                         enSaut = true;
                     }
-                    else if(!joueur.collision(joueur.getX(), joueur.getY() - joueur.getvSaut()) && !enSaut){
+                    else if(!joueur.collision(joueur.getX(), joueur.getY() - joueur.getVSaut()) && !enSaut){
                         joueur.saut(0, 1);
+                        enSaut = false;
                     }
                     lastUpdate = now;
                 }
@@ -93,7 +94,7 @@ public class Controller implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle){
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map);
-        joueur = new Joueur(500, 805, map);
+        joueur = new Joueur(500, 725, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
