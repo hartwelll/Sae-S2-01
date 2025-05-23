@@ -22,7 +22,7 @@ public class Joueur {
         this.vSaut = 100;
         this.vGravite = 4;
         this.map = map;
-        hauteurJoueur = 64;
+        hauteurJoueur = 63;
         largeurJoueur = 32;
     }
 
@@ -46,11 +46,8 @@ public class Joueur {
 
     public void collisionDetectee(int dx, int dy, int nposx, int nposy){
         Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
-        boolean collisionDetectee = false;
         for(Rectangle2D hitboxBloc : map.getHitboxList()) {
             if (hitboxJoueur.intersects(hitboxBloc)) {
-
-                collisionDetectee = true;
                 if (dx != 0) {
                     if (dx > 0) {
                         nposx = (int) (hitboxBloc.getMinX() - largeurJoueur);
