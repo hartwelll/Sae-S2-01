@@ -38,7 +38,7 @@
             <Button mnemonicParsing="false" text="Button" />
         </children>
     </GridPane>  -->
-    <TableView maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER">
+    <TableView maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER" focusTraversable="false">
         <columns>
             <TableColumn prefWidth="75.0" text="C1" />
             <TableColumn prefWidth="75.0" text="C2" />

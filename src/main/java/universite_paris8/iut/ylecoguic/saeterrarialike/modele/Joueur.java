@@ -14,6 +14,7 @@ public class Joueur {
     private Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
+    private int vie;
 
     public Joueur(int x, int y, Map map){
         this.xProperty = new SimpleIntegerProperty(x);
@@ -24,6 +25,7 @@ public class Joueur {
         this.map = map;
         hauteurJoueur = 60;
         largeurJoueur = 32;
+        this.vie = 10;
     }
 
     public void deplacement(int dx, int dy){
@@ -48,6 +50,10 @@ public class Joueur {
         Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
         for(Rectangle2D hitboxBloc : map.getHitboxList()) {
             if (hitboxJoueur.intersects(hitboxBloc)) {
+                if(map.getCase(nposx, nposy) == 3){
+                decrementerVie(1);
+                System.out.println(this.vie);
+                }
                 if (dx != 0) {
                     if (dx > 0) {
                         nposx = (int) (hitboxBloc.getMinX() - largeurJoueur);
@@ -76,6 +82,15 @@ public class Joueur {
             }
         }
         return false;
+    }
+
+    public void decrementerVie(int vie){
+        if (this.vie > 0){
+            this.vie -= vie;
+        }
+        else {
+            System.exit(0);
+        }
     }
 
     public IntegerProperty getxProperty() {
