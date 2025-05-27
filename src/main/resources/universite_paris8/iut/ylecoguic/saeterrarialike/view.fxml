@@ -52,52 +52,52 @@
     </TableView>
    <HBox maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_LEFT">
       <children>
-         <ImageView>
+         <ImageView fx:id="coeur10">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur9">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur8">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur7">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur6">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur5">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur4">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur3">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur2">
             <image>
                <Image url="@coeur.png" />
             </image>
          </ImageView>
-         <ImageView>
+         <ImageView fx:id="coeur1">
             <image>
                <Image url="@coeur.png" />
             </image>
@@ -107,6 +107,4 @@
          <Insets left="10.0" top="10.0" />
       </StackPane.margin>
    </HBox>
-    
-
 </StackPane>

@@ -3,6 +3,9 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
 
 public class Joueur {
 
@@ -31,7 +34,7 @@ public class Joueur {
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 32;
-        this.vie = 100;
+        this.vie = 50;
         this.vy = 0;
         this.sautEnCours = false;
     }
@@ -58,7 +61,6 @@ public class Joueur {
         }
         if (vy > 0){
             collisionDetectee(0, 1, nposx, nposy);
-
         } else if (vy < 0) {
             collisionDetectee(0, -1, nposx, nposy);
         }
@@ -78,7 +80,7 @@ public class Joueur {
         }
         for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
             if (hitboxJoueur.intersects(hitboxBloc)) {
-                decrementerVie(1);
+                decrementerVie();
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
             }
@@ -112,24 +114,15 @@ public class Joueur {
         return nposy;
     }
 
-    /*public boolean collision(int nposx, int nposy) {
-        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
-        for (Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
-    public void decrementerVie(int vie) {
-        System.out.println(this.vie);
+    public boolean decrementerVie() {
         if (this.vie > 0) {
-            this.vie -= vie;
+            this.vie -= 1;
         } else {
             System.out.println("Game Over! Vie: " + this.vie);
             System.exit(0);
         }
+        System.out.println(this.vie);
+        return true;
     }
 
     public boolean estSurLeSol() {
@@ -172,5 +165,9 @@ public class Joueur {
 
     public int getVSaut() {
         return vSautInitial;
+    }
+
+    public int getVie() {
+        return vie;
     }
 }

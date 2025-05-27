@@ -2,11 +2,14 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -22,10 +25,13 @@ public class Controller implements Initializable {
     private TilePane panneauDeJeu;
     @FXML
     private Pane panneauJoueur;
+    @FXML
+    private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     private Map map;
     private VueMap vueMap;
     private Joueur joueur;
     private VueJoueur vueJoueur;
+    private ArrayList<ImageView> coeurList;
 
     private Set<KeyCode> touchesActives;
 
@@ -59,6 +65,15 @@ public class Controller implements Initializable {
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
+                    if (touchesActives.contains(KeyCode.C)){
+
+                    }
+                    if (!coeurList.isEmpty()){
+                        if (joueur.getVie()%5 == 0 && joueur.decrementerVie() && joueur.getVie() <= 45){
+                            coeurList.get(0).setVisible(false);
+                            coeurList.remove(0);
+                        }
+                    }
 
                     joueur.appliquerMouvementVertival();
 
@@ -77,6 +92,17 @@ public class Controller implements Initializable {
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+        coeurList = new ArrayList<>();
+        coeurList.add(coeur1);
+        coeurList.add(coeur2);
+        coeurList.add(coeur3);
+        coeurList.add(coeur4);
+        coeurList.add(coeur5);
+        coeurList.add(coeur6);
+        coeurList.add(coeur7);
+        coeurList.add(coeur8);
+        coeurList.add(coeur9);
+        coeurList.add(coeur10);
         touchesActives = new HashSet<>();
         setupClavierInput();
         startAnimationTimer();
