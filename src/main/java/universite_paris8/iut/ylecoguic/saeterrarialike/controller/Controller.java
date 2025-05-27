@@ -1,20 +1,22 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
+
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 
-public class Controller implements Initializable{
+public class Controller implements Initializable {
 
     @FXML
     private TilePane panneauDeJeu;
@@ -24,65 +26,42 @@ public class Controller implements Initializable{
     private VueMap vueMap;
     private Joueur joueur;
     private VueJoueur vueJoueur;
-    private boolean droite = false;
-    private boolean gauche = false;
-    private boolean enSaut = false;
 
-    public void gestionClavier() {
-        panneauDeJeu.sceneProperty().addListener((obs, ancienneScene, nouvelleScene) -> {
-            nouvelleScene.setOnKeyPressed(event -> {
-                switch (event.getCode()) {
-                    case Z, UP, SPACE:
-                        enSaut = false;
-                        break;
-                    case Q, LEFT:
-                        gauche = true;
-                        break;
-                    case D, RIGHT:
-                        droite = true;
-                        break;
-                }
-            });
+    private Set<KeyCode> touchesActives;
 
-            nouvelleScene.setOnKeyReleased(event -> {
-                switch (event.getCode()) {
-                    case Z, UP, SPACE:
-                        enSaut = true;
-                        break;
-                    case Q, LEFT:
-                        droite = false;
-                        break;
-                    case D, RIGHT:
-                        gauche = false;
-                        break;
-                }
-            });
+    public void setupClavierInput() {
+        panneauDeJeu.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyPressed(event -> {
+                    touchesActives.add(event.getCode());
+                });
+                newScene.setOnKeyReleased(event -> {
+                    touchesActives.remove(event.getCode());
+                });
+            }
         });
     }
 
-    public void AnimationTimer(){
-        AnimationTimer timer = new AnimationTimer() { // classe qui sert pour faire des animations fluides car dans sa méthode handle ,ce qui est écrit dedans est effectué toutes les frames
+    public void startAnimationTimer() {
+        AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
-            private final long frameInterval = 16_666_666; // Conversion nano secondes en secondes = 60 FPS
+            private final long frameInterval = 16_666_666;
+
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
-                    if (gauche == true){
+                    if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
                         joueur.deplacement(-1, 0);
-                        gauche = false;
-                    }
-                    else if (droite== true) {
+                    } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
                         joueur.deplacement(1, 0);
-                        droite = false;
                     }
-                    if (!joueur.collision(joueur.getX(), joueur.getY() + joueur.getVGravite())){
-                        joueur.gravite(0, -1);
-                        enSaut = true;
+
+                    if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
+                        joueur.demarrerSaut();
                     }
-                    else if(!joueur.collision(joueur.getX(), joueur.getY() - joueur.getVSaut()) && !enSaut){
-                        joueur.saut(0, 1);
-                        enSaut = false;
-                    }
+
+                    joueur.appliquerMouvementVertival();
+
                     lastUpdate = now;
                 }
             }
@@ -91,14 +70,15 @@ public class Controller implements Initializable{
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle){
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map);
         joueur = new Joueur(500, 725, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        gestionClavier();
-        AnimationTimer();
+        touchesActives = new HashSet<>();
+        setupClavierInput();
+        startAnimationTimer();
     }
 }
