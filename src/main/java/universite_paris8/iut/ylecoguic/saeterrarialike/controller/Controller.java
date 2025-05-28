@@ -1,3 +1,4 @@
+// Zizi au caca, je suis Yohann et je suis scatophile supplément, me mettre avec un gosse de 12 ans ? ça me dérange pas, j'aime ça car en vrai dans le lore elle ont 1000 ans donc ça va, c'est lore accurate. J'ai des lunettes mais c'est pas parce que je vois mal, elles me permettent de voir à travers les vêtements des gens *miam*. Gougougaga je suis un gros bébé et je mesure 2 cm dans le caleçon
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
