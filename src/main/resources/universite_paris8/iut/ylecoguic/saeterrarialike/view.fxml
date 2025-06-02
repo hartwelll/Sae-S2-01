@@ -107,4 +107,7 @@
          <Insets left="10.0" top="10.0" />
       </StackPane.margin>
    </HBox>
+   <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600" prefWidth="750" StackPane.alignment="CENTER" style="-fx-background-color: Blue;" opacity="0.3">
+
+   </Pane>
 </StackPane>

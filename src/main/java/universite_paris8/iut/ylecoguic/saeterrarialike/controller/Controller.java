@@ -1,4 +1,3 @@
-// Zizi au caca, je suis Yohann et je suis scatophile supplément, me mettre avec un gosse de 12 ans ? ça me dérange pas, j'aime ça car en vrai dans le lore elle ont 1000 ans donc ça va, c'est lore accurate. J'ai des lunettes mais c'est pas parce que je vois mal, elles me permettent de voir à travers les vêtements des gens *miam*. Gougougaga je suis un gros bébé et je mesure 2 cm dans le caleçon
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
@@ -27,6 +26,8 @@ public class Controller implements Initializable {
     @FXML
     private Pane panneauJoueur;
     @FXML
+    private Pane craft;
+    @FXML
     private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     private Map map;
     private VueMap vueMap;
@@ -41,6 +42,15 @@ public class Controller implements Initializable {
             if (newScene != null) {
                 newScene.setOnKeyPressed(event -> {
                     touchesActives.add(event.getCode());
+                    switch (event.getCode()){
+                        case C:
+                            if (!craft.isVisible()){
+                                craft.setVisible(true);
+                            }
+                            else{
+                                craft.setVisible(false);
+                            }
+                    }
                 });
                 newScene.setOnKeyReleased(event -> {
                     touchesActives.remove(event.getCode());
@@ -66,9 +76,7 @@ public class Controller implements Initializable {
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
-                    if (touchesActives.contains(KeyCode.C)){
 
-                    }
                     if (!coeurList.isEmpty()){
                         if (joueur.getVie()%5 == 0 && joueur.decrementerVie() && joueur.getVie() <= 45){
                             coeurList.get(0).setVisible(false);
@@ -104,6 +112,7 @@ public class Controller implements Initializable {
         coeurList.add(coeur8);
         coeurList.add(coeur9);
         coeurList.add(coeur10);
+        craft.setVisible(false);
         touchesActives = new HashSet<>();
         setupClavierInput();
         startAnimationTimer();
