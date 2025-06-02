@@ -19,6 +19,7 @@
 <!--change Anchorpane par Stackpane (le tile panne en arriere plan le pane 1 plan avant le tilepane) pour pouvoir mettre tableview-->
 <!-- voir les effets pour voir ce que sa donne -->
 
+<?import javafx.scene.ParallelCamera?>
 <StackPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
     <TilePane fx:id="panneauDeJeu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Pane fx:id="panneauJoueur" mouseTransparent="true" />
@@ -108,6 +109,33 @@
       </StackPane.margin>
    </HBox>
    <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600" prefWidth="750" StackPane.alignment="CENTER" style="-fx-background-color: Blue;" opacity="0.3">
-
+      <children>
+         <VBox alignment="TOP_CENTER">
+            <children>
+               <HBox>
+                  <children>
+                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
+                  </children>
+               </HBox>
+               <HBox>
+                  <children>
+                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
+                  </children>
+               </HBox>
+               <HBox>
+                  <children>
+                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
+                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+      </children>
    </Pane>
+
 </StackPane>
