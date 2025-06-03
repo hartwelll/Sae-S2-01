@@ -4,6 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
+import universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class Joueur {
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 32;
-        this.vie = 50;
+        this.vie = 500;
         this.vy = 0;
         this.sautEnCours = false;
     }

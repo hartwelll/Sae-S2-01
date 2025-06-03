@@ -8,6 +8,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
+
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,6 +52,7 @@ public class Controller implements Initializable {
                             else{
                                 craft.setVisible(false);
                             }
+                            break;
                     }
                 });
                 newScene.setOnKeyReleased(event -> {
@@ -57,6 +60,10 @@ public class Controller implements Initializable {
                 });
             }
         });
+    }
+
+    public void craft(){
+        System.out.println("fabrication");
     }
 
     public void startAnimationTimer() {

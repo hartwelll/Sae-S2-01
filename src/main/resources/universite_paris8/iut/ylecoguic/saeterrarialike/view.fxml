@@ -16,126 +16,120 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.StackPane?>
 
-<!--change Anchorpane par Stackpane (le tile panne en arriere plan le pane 1 plan avant le tilepane) pour pouvoir mettre tableview-->
-<!-- voir les effets pour voir ce que sa donne -->
-
 <?import javafx.scene.ParallelCamera?>
+<?import javafx.scene.text.Text?>
 <StackPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
-    <TilePane fx:id="panneauDeJeu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-    <Pane fx:id="panneauJoueur" mouseTransparent="true" />
-    <!--tableview pour inventaire -->
-    <!-- soit tableview(voie un tableau avce nom colonne) soit gridpane (pas de 'tableau' juste les truc dans le vide  -->
-  <!--  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-        <children>
-            <Button mnemonicParsing="false" text="Button" />
-        </children>
-    </GridPane>  -->
-    <TableView maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER" focusTraversable="false">
-        <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
-            <TableColumn prefWidth="75.0" text="c3" />
-            <TableColumn prefWidth="75.0" text="c4" />
-            <TableColumn prefWidth="75.0" text="c5" />
-        </columns>
-        <StackPane.margin>
-            <Insets bottom="10.0" />
-        </StackPane.margin>
-    </TableView>
-   <HBox maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_LEFT">
-      <children>
-         <ImageView fx:id="coeur10">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur9">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur8">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur7">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur6">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur5">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur4">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur3">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur2">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="coeur1">
-            <image>
-               <Image url="@coeur.png" />
-            </image>
-         </ImageView>
-      </children>
-      <StackPane.margin>
-         <Insets left="10.0" top="10.0" />
-      </StackPane.margin>
-   </HBox>
-   <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600" prefWidth="750" StackPane.alignment="CENTER" style="-fx-background-color: Blue;" opacity="0.3">
-      <children>
-         <VBox alignment="TOP_CENTER">
-            <children>
-               <HBox>
-                  <children>
-                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
-                  </children>
-               </HBox>
-               <HBox>
-                  <children>
-                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
-                  </children>
-               </HBox>
-               <HBox>
-                  <children>
-                     <Pane style="-fx-background-color: red;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: yellow;" prefHeight="200" prefWidth="250"/>
-                     <Pane style="-fx-background-color: green;" prefHeight="200" prefWidth="250"/>
-                  </children>
-               </HBox>
-            </children>
-         </VBox>
-      </children>
-   </Pane>
+   <TilePane fx:id="panneauDeJeu" /> <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
+   <TableView maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER" focusTraversable="false">
+      <columns>
+         <TableColumn prefWidth="75.0" text="C1" />
+         <TableColumn prefWidth="75.0" text="C2" />
+         <TableColumn prefWidth="75.0" text="c3" />
+         <TableColumn prefWidth="75.0" text="c4" />
+         <TableColumn prefWidth="75.0" text="c5" />
+      </columns>
+      <StackPane.margin>
+         <Insets bottom="10.0" />
+      </StackPane.margin>
+   </TableView>
+   <HBox maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0"
+         StackPane.alignment="TOP_LEFT">
+      <StackPane.margin>
+         <Insets left="10.0" top="10.0"/>
+      </StackPane.margin>
+      <ImageView fx:id="coeur10">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur9">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur8">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur7">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur6">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur5">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur4">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur3">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur2">
+         <Image url="@coeur.png"/>
+      </ImageView>
+      <ImageView fx:id="coeur1">
+         <Image url="@coeur.png"/>
+      </ImageView>
+   </HBox>
+   <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400" prefWidth="750" StackPane.alignment="CENTER" opacity="0.5">
+      <VBox alignment="TOP_CENTER">
+         <HBox style="-fx-background-color: green;">
+
+            <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
+               <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                  <VBox alignment="CENTER_LEFT">
+                     <Text text="3 pierres"/>
+                     <Text text="2 bois"/>
+                  </VBox>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../../Objet/Epioche.gif"/>
+                  </ImageView>
+               </HBox>
+               <Button text="fabriquer pioche" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+                       AnchorPane.rightAnchor="5.0"/>
+            </AnchorPane>
+
+            <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
+               <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                  <VBox alignment="CENTER_LEFT">
+                     <Text text="1 pierres"/>
+                     <Text text="3 bois"/>
+                  </VBox>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../Objet/pelle.gif"/>
+                     </image>
+                  </ImageView>
+               </HBox>
+               <Button text="fabriquer pelle" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+                       AnchorPane.rightAnchor="5.0"/>
+            </AnchorPane>
+
+            <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
+               <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
+
+                  <VBox alignment="CENTER_LEFT">
+                     <children>
+                        <Text text="2 pierres"/>
+                        <Text text="1 bois"/>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../Objet/epee.gif"/>
+                     </image>
+                  </ImageView>
+               </HBox>
+               <Button text="fabriquer épée" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+                       AnchorPane.rightAnchor="5.0"/>
+            </AnchorPane>
+
+         </HBox>
+         <HBox style="-fx-background-color: yellow;">
+<!--
+            <Pane prefHeight="200" prefWidth="250"/>
+            <Pane prefHeight="200" prefWidth="250"/>
+            <Pane prefHeight="200" prefWidth="250"/>
+-->
+         </HBox>
+      </VBox>
+   </Pane>
 </StackPane>
