@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Map {
     private static int[][] map = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -50,12 +50,10 @@ public class Map {
         tailleTuile = 32;
         hitboxList = new ArrayList<>();
         hurtboxList = new ArrayList<>();
-        rebuildHitboxes();
+        buildHitboxes();
     }
 
-    public void rebuildHitboxes(){
-        hitboxList.clear();
-        hurtboxList.clear();
+    public void buildHitboxes(){
         for(int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 int x = j * tailleTuile;
@@ -70,10 +68,18 @@ public class Map {
         }
     }
 
+    public void removeHitbox(int ligne, int colonne, int newId){
+        int x = colonne * tailleTuile;
+        int y = ligne * tailleTuile;
+        Rectangle2D affectedHitbox = new Rectangle2D(x, y, tailleTuile, tailleTuile);
+
+        hitboxList.remove(affectedHitbox);
+    }
+
     public void setCase(int ligne, int colonne, int newId) {
         if (ligne >= 0 && ligne < map.length && colonne >= 0 && colonne < map[0].length) {
             map[ligne][colonne] = newId;
-            rebuildHitboxes();
+            removeHitbox(ligne, colonne, newId);
         }
     }
 

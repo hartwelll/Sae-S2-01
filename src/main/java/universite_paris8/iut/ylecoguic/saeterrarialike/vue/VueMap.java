@@ -11,7 +11,8 @@ public class VueMap {
     private HashMap<Integer, Image> tileImages;
     private Map map;
     private TilePane pane;
-    private ImageView imageView;
+    // Ajout d'un tableau pour stocker toutes les ImageView du plateau
+    private ImageView[][] imageViewsTiles; // Pour un accès facile par coordonnée
 
     public VueMap(TilePane pane, Map map){
         this.tileImages = new HashMap<>();
@@ -19,8 +20,10 @@ public class VueMap {
         this.pane = pane;
         this.pane.setPrefTileWidth(32);
         this.pane.setPrefTileHeight(32);
+        // Initialiser le tableau d'ImageView avec les dimensions de la map
+        this.imageViewsTiles = new ImageView[map.getLigne()][map.getColonne()];
         initialiseTile();
-        affichage();
+        affichage(); // L'affichage initial va maintenant remplir imageViewsTiles
     }
 
     public Image creerImage(String chemin){
@@ -46,31 +49,35 @@ public class VueMap {
         ajoutTile(3,"/Tile/barbele.png");
     }
 
+    // Cette méthode crée toutes les ImageView et les ajoute au TilePane ET au tableau
     public void affichage(){
+        // On vide le TilePane avant de tout recréer (utile si on réinitialise la map)
+        pane.getChildren().clear();
         for (int i = 0; i < map.getLigne(); i++) {
             for (int j = 0; j < map.getColonne(); j++) {
-                int tileId = map.getCase(i, j); // getid
+                int tileId = map.getCase(i, j);
                 Image image = tileImages.get(tileId);
-                //System.out.println("ID de la tile récupéré : " + tileId);
                 if (image != null) {
-                    imageView = new ImageView(image);
+                    ImageView imageView = new ImageView(image);
+                    imageViewsTiles[i][j] = imageView; // Stocke l'ImageView dans le tableau
                     pane.getChildren().add(imageView);
-                    //System.out.println("ID de tile connu : " + tileId + " à la position [" + i + ", " + j + "]");
                 } else {
-                    System.out.println("ID de tile inconnu : " + tileId + " à la position [" + i + ", " + j + "]"); // Gérer le cas où l'ID de la tile n'a pas d'image correspondante
+                    System.out.println("ID de tile inconnu : " + tileId + " à la position [" + i + ", " + j + "]");
                 }
             }
         }
     }
 
+    public void miseAJourAffichage(int ligne, int colonne){
+        int tileId = map.getCase(ligne, colonne);
+        Image newImage = tileImages.get(tileId);
 
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    public void miseAJourAffichage(){
-        pane.getChildren().clear();
-        affichage();
+        // Vérifie si l'ImageView existe déjà à cet emplacement
+        if (imageViewsTiles[ligne][colonne] != null) {
+            // Met à jour l'image de l'ImageView existante
+            imageViewsTiles[ligne][colonne].setImage(newImage);
+        } else {
+            System.err.println("WARN: ImageView was null at [" + ligne + ", " + colonne + "], recreated.");
+        }
     }
 }

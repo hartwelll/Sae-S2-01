@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 
-import java.awt.*;
+import java.awt.*; // Attention: java.awt.Point n'est pas utilisé ici, vous pouvez le supprimer
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,17 +68,16 @@ public class Controller implements Initializable {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
 
-        int joueurPoseTileX = joueur.getTileX();
-        int joueurPoseTileY = joueur.getTileY();
+        int joueurPoseTileX = joueur.getTileX(); // Coordonnée X de la tuile du joueur
+        int joueurPoseTileY = joueur.getTileY(); // Coordonnée Y de la tuile du joueur
 
         boolean isAdjacent = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
-        boolean isNotPlayerTile = !(colTileCliquer == joueurPoseTileX && ligneTileCliquer == joueurPoseTileY);
 
-        if (isAdjacent && isNotPlayerTile) {
+        if (isAdjacent) {
             int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
             if (idBloc != 0 && idBloc != 3) {
                 map.setCase(ligneTileCliquer, colTileCliquer, 0);
-                vueMap.miseAJourAffichage();
+                vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
             }
         }
     }
@@ -124,7 +123,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map);
+        vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
         joueur = new Joueur(500, 725, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
