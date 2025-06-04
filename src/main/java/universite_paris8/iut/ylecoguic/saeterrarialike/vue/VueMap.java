@@ -63,11 +63,14 @@ public class VueMap {
         }
     }
 
+
+
     public ImageView getImageView() {
         return imageView;
     }
 
     public void miseAJourAffichage(){
+        pane.getChildren().clear();
         affichage();
     }
 }

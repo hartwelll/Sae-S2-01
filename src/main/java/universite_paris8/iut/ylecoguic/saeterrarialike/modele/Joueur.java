@@ -35,7 +35,7 @@ public class Joueur {
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 32;
-        this.vie = 500;
+        this.vie = 50;
         this.vy = 0;
         this.sautEnCours = false;
     }
@@ -170,5 +170,13 @@ public class Joueur {
 
     public int getVie() {
         return vie;
+    }
+
+    public int getTileX() {
+        return (getX() + (largeurJoueur / 2)) / 32;
+    }
+
+    public int getTileY() {
+        return (getY() + (hauteurJoueur / 2)) / 32;
     }
 }

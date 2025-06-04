@@ -50,18 +50,30 @@ public class Map {
         tailleTuile = 32;
         hitboxList = new ArrayList<>();
         hurtboxList = new ArrayList<>();
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[i].length; j++){
-                int x = j* tailleTuile;
-                int y = i* tailleTuile;
+        rebuildHitboxes();
+    }
+
+    public void rebuildHitboxes(){
+        hitboxList.clear();
+        hurtboxList.clear();
+        for(int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                int x = j * tailleTuile;
+                int y = i * tailleTuile;
                 hitboxBlock = new Rectangle2D(x, y, tailleTuile, tailleTuile);
-                if(map[i][j] != 0 && map[i][j] != 3) {
+                if (map[i][j] != 0 && map[i][j] != 3) {
                     hitboxList.add(hitboxBlock);
-                }
-                else if (map[i][j] == 3){
+                } else if (map[i][j] == 3) {
                     hurtboxList.add(hitboxBlock);
                 }
             }
+        }
+    }
+
+    public void setCase(int ligne, int colonne, int newId) {
+        if (ligne >= 0 && ligne < map.length && colonne >= 0 && colonne < map[0].length) {
+            map[ligne][colonne] = newId;
+            rebuildHitboxes();
         }
     }
 

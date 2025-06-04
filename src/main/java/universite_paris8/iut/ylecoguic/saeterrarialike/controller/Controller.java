@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
@@ -58,8 +59,28 @@ public class Controller implements Initializable {
                 newScene.setOnKeyReleased(event -> {
                     touchesActives.remove(event.getCode());
                 });
+                newScene.setOnMouseClicked(this::handleMouseClick);
             }
         });
+    }
+
+    private void handleMouseClick(MouseEvent event) {
+        int colTileCliquer = (int) (event.getX() / 32);
+        int ligneTileCliquer = (int) (event.getY() / 32);
+
+        int joueurPoseTileX = joueur.getTileX();
+        int joueurPoseTileY = joueur.getTileY();
+
+        boolean isAdjacent = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
+        boolean isNotPlayerTile = !(colTileCliquer == joueurPoseTileX && ligneTileCliquer == joueurPoseTileY);
+
+        if (isAdjacent && isNotPlayerTile) {
+            int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
+            if (idBloc != 0 && idBloc != 3) {
+                map.setCase(ligneTileCliquer, colTileCliquer, 0);
+                vueMap.miseAJourAffichage();
+            }
+        }
     }
 
     public void craft(){
