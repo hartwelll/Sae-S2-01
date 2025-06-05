@@ -85,8 +85,8 @@ public class Controller implements Initializable {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
 
-        int joueurPoseTileX = joueur.getTileX(); // Coordonnée X de la tuile du joueur
-        int joueurPoseTileY = joueur.getTileY(); // Coordonnée Y de la tuile du joueur
+        int joueurPoseTileX = joueur.getTileX();
+        int joueurPoseTileY = joueur.getTileY();
 
         boolean isAdjacent = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
 
@@ -124,14 +124,14 @@ public class Controller implements Initializable {
                                 coeurList.remove(0);
                             }
                         }
-                        joueur.appliquerMouvementVertival();
-                        lastUpdate = now;
                     }
+                    joueur.appliquerMouvementVertival();
+                    lastUpdate = now;
                 }
             }
-            };
+        };
         timer.start();
-        }
+    }
 
     private void spawnObjects() {
         Objet objet = new Objet("Épée", "Une épée brillante");
