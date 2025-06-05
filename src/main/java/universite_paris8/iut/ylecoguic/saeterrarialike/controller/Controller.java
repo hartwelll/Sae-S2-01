@@ -2,12 +2,15 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.input.MouseButton;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 
 import java.awt.*; // Attention: java.awt.Point n'est pas utilisé ici, vous pouvez le supprimer
@@ -16,11 +19,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
 
 public class Controller implements Initializable {
 
@@ -37,8 +43,19 @@ public class Controller implements Initializable {
     private Joueur joueur;
     private VueJoueur vueJoueur;
     private ArrayList<ImageView> coeurList;
-
+    @FXML
+    private TableView<Objet> table;
+    @FXML
+    private TableColumn<Objet, String> col1;
+    @FXML
+    private Button Badd;
     private Set<KeyCode> touchesActives;
+    @FXML private Pane gamePane;
+    @FXML private TableView<Objet> inventaireTable;
+    @FXML private TableColumn<Objet, String> nomColumn;
+    @FXML private TableColumn<Objet, String> descColumn;
+
+    private final Inventaire inventaire = new Inventaire();
 
     public void setupClavierInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -99,25 +116,37 @@ public class Controller implements Initializable {
                     } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
                         joueur.deplacement(1, 0);
                     }
-
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
-                    }
-
-                    if (!coeurList.isEmpty()){
-                        if (joueur.getVie()%5 == 0 && joueur.decrementerVie() && joueur.getVie() <= 45){
-                            coeurList.get(0).setVisible(false);
-                            coeurList.remove(0);
+                        if (!coeurList.isEmpty()) {
+                            if (joueur.getVie() % 5 == 0 && joueur.decrementerVie() && joueur.getVie() <= 45) {
+                                coeurList.get(0).setVisible(false);
+                                coeurList.remove(0);
+                            }
                         }
+                        joueur.appliquerMouvementVertival();
+                        lastUpdate = now;
                     }
-
-                    joueur.appliquerMouvementVertival();
-
-                    lastUpdate = now;
                 }
             }
-        };
+            };
         timer.start();
+        }
+
+    private void spawnObjects() {
+        Objet objet = new Objet("Épée", "Une épée brillante");
+        VueObjet epee = new VueObjet(objet, 100, 100, 60, 60);
+
+        epee.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                System.out.println("Ajout à l'inventaire : " + epee.getObjet().getNom());
+                inventaire.addObjet(epee.getObjet());
+                gamePane.getChildren().remove(epee);
+                System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
+            }
+        });
+
+        gamePane.getChildren().add(epee);
     }
 
     @Override
@@ -141,6 +170,12 @@ public class Controller implements Initializable {
         coeurList.add(coeur10);
         craft.setVisible(false);
         touchesActives = new HashSet<>();
+        nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        descColumn.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        inventaireTable.setItems(inventaire.getObjets());
+
+        spawnObjects();
+
         setupClavierInput();
         startAnimationTimer();
     }
