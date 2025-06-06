@@ -17,21 +17,22 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.ParallelCamera?>
 
-<!-- uand ajout trucet fleche plus bouger mettre: focusTraversable="false" -->
+<!-- A ne pas enlever (pour Ririne)-->
+<!-- quand ajout truc et fleche plus bouger mettre: focusTraversable="false" -->
 <!--fait change Anchorpane par Stackpane (le tile panne en arriere plan le pane 1 plan avant le tilepane) pour pouvoir mettre tableview-->
-<!-- voir les effets pour voir ce que sa donne
--->
+<!-- voir les effets pour voir ce que sa donne-->
 
 <?import javafx.scene.text.Text?>
 <StackPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
-   <TilePane fx:id="panneauDeJeu" /> <Pane fx:id="panneauJoueur" mouseTransparent="true" />
+   <TilePane fx:id="panneauDeJeu" />
+   <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
    <Pane fx:id="gamePane" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0"   />
 
-   <TableView fx:id="inventaireTable" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="BOTTOM_CENTER" focusTraversable="false">
+   <TableView fx:id="inventaireTable" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_RIGHT" focusTraversable="false">
       <columns>
-         <TableColumn fx:id="nomColumn" text="Nom"/>
-         <TableColumn fx:id="descColumn" text="Description"/>
+         <TableColumn fx:id="nomColumn" text="Nom" prefWidth="99.0"/>
+         <TableColumn fx:id="descColumn" text="Description" prefWidth="300.0"/>
       </columns>
       <StackPane.margin>
          <Insets bottom="10.0" />
@@ -75,7 +76,7 @@
    </HBox>
    <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400" prefWidth="750" StackPane.alignment="CENTER" opacity="0.5">
       <VBox alignment="TOP_CENTER">
-         <HBox style="-fx-background-color: green;">
+         <HBox style="-fx-background-color: white;">
 
             <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
                <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
@@ -84,7 +85,7 @@
                      <Text text="2 bois"/>
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../../Objet/Epioche.gif"/>
+                     <Image url="@../../../../Objet/EpiocheHD.gif"/>
                   </ImageView>
                </HBox>
                <Button text="fabriquer pioche" onAction="#craft" AnchorPane.bottomAnchor="5.0"
@@ -99,7 +100,7 @@
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Objet/pelle.gif"/>
+                        <Image url="@../../../../Objet/pelleHD.gif"/>
                      </image>
                   </ImageView>
                </HBox>
@@ -118,7 +119,7 @@
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Objet/epee.gif"/>
+                        <Image url="@../../../../Objet/epeeHD.gif"/>
                      </image>
                   </ImageView>
                </HBox>

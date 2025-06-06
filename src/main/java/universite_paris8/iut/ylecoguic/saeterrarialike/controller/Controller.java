@@ -118,11 +118,12 @@ public class Controller implements Initializable {
                     }
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
-                        if (!coeurList.isEmpty()) {
-                            if (joueur.getVie() % 5 == 0 && joueur.decrementerVie() && joueur.getVie() <= 45) {
-                                coeurList.get(0).setVisible(false);
-                                coeurList.remove(0);
-                            }
+
+                    }
+                    if (!coeurList.isEmpty()) {
+                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
+                            coeurList.get(0).setVisible(false);
+                            coeurList.remove(0);
                         }
                     }
                     joueur.appliquerMouvementVertival();
@@ -135,7 +136,7 @@ public class Controller implements Initializable {
 
     private void spawnObjects() {
         Objet objet = new Objet("Épée", "Une épée brillante");
-        VueObjet epee = new VueObjet(objet, 100, 100, 60, 60);
+        VueObjet epee = new VueObjet(objet, 100, 730, 60, 60);
 
         epee.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -152,7 +153,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
+        vueMap = new VueMap(panneauDeJeu, map);
         joueur = new Joueur(500, 725, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());

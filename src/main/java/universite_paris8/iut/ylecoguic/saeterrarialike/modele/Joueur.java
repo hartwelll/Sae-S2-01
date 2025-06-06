@@ -35,7 +35,7 @@ public class Joueur {
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 32;
-        this.vie = 50;
+        this.vie = 100;
         this.vy = 0;
         this.sautEnCours = false;
     }
