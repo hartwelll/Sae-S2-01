@@ -3,10 +3,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.ImageView;
-import universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller;
-
-import java.util.ArrayList;
 
 public class Joueur {
 
@@ -16,6 +12,7 @@ public class Joueur {
     private int v;
     private int vSautInitial;
     private int vGravite;
+    private boolean collision;
 
     private Map map;
 
@@ -26,13 +23,19 @@ public class Joueur {
     private boolean sautEnCours;
     private int vy;
 
+    private final int minXMap = 0;
+    private final int maxXMap = 1824;
+    private final int minYMap = 0;
+    private final int maxYMap = 1024;
+
     public Joueur(int x, int y, Map map) {
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
+        this.map = map;
         this.v = 8;
         this.vSautInitial = 21;
         this.vGravite = 4;
-        this.map = map;
+        this.collision = false;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 32;
         this.vie = 100;
@@ -43,11 +46,18 @@ public class Joueur {
     public void deplacement(int dx, int dy) {
         int nposx = getX() + v * dx;
         int nposy = getY();
+
+        if (nposx < minXMap) {
+            nposx = minXMap;
+        } else if (nposx + largeurJoueur > maxXMap) {
+            nposx = maxXMap - largeurJoueur;
+        }
+
         collisionDetectee(dx, dy, nposx, nposy);
     }
 
     public void demarrerSaut() {
-        if (estSurLeSol() && !sautEnCours) {
+        if (collision && !sautEnCours) {
             this.vy = -vSautInitial;
             this.sautEnCours = true;
         }
@@ -56,6 +66,16 @@ public class Joueur {
     public void appliquerMouvementVertival() {
         int nposx = getX();
         int nposy = getY() + vy;
+
+        if (nposy < minYMap) {
+            nposy = minYMap;
+            vy = 0;
+        } else if (nposy + hauteurJoueur > maxYMap) {
+            nposy = maxYMap - hauteurJoueur;
+            vy = 0;
+            sautEnCours = false;
+        }
+
         vy += vGravite;
         if (vy > 20) {
             vy = 20;
@@ -77,6 +97,7 @@ public class Joueur {
             if (hitboxJoueur.intersects(hitboxBloc)) {
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
+                collision(true);
             }
         }
         for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
@@ -84,10 +105,21 @@ public class Joueur {
                 decrementerVie();
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
+                collision(true);
             }
         }
+        /*if (nposx <= 0 || nposx >= 1792){
+            setV(0);
+        }
+        if (nposy <= 0){
+            setvSautInitial(0);
+        }*/
         xProperty.set(nposx);
         yProperty.set(nposy);
+    }
+
+    public boolean collision(boolean collision){
+        return this.collision = collision;
     }
 
     public int siCollisionX(int dx, int nposx, Rectangle2D hitboxBloc){
