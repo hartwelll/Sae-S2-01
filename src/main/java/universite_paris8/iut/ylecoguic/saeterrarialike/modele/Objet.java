@@ -65,6 +65,10 @@ public class Objet {
         this.quantite.set(this.quantite.get() + 1);
     }
 
+    public void decrementerQuantite(int nb) {
+        this.quantite.set(this.quantite.get() - nb);
+    }
+
     public boolean estMemeType(Objet autre) {
         return this.getNom().equals(autre.getNom()) && this.getDesc().equals(autre.getDesc());
     }

@@ -37,7 +37,7 @@ public class Joueur {
         this.vGravite = 4;
         this.collision = false;
         this.hauteurJoueur = 60;
-        this.largeurJoueur = 32;
+        this.largeurJoueur = 30;
         this.vie = 100;
         this.vy = 0;
         this.sautEnCours = false;

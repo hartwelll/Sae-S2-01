@@ -89,7 +89,7 @@
                      <Image url="@../../../../Objet/EpiocheHD.gif"/>
                   </ImageView>
                </HBox>
-               <Button text="fabriquer pioche" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+               <Button fx:id="pioche" text="fabriquer pioche" onAction="#craft" AnchorPane.bottomAnchor="5.0"
                        AnchorPane.rightAnchor="5.0"/>
             </AnchorPane>
 
@@ -105,7 +105,7 @@
                      </image>
                   </ImageView>
                </HBox>
-               <Button text="fabriquer pelle" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+               <Button fx:id="pelle" text="fabriquer pelle" onAction="#craft" AnchorPane.bottomAnchor="5.0"
                        AnchorPane.rightAnchor="5.0"/>
             </AnchorPane>
 
@@ -124,7 +124,7 @@
                      </image>
                   </ImageView>
                </HBox>
-               <Button text="fabriquer épée" onAction="#craft" AnchorPane.bottomAnchor="5.0"
+               <Button fx:id="epee" text="fabriquer épée" onAction="#craft" AnchorPane.bottomAnchor="5.0"
                        AnchorPane.rightAnchor="5.0"/>
             </AnchorPane>
 

@@ -2,7 +2,7 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +11,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,13 +46,20 @@ public class Controller implements Initializable {
     @FXML private TableView<Objet> inventaireTable;
     @FXML private TableColumn<Objet, String> nomCol;
     @FXML private TableColumn<Objet, String> descCol;
-    @FXML private TableColumn<Objet, Integer> quantCol;
+    @FXML private TableColumn<Objet, String> quantCol;
+    @FXML
+    private Button pioche;
+    @FXML
+    private Button pelle;
+    @FXML
+    private Button epee;
+
     private final Inventaire inventaire = new Inventaire();
 
-    public void setupClavierInput() {
-        panneauDeJeu.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) {
-                newScene.setOnKeyPressed(event -> {
+    public void setupInput() {
+        panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
+            if (sceneActuel != null) {
+                sceneActuel.setOnKeyPressed(event -> {
                     touchesActives.add(event.getCode());
                     switch (event.getCode()){
                         case C:
@@ -64,69 +72,91 @@ public class Controller implements Initializable {
                             break;
                     }
                 });
-                newScene.setOnKeyReleased(event -> {
+                sceneActuel.setOnKeyReleased(event -> {
                     touchesActives.remove(event.getCode());
                 });
-                newScene.setOnMouseClicked(this::handleMouseClick);
+                sceneActuel.setOnMouseClicked(this::clickBlock);
             }
         });
     }
 
-    private void handleMouseClick(MouseEvent event) {
+    private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
+
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
 
-        boolean isAdjacent = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
+        boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
+        boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
 
-        if (isAdjacent) {
-            int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
-            if (idBloc != 0 && idBloc != 3) {
-                Objet objetCasse = creerObjetDepuisBloc(idBloc);
-                if (objetCasse != null) {
-                    inventaire.addObjet(objetCasse);
-                    System.out.println("Bloc cassé ajouté à l'inventaire : " + objetCasse.getNom());
-                    System.out.println("Quantite dans inventaire : " + inventaire.getObjets().size());
+        if (event.getButton() == MouseButton.PRIMARY) {
+            if (estAdjacentCasseBlock) {
+                int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
+                if (idBloc != 0 && idBloc != 3) {
+                    Objet objetCasse = creerObjetDepuisBloc(idBloc);
+                    if (objetCasse != null) {
+                        inventaire.addObjet(objetCasse);
+                        System.out.println("Bloc cassé ajouté à l'inventaire : " + objetCasse.getNom());
+                        System.out.println("Quantite dans inventaire : " + inventaire.getObjets().size());
+                    }
+                    map.setCase(ligneTileCliquer, colTileCliquer, 0);
+                    vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
                 }
-                map.setCase(ligneTileCliquer, colTileCliquer, 0);
-                vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
+            }
+        }
+        else if (event.getButton() == MouseButton.SECONDARY) {
+            if (estAdjacentPoseBlock) {
+                int idBlocCible = map.getCase(ligneTileCliquer, colTileCliquer);
+                if (idBlocCible == 0) {
+                    Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
+                    if (objetSelectionne != null) {
+                        if (objetSelectionne.getQuantite() > 0) {
+                            int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
+                            if (idBlocAPoser != 0) {
+                                inventaire.removeObjet(objetSelectionne);
+                                System.out.println("Bloc posé. Objet retiré de l'inventaire : " + objetSelectionne.getNom());
+                                System.out.println("Quantité dans inventaire : " + inventaire.getObjets().size());
+                                map.creeCase(ligneTileCliquer, colTileCliquer, idBlocAPoser);
+                                vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    public void craft(){
-        System.out.println("fabrication");
+    private int getIdBlocDepuisObjet(Objet objet) {
+        switch (objet.getNom()) {
+            case "Pierre":
+                return 1;
+            case "bois":
+                return 2;
+            default:
+                return 0;
+        }
     }
 
-    public void startAnimationTimer() {
-        AnimationTimer timer = new AnimationTimer() {
-            private long lastUpdate = 0;
-            private final long frameInterval = 16_666_666;
+    public void craft() {
+        craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
+        craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
+        craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
+    }
 
-            @Override
-            public void handle(long now) {
-                if (now - lastUpdate >= frameInterval) {
-                    if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
-                        joueur.deplacement(-1, 0);
-                    } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
-                        joueur.deplacement(1, 0);
-                    }
-                    if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
-                        joueur.demarrerSaut();
-                        if (!coeurList.isEmpty()) {
-                            if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
-                                coeurList.get(0).setVisible(false);
-                                coeurList.remove(0);
-                            }
-                        }
-                    }
-                    joueur.appliquerMouvementVertival();
-                    lastUpdate = now;
+    private void craftItemButton(Button bouttonItem, String itemName, String itemDescription, int nbBois, int nbPierre) {
+        bouttonItem.setOnMouseClicked(e -> {
+           if(inventaire.getQuantiteObjet("Bois") >= nbBois && inventaire.getQuantiteObjet("Pierre") >= nbPierre) {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    Objet objet = new Objet(itemName, itemDescription);
+                    VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
+
+                    System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
+                    inventaire.addObjet(nouvelItem.getObjet());
+                    System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
                 }
             }
-        };
-        timer.start();
+        });
     }
 
     private Objet creerObjetDepuisBloc(int idBloc) {
@@ -134,7 +164,7 @@ public class Controller implements Initializable {
             case 1:
                 return new Objet("Pierre", "Bloc de pierre");
             case 2:
-                return new Objet("Caisse", "Caisse en bois");
+                return new Objet("Bois", "Caisse de bois");
             default:
                 return null; // Pour les blocs non récupérables (comme l'air, id = 0)
         }
@@ -154,6 +184,36 @@ public class Controller implements Initializable {
         });
 
         objetAffiche.getChildren().add(epee);
+    }
+
+    public void startAnimationTimer() {
+        AnimationTimer timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+            private final long frameInterval = 16_666_666;
+
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate >= frameInterval) {
+                    if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
+                        joueur.deplacement(-1, 0);
+                    } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
+                        joueur.deplacement(1, 0);
+                    }
+                    if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
+                        joueur.demarrerSaut();
+                    }
+                    if (!coeurList.isEmpty()) {
+                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
+                            coeurList.get(0).setVisible(false);
+                            coeurList.remove(0);
+                        }
+                    }
+                    joueur.appliquerMouvementVertival();
+                    lastUpdate = now;
+                }
+            }
+        };
+        timer.start();
     }
 
     @Override
@@ -179,11 +239,12 @@ public class Controller implements Initializable {
         touchesActives = new HashSet<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
-        quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
+        quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
         inventaireTable.setItems(inventaire.getObjets());
 
         spawnObjects();
-        setupClavierInput();
+
+        setupInput();
         startAnimationTimer();
     }
 }
