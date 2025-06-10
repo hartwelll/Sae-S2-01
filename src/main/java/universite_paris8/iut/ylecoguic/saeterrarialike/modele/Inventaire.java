@@ -1,6 +1,5 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,7 +9,14 @@ public class Inventaire {
     public ObservableList<Objet> getObjets() {
         return objets;
     }
-    public void addObjet(Objet objet) {
-        objets.add(objet);
+
+    public void addObjet(Objet nouvelObjet) {
+        for (Objet objetExistant : objets) {
+            if (objetExistant.estMemeType(nouvelObjet)) {
+                objetExistant.incrementerQuantite();
+                return;
+            }
+        }
+        objets.add(nouvelObjet);
     }
 }

@@ -8,12 +8,12 @@ public class VueObjet extends Rectangle {
     private final Objet objet;
 
     public VueObjet(Objet objet, double x, double y, double width, double height) {
-        super(width, height);
+        super(width, height);//herite rectrangle
         this.objet = objet;
-        setTranslateX(x);
+        setTranslateX(x);//utilisable via l'herite de rectangle
         setTranslateY(y);
-        setFill(Color.GOLD);
-        setStroke(Color.BLACK);
+        setFill(Color.GOLD); //remplissage carre
+        setStroke(Color.BLACK); //bord carre
         setPickOnBounds(true);
     }
 

@@ -2,7 +2,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -12,8 +11,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
-
-import java.awt.*; // Attention: java.awt.Point n'est pas utilisé ici, vous pouvez le supprimer
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,18 +40,12 @@ public class Controller implements Initializable {
     private Joueur joueur;
     private VueJoueur vueJoueur;
     private ArrayList<ImageView> coeurList;
-    @FXML
-    private TableView<Objet> table;
-    @FXML
-    private TableColumn<Objet, String> col1;
-    @FXML
-    private Button Badd;
     private Set<KeyCode> touchesActives;
-    @FXML private Pane gamePane;
+    @FXML private Pane objetAffiche;
     @FXML private TableView<Objet> inventaireTable;
-    @FXML private TableColumn<Objet, String> nomColumn;
-    @FXML private TableColumn<Objet, String> descColumn;
-
+    @FXML private TableColumn<Objet, String> nomCol;
+    @FXML private TableColumn<Objet, String> descCol;
+    @FXML private TableColumn<Objet, Integer> quantCol;
     private final Inventaire inventaire = new Inventaire();
 
     public void setupClavierInput() {
@@ -84,7 +75,6 @@ public class Controller implements Initializable {
     private void handleMouseClick(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
-
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
 
@@ -93,6 +83,12 @@ public class Controller implements Initializable {
         if (isAdjacent) {
             int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
             if (idBloc != 0 && idBloc != 3) {
+                Objet objetCasse = creerObjetDepuisBloc(idBloc);
+                if (objetCasse != null) {
+                    inventaire.addObjet(objetCasse);
+                    System.out.println("Bloc cassé ajouté à l'inventaire : " + objetCasse.getNom());
+                    System.out.println("Quantite dans inventaire : " + inventaire.getObjets().size());
+                }
                 map.setCase(ligneTileCliquer, colTileCliquer, 0);
                 vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
             }
@@ -118,12 +114,11 @@ public class Controller implements Initializable {
                     }
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
-
-                    }
-                    if (!coeurList.isEmpty()) {
-                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
-                            coeurList.get(0).setVisible(false);
-                            coeurList.remove(0);
+                        if (!coeurList.isEmpty()) {
+                            if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
+                                coeurList.get(0).setVisible(false);
+                                coeurList.remove(0);
+                            }
                         }
                     }
                     joueur.appliquerMouvementVertival();
@@ -134,6 +129,17 @@ public class Controller implements Initializable {
         timer.start();
     }
 
+    private Objet creerObjetDepuisBloc(int idBloc) {
+        switch (idBloc) {
+            case 1:
+                return new Objet("Pierre", "Bloc de pierre");
+            case 2:
+                return new Objet("Caisse", "Caisse en bois");
+            default:
+                return null; // Pour les blocs non récupérables (comme l'air, id = 0)
+        }
+    }
+
     private void spawnObjects() {
         Objet objet = new Objet("Épée", "Une épée brillante");
         VueObjet epee = new VueObjet(objet, 100, 730, 60, 60);
@@ -142,18 +148,18 @@ public class Controller implements Initializable {
             if (e.getButton() == MouseButton.PRIMARY) {
                 System.out.println("Ajout à l'inventaire : " + epee.getObjet().getNom());
                 inventaire.addObjet(epee.getObjet());
-                gamePane.getChildren().remove(epee);
+                objetAffiche.getChildren().remove(epee);
                 System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }
         });
 
-        gamePane.getChildren().add(epee);
+        objetAffiche.getChildren().add(epee);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map);
+        vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
         joueur = new Joueur(500, 725, map);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
@@ -171,12 +177,12 @@ public class Controller implements Initializable {
         coeurList.add(coeur10);
         craft.setVisible(false);
         touchesActives = new HashSet<>();
-        nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        descColumn.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
+        descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
+        quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
         inventaireTable.setItems(inventaire.getObjets());
 
         spawnObjects();
-
         setupClavierInput();
         startAnimationTimer();
     }

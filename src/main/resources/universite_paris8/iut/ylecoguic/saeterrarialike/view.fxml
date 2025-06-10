@@ -27,12 +27,13 @@
    <TilePane fx:id="panneauDeJeu" />
    <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
-   <Pane fx:id="gamePane" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0"   />
+   <Pane fx:id="objetAffiche" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0" focusTraversable="false"  />
 
    <TableView fx:id="inventaireTable" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_RIGHT" focusTraversable="false">
       <columns>
-         <TableColumn fx:id="nomColumn" text="Nom" prefWidth="99.0"/>
-         <TableColumn fx:id="descColumn" text="Description" prefWidth="300.0"/>
+         <TableColumn fx:id="nomCol" text="Nom"/>
+         <TableColumn fx:id="descCol" text="Description"/>
+         <TableColumn fx:id="quantCol" text="Quantite"/>
       </columns>
       <StackPane.margin>
          <Insets bottom="10.0" />
