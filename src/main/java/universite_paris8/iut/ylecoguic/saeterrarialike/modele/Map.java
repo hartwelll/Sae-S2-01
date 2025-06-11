@@ -83,6 +83,20 @@ public class Map {
         }
     }
 
+    public void creeCase(int ligneTileCliquer, int colTileCliquer, int idBlocAPoser) {
+        if (ligneTileCliquer >= 0 && ligneTileCliquer < map.length && colTileCliquer >= 0 && colTileCliquer < map[0].length) {
+            map[ligneTileCliquer][colTileCliquer] = idBlocAPoser;
+            addHitbox(ligneTileCliquer, colTileCliquer, idBlocAPoser);
+        }
+    }
+
+    public void addHitbox(int ligne, int colonne, int idBlock) {
+        int x = colonne * tailleTuile;
+        int y = ligne * tailleTuile;
+        Rectangle2D affectedHitbox = new Rectangle2D(x, y, tailleTuile, tailleTuile);
+        hitboxList.add(affectedHitbox);
+    }
+
     public  int getColonne(){
         return map[0].length;
     }

@@ -117,7 +117,6 @@ public class Controller implements Initializable {
         int joueurPoseTileY = joueur.getTileY();
         boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
-
         if (event.getButton() == MouseButton.PRIMARY) {
             if (estAdjacentCasseBlock) {
                 int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);

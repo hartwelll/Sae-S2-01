@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+
 public class Objet {
     private final StringProperty nom;
     private final StringProperty desc;
@@ -22,7 +23,6 @@ public class Objet {
         this.quantite = new SimpleIntegerProperty(quantite);
     }
 
-    // Getters pour les valeurs
     public String getNom() {
         return nom.get();
     }
@@ -35,7 +35,6 @@ public class Objet {
         return quantite.get();
     }
 
-    // Getters pour les Properties (utilisés par JavaFX)
     public StringProperty nomProperty() {
         return nom;
     }
@@ -48,7 +47,6 @@ public class Objet {
         return quantite;
     }
 
-    // Setters
     public void setNom(String nom) {
         this.nom.set(nom);
     }
