@@ -1,40 +1,73 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
+
 import javafx.fxml.FXML;
+
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Button;
+
 import javafx.scene.image.ImageView;
+
 import javafx.scene.input.KeyCode;
+
 import javafx.scene.input.MouseEvent;
+
 import javafx.scene.layout.Pane;
+
 import javafx.scene.layout.TilePane;
+
 import javafx.scene.input.MouseButton;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 
+
 import java.net.URL;
+
 import java.util.ArrayList;
+
 import java.util.HashSet;
+
 import java.util.ResourceBundle;
+
 import java.util.Set;
+
 import javafx.scene.control.TableColumn;
+
 import javafx.scene.control.TableView;
+
 import javafx.animation.AnimationTimer;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
+
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
+
 
 public class Controller implements Initializable {
 
+
     @FXML
+
     private TilePane panneauDeJeu;
+
     @FXML
+
     private Pane panneauJoueur;
+
     @FXML
+
     private Pane craft;
+
     @FXML
+
     private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     private Map map;
     private VueMap vueMap;
@@ -53,9 +86,7 @@ public class Controller implements Initializable {
     private Button pelle;
     @FXML
     private Button epee;
-
     private final Inventaire inventaire = new Inventaire();
-
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
             if (sceneActuel != null) {
@@ -79,14 +110,11 @@ public class Controller implements Initializable {
             }
         });
     }
-
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
-
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
-
         boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
 
@@ -114,7 +142,7 @@ public class Controller implements Initializable {
                         if (objetSelectionne.getQuantite() > 0) {
                             int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
                             if (idBlocAPoser != 0) {
-                                inventaire.removeObjet(objetSelectionne);
+                                inventaire.removeObjet(objetSelectionne, 1);
                                 System.out.println("Bloc posé. Objet retiré de l'inventaire : " + objetSelectionne.getNom());
                                 System.out.println("Quantité dans inventaire : " + inventaire.getObjets().size());
                                 map.creeCase(ligneTileCliquer, colTileCliquer, idBlocAPoser);
@@ -146,16 +174,19 @@ public class Controller implements Initializable {
 
     private void craftItemButton(Button bouttonItem, String itemName, String itemDescription, int nbBois, int nbPierre) {
         bouttonItem.setOnMouseClicked(e -> {
-           if(inventaire.getQuantiteObjet("Bois") >= nbBois && inventaire.getQuantiteObjet("Pierre") >= nbPierre) {
+            if(inventaire.getQuantiteObjet("Bois") >= nbBois && inventaire.getQuantiteObjet("Pierre") >= nbPierre) {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     Objet objet = new Objet(itemName, itemDescription);
                     VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
+                    Objet boisARemove = new Objet("Bois", "");
+                    Objet pierreARemove = new Objet("Pierre", "");
+
+                    inventaire.removeObjet(boisARemove, nbBois);
+                    inventaire.removeObjet(pierreARemove, nbPierre);
 
                     System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
                     inventaire.addObjet(nouvelItem.getObjet());
                     System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
-
-
                 }
             }
         });
@@ -184,7 +215,6 @@ public class Controller implements Initializable {
                 System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }
         });
-
         objetAffiche.getChildren().add(epee);
     }
 
@@ -243,9 +273,7 @@ public class Controller implements Initializable {
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
         inventaireTable.setItems(inventaire.getObjets());
-
         spawnObjects();
-
         setupInput();
         startAnimationTimer();
     }
