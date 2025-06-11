@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 
 
 public class Inventaire {
-
     private final ObservableList<Objet> objets = FXCollections.observableArrayList();
 
     public ObservableList<Objet> getObjets() {
