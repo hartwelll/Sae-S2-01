@@ -1,37 +1,20 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
-
 import javafx.fxml.FXML;
-
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.Button;
-
 import javafx.scene.image.ImageView;
-
 import javafx.scene.input.KeyCode;
-
 import javafx.scene.input.MouseEvent;
-
 import javafx.scene.layout.Pane;
-
 import javafx.scene.layout.TilePane;
-
 import javafx.scene.input.MouseButton;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
-
-
 import java.net.URL;
-
 import java.util.ArrayList;
-
 import java.util.HashSet;
-
 import java.util.ResourceBundle;
-
 import java.util.Set;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,7 +32,6 @@ public class Controller implements Initializable {
     @FXML
     private Pane panneauJoueur;
     @FXML
-
     private Pane craft;
     @FXML
     private Pane TableCraft;
@@ -164,9 +146,7 @@ public class Controller implements Initializable {
     }
 
     public void craft() {
-        craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
-        craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
-        craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
+        craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
     }
 
     public void craftDansTableCraft(){
@@ -203,7 +183,7 @@ public class Controller implements Initializable {
             case 4:
                 return new Objet("Table De Craft", "une simple table de craft");
             default:
-                return null; // Pour les blocs non récupérables (comme l'air, id = 0)
+                return null;
         }
     }
 
