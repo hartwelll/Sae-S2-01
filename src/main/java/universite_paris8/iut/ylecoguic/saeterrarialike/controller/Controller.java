@@ -33,41 +33,27 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import java.util.Set;
-
 import javafx.scene.control.TableColumn;
-
 import javafx.scene.control.TableView;
-
 import javafx.animation.AnimationTimer;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
-
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
-
 
 public class Controller implements Initializable {
 
-
     @FXML
-
     private TilePane panneauDeJeu;
-
     @FXML
-
     private Pane panneauJoueur;
-
     @FXML
 
     private Pane craft;
-
     @FXML
-
+    private Pane TableCraft;
+    @FXML
     private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     private Map map;
     private VueMap vueMap;
@@ -86,7 +72,10 @@ public class Controller implements Initializable {
     private Button pelle;
     @FXML
     private Button epee;
+    @FXML
+    private Button tableDeCraft;
     private final Inventaire inventaire = new Inventaire();
+
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
             if (sceneActuel != null) {
@@ -94,7 +83,7 @@ public class Controller implements Initializable {
                     touchesActives.add(event.getCode());
                     switch (event.getCode()){
                         case C:
-                            if (!craft.isVisible()){
+                            if (!craft.isVisible() && !TableCraft.isVisible()){
                                 craft.setVisible(true);
                             }
                             else{
@@ -149,6 +138,13 @@ public class Controller implements Initializable {
                             }
                         }
                     }
+                } else if (idBlocCible == 4) {
+                    if (!TableCraft.isVisible() && !craft.isVisible()){
+                        TableCraft.setVisible(true);
+                    }
+                    else{
+                        TableCraft.setVisible(false);
+                    }
                 }
             }
         }
@@ -158,14 +154,22 @@ public class Controller implements Initializable {
         switch (objet.getNom()) {
             case "Pierre":
                 return 1;
-            case "bois":
+            case "Bois":
                 return 2;
+            case "Table De Craft":
+                return 4;
             default:
                 return 0;
         }
     }
 
     public void craft() {
+        craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
+        craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
+        craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
+    }
+
+    public void craftDansTableCraft(){
         craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
         craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
         craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
@@ -196,6 +200,8 @@ public class Controller implements Initializable {
                 return new Objet("Pierre", "Bloc de pierre");
             case 2:
                 return new Objet("Bois", "Caisse de bois");
+            case 4:
+                return new Objet("Table De Craft", "une simple table de craft");
             default:
                 return null; // Pour les blocs non récupérables (comme l'air, id = 0)
         }
@@ -266,6 +272,7 @@ public class Controller implements Initializable {
         coeurList.add(coeur9);
         coeurList.add(coeur10);
         craft.setVisible(false);
+        TableCraft.setVisible(false);
         touchesActives = new HashSet<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
