@@ -178,8 +178,8 @@ public class Controller implements Initializable {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     Objet objet = new Objet(itemName, itemDescription);
                     VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
-                    Objet boisARemove = new Objet("Bois", "");
-                    Objet pierreARemove = new Objet("Pierre", "");
+                    Objet boisARemove = creerObjetDepuisBloc(2);
+                    Objet pierreARemove = creerObjetDepuisBloc(1);
 
                     inventaire.removeObjet(boisARemove, nbBois);
                     inventaire.removeObjet(pierreARemove, nbPierre);
