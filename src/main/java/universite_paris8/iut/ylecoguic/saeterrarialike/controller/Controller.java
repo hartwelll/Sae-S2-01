@@ -154,6 +154,8 @@ public class Controller implements Initializable {
                     System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
                     inventaire.addObjet(nouvelItem.getObjet());
                     System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
+
+
                 }
             }
         });
