@@ -188,18 +188,18 @@ public class Controller implements Initializable {
     }
 
     private void spawnObjects() {
-        Objet objet = new Objet("Épée", "Une épée brillante");
-        VueObjet epee = new VueObjet(objet, 100, 730, 60, 60);
+        Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
+        VueObjet sabre = new VueObjet(objet, 100, 762, 32, 32, "/Objet/lightSaberDrop.png");
 
-        epee.setOnMouseClicked(e -> {
+        sabre.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
-                System.out.println("Ajout à l'inventaire : " + epee.getObjet().getNom());
-                inventaire.addObjet(epee.getObjet());
-                objetAffiche.getChildren().remove(epee);
+                System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
+                inventaire.addObjet(sabre.getObjet());
+                objetAffiche.getChildren().remove(sabre);
                 System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }
         });
-        objetAffiche.getChildren().add(epee);
+        objetAffiche.getChildren().add(sabre);
     }
 
     public void startAnimationTimer() {

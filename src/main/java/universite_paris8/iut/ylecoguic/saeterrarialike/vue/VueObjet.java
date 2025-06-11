@@ -1,22 +1,45 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
 
-public class VueObjet extends Rectangle {
+import java.net.URL;
+
+public class VueObjet extends ImageView {
     private final Objet objet;
 
     public VueObjet(Objet objet, double x, double y, double width, double height) {
-        super(width, height);
+        super();
         this.objet = objet;
         setTranslateX(x);
         setTranslateY(y);
-        setFill(Color.GOLD);
-        setStroke(Color.BLACK);
+        setFitWidth(width);
+        setFitHeight(height);
         setPickOnBounds(true);
     }
-    public Objet getObjet() {
-        return objet;
+
+    public VueObjet(Objet objet, double x, double y, double width, double height, String chemin) {
+        super();
+        this.objet = objet;
+        setTranslateX(x);
+        setTranslateY(y);
+        setFitWidth(width);
+        setFitHeight(height);
+//        setFill(Color.GOLD);
+//        setStroke(Color.BLACK);
+        setImage(creerImage(chemin));
+
+        setPickOnBounds(true);
     }
+
+    public Image creerImage(String chemin) {
+        URL url = this.getClass().getResource(chemin);
+        return new Image(url.toString());
+    }
+
+    public Objet getObjet() {return objet;}
+
 }

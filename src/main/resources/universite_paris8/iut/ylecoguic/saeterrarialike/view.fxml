@@ -23,7 +23,13 @@
 <!-- voir les effets pour voir ce que sa donne-->
 
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.cell.ImageGridCell?>
 <StackPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
+
+   <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true">
+         <Image url="@../../../../Tile/bg1Fit.png" />
+   </ImageView>
+
    <TilePane fx:id="panneauDeJeu" />
    <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
