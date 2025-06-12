@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Map {
     private static int[][] map = {
-            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -112,6 +112,29 @@ public class Map {
         return 0;
     }
 
+    public int getLigneId(int id){
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map[0].length ;j++){
+                if (map[i][j] == id) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public int getColId(int id){
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map[0].length ;j++){
+                if (map[i][j] == id) {
+                    return j;
+                }
+            }
+        }
+        return -1;
+    }
+
+
     public Rectangle2D getHitboxBlock(){
         return hitboxBlock;
     }
@@ -122,11 +145,6 @@ public class Map {
 
     public ArrayList<Rectangle2D> getHurtboxList() {
         return hurtboxList;
-    }
-
-    public int getBlocId(int x, int y){
-        int id =getCase(x, y);
-        return id;
     }
 
     public int getTailleTuile() {

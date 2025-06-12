@@ -81,50 +81,58 @@ public class Controller implements Initializable {
             }
         });
     }
+
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
+
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
+
         boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
+
         if (event.getButton() == MouseButton.PRIMARY) {
-            if (estAdjacentCasseBlock) {
-                int idBloc = map.getCase(ligneTileCliquer, colTileCliquer);
-                if (idBloc != 0 && idBloc != 3) {
-                    Objet objetCasse = creerObjetDepuisBloc(idBloc);
-                    if (objetCasse != null) {
-                        inventaire.addObjet(objetCasse);
-                        System.out.println("Bloc cassé ajouté à l'inventaire : " + objetCasse.getNom());
-                        System.out.println("Quantite dans inventaire : " + inventaire.getObjets().size());
-                    }
-                    map.setCase(ligneTileCliquer, colTileCliquer, 0);
-                    vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
-                }
-            }
+            casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
         }
         else if (event.getButton() == MouseButton.SECONDARY) {
-            if (estAdjacentPoseBlock) {
-                int idBlocCible = map.getCase(ligneTileCliquer, colTileCliquer);
-                if (idBlocCible == 0) {
-                    Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
-                    if (objetSelectionne != null) {
-                        if (objetSelectionne.getQuantite() > 0) {
-                            int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
-                            if (idBlocAPoser != 0) {
-                                inventaire.removeObjet(objetSelectionne, 1);
-                                System.out.println("Bloc posé. Objet retiré de l'inventaire : " + objetSelectionne.getNom());
-                                System.out.println("Quantité dans inventaire : " + inventaire.getObjets().size());
-                                map.creeCase(ligneTileCliquer, colTileCliquer, idBlocAPoser);
-                                vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
-                            }
+            poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
+        }
+        vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
+    }
+
+    public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
+        if (adjacent) {
+            int idBloc = map.getCase(ligneTileClick, colTileClick);
+            if (idBloc != 0 && idBloc != 3) {
+                Objet objetCasse = creerObjetDepuisBloc(idBloc);
+                if (objetCasse != null) {
+                    inventaire.addObjet(objetCasse);
+                }
+                map.setCase(ligneTileClick, colTileClick, 0);
+            }
+        }
+    }
+
+    public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
+        if (adjacent) {
+            int idBlocCible = map.getCase(ligneTileClick, colTileClick);
+            if (idBlocCible == 0) {
+                Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
+                if (objetSelectionne != null) {
+                    if (objetSelectionne.getQuantite() > 0) {
+                        int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
+                        if (idBlocAPoser != 0) {
+                            inventaire.removeObjet(objetSelectionne, 1);
+                            map.creeCase(ligneTileClick, colTileClick, idBlocAPoser);
                         }
                     }
-                } else if (idBlocCible == 4) {
-                    if (!TableCraft.isVisible() && !craft.isVisible()){
+                }
+            } else if (idBlocCible == 4) {
+                if(Math.abs(joueur.getX() / 32 - map.getColId(4)) <= 2 && Math.abs(joueur.getY() / 32 - map.getLigneId(4)) <= 2) {
+                    if (!TableCraft.isVisible() && !craft.isVisible()) {
                         TableCraft.setVisible(true);
-                    }
-                    else{
+                    } else {
                         TableCraft.setVisible(false);
                     }
                 }
@@ -224,6 +232,9 @@ public class Controller implements Initializable {
                             coeurList.remove(0);
                         }
                     }
+                    if(Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
+                        TableCraft.setVisible(false);
+                    }
                     joueur.appliquerMouvementVertival();
                     lastUpdate = now;
                 }
@@ -253,6 +264,7 @@ public class Controller implements Initializable {
         coeurList.add(coeur10);
         craft.setVisible(false);
         TableCraft.setVisible(false);
+        tuto.setVisible(false);
         touchesActives = new HashSet<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
