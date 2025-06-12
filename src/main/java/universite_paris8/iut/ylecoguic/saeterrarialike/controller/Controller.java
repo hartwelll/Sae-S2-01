@@ -36,6 +36,10 @@ public class Controller implements Initializable {
     @FXML
     private Pane TableCraft;
     @FXML
+    private Pane tuto;
+    @FXML
+    private Pane consignes;
+    @FXML
     private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     private Map map;
     private VueMap vueMap;
@@ -72,6 +76,14 @@ public class Controller implements Initializable {
                                 craft.setVisible(false);
                             }
                             break;
+                        case ESCAPE:
+                            if (!tuto.isVisible()) {
+                                tuto.setVisible(true);
+                                consignes.setVisible(false);
+                            }
+                            else {
+                                tuto.setVisible(false);
+                            }
                     }
                 });
                 sceneActuel.setOnKeyReleased(event -> {

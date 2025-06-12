@@ -149,4 +149,26 @@
             </AnchorPane>
          </HBox>
    </Pane>
+
+   <Pane fx:id="consignes" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_CENTER" style="-fx-font-size: 25px">
+      <VBox>
+         <Text text="Appuyez Sur ECHAP Pour Acceder Aux Touches" />
+      </VBox>
+   </Pane>
+
+   <Pane fx:id="tuto" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="CENTER" style="-fx-background-color: white; -fx-font-size: 16px;">
+      <VBox alignment="CENTER">
+         <Text text="Deplacement" />
+         <Text text="Gauche : Q / Flèche De Gauche" />
+         <Text text="Saut : Z / Espace / Flèche Du Haut" />
+         <Text text="Droite : D / Flèche De Droite" />
+         <Text/>
+         <Text text="Action" />
+         <Text text="Casser Block : Click Gauche" />
+         <Text text="Poser Block : Click Droit" />
+         <Text text="Table De Craft : Click Droit" />
+         <Text text="Fabriquer : Click Gauche Sur Le Bouton" />
+         <Text text="Acceder Au Tuto : Echap" />
+      </VBox>
+   </Pane>
 </StackPane>
