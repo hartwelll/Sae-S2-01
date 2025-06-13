@@ -243,6 +243,7 @@ public class Controller implements Initializable {
                         TableCraft.setVisible(false);
                     }
                     joueur.appliquerMouvementVertival();
+                    ennemis.appliquerMouvementVertival();
                     lastUpdate = now;
                 }
             }

@@ -43,8 +43,8 @@ public class VueEnnemis {
         Image image = imagesEnnemi.get(0);
         if (image != null) {
             imageView.setImage(image);
-            imageView.setFitHeight(64);
-            imageView.setFitWidth(32);
+            imageView.setFitHeight(60);
+            imageView.setFitWidth(30);
             pane.getChildren().add(imageView);
         }
     }

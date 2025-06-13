@@ -4,31 +4,38 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
 
-public class Joueur {
+public class Entite {
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
     private int v;
     private int vSautInitial;
     private int vGravite;
+    private int vy;
+    private boolean sautEnCours;
+
     private boolean collision;
     private Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
     private int vie;
-    private boolean sautEnCours;
-    private int vy;
+
     private final int minXMap = 0;
     private final int maxXMap = 1824;
     private final int minYMap = 0;
     private final int maxYMap = 1024;
 
-    public Joueur(int x, int y, Map map) {
-        super(x, y, map);
+
+    public Entite (int x, int y, Map map){
+        this.xProperty = new SimpleIntegerProperty(x);
+        this.yProperty = new SimpleIntegerProperty(y);
+        this.map = map;
         this.v = 8; //vitesse horizale droite/gauchey)
+        this.vSautInitial = 21;
+        this.vGravite = 4;
+        this.collision = false;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
-        this.vie = 100;
         this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
     }
@@ -130,11 +137,64 @@ public class Joueur {
         return nposy;
     }
 
+    public boolean estSurLeSol() {
+        Rectangle2D hitboxSousJoueur = new Rectangle2D(this.getX(), getY() + hauteurJoueur + 1, largeurJoueur, 1);
+        for (Rectangle2D hitboxBloc : map.getHitboxList()) {
+            if (hitboxSousJoueur.intersects(hitboxBloc)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean decrementerVie() {
-        super.decrementerVie();
-         if(this.getVie() <= 0) {
-            System.exit(0);
+        if (this.vie > 0) {
+            this.vie -= 1;
         }
         return true;
+    }
+
+    public int getX() {
+        return xProperty.getValue();
+    }
+
+    public int getY() {
+        return yProperty.getValue();
+    }
+
+    public int getVie() {
+        return vie;
+    }
+
+    public int getVGravite() {
+        return vGravite;
+    }
+
+    public int getVSaut() {
+        return vSautInitial;
+    }
+
+    public int getTileX() {
+        return (getX() + (largeurJoueur / 2)) / 32;
+    }
+
+    public int getTileY() {
+        return (getY() + (hauteurJoueur / 2)) / 32;
+    }
+
+    public boolean isSautEnCours() {
+        return sautEnCours;
+    }
+
+    public void setSautEnCours(boolean sautEnCours) {
+        this.sautEnCours = sautEnCours;
+    }
+
+    public IntegerProperty getxProperty() {
+        return xProperty;
+    }
+
+    public IntegerProperty getyProperty() {
+        return yProperty;
     }
 }

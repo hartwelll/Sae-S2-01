@@ -163,6 +163,7 @@
          <Text text="Action" />
          <Text text="Casser Block : Click Gauche" />
          <Text text="Poser Block : Click Droit" />
+         <Text text="Craft : C" />
          <Text text="Table De Craft : Click Droit" />
          <Text text="Fabriquer : Click Gauche Sur Le Bouton" />
          <Text text="Acceder Au Tuto : Echap" />

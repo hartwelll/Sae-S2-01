@@ -22,6 +22,10 @@ public class Ennemis extends Joueur {
         super.deplacement(dx * vMarche, dy);
     }
 
+    public void appliquerMouvementVertival(){
+        super.appliquerMouvementVertival();
+    }
+
     @Override
     public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
         super.collisionDetectee(dx, dy, nposx, nposy);
