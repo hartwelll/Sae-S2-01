@@ -182,7 +182,7 @@ public class Controller implements Initializable {
                     inventaire.removeObjet(boisARemove, nbBois);
                     inventaire.removeObjet(pierreARemove, nbPierre);
                     System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
-                    inventaire.addObjet(nouvelItem.getObjet());
+                    inventaire.addObjet(nouvelItem.getObjet(), 1);
                     System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
                 }
             }
@@ -209,7 +209,7 @@ public class Controller implements Initializable {
         sabre.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
-                inventaire.addObjet(sabre.getObjet());
+                inventaire.addObjet(sabre.getObjet(), 1);
                 objetAffiche.getChildren().remove(sabre);
                 System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }

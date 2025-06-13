@@ -83,8 +83,19 @@
                </HBox>
                <Button fx:id="tableDeCraft" text="fabriquer table de craft" onAction="#craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" focusTraversable="false"/>
             </AnchorPane>
+
+            <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
+               <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                  <VBox alignment="CENTER_LEFT">
+                     <Text text="2 bois"/>
+                  </VBox>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../../Tile/caisseBois.png"/>
+                  </ImageView>
+               </HBox>
+               <Button fx:id="caisse" text="fabriquer caisse en bois posable" onAction="#craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" focusTraversable="false"/>
+            </AnchorPane>
          </HBox>
-      </VBox>
    </Pane>
 
    <Pane fx:id="TableCraft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200" prefWidth="750" StackPane.alignment="CENTER" opacity="0.5">

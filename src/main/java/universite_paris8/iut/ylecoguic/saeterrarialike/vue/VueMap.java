@@ -43,9 +43,10 @@ public class VueMap {
     public void initialiseTile(){
         ajoutTile(0,"/Tile/newCiel.png");
         ajoutTile(1,"/Tile/pierre.png");
-        ajoutTile(2,"/Tile/caisse.png");
+        ajoutTile(2,"/Tile/caisseBois.png");
         ajoutTile(3,"/Tile/barbele.png");
-        ajoutTile(4, "/Tile/tableCraft.png");
+        ajoutTile(4,"/Tile/tableCraft.png");
+        ajoutTile(5,"/Tile/bois.png");
     }
 
     public void affichage(){

@@ -12,7 +12,7 @@ public class Inventaire {
     public void addObjet(Objet nouvelObjet, int nbAajouter) {
         for (Objet objetExistant : objets) {
             if (objetExistant.estMemeType(nouvelObjet)) {
-                objetExistant.incrementerQuantite();
+                objetExistant.incrementerQuantite(nbAajouter);
                 return;
             }
         }

@@ -59,8 +59,8 @@ public class Objet {
         this.quantite.set(quantite);
     }
 
-    public void incrementerQuantite() {
-        this.quantite.set(this.quantite.get() + 1);
+    public void incrementerQuantite(int nbQuantite) {
+        this.quantite.set(this.quantite.get() + nbQuantite);
     }
 
     public void decrementerQuantite(int nb) {
