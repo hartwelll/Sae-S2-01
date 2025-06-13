@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
 
-public class Joueur {
+public class Joueur extends Entite {
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -29,105 +29,6 @@ public class Joueur {
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.vie = 100;
-        this.vy = 0; //vitesse en y(vertical) monte/descent
-        this.sautEnCours = false;
-    }
-
-    public void deplacement(int dx, int dy) {
-        int nposx = getX() + v * dx;  //nposx = nex position
-        int nposy = getY();
-
-        if (nposx < minXMap) {
-            nposx = minXMap;
-        } else if (nposx + largeurJoueur > maxXMap) {
-            nposx = maxXMap - largeurJoueur;
-        }
-
-        collisionDetectee(dx, dy, nposx, nposy);
-    }
-
-    public void demarrerSaut() {
-        if (collision && !sautEnCours) {
-            this.vy = -vSautInitial;
-            this.sautEnCours = true;
-        }
-    }
-
-    public void appliquerMouvementVertival() {
-        int nposx = getX();
-        int nposy = getY() + vy;
-
-        if (nposy < minYMap) {
-            nposy = minYMap;
-            vy = 0;
-        } else if (nposy + hauteurJoueur > maxYMap) {
-            nposy = maxYMap - hauteurJoueur;
-            vy = 0;
-            sautEnCours = false;
-        }
-        vy += vGravite;
-        if (vy > 20) {
-            vy = 20;
-        }
-        if (vy > 0){
-            collisionDetectee(0, 1, nposx, nposy);
-        } else if (vy < 0) {
-            collisionDetectee(0, -1, nposx, nposy);
-        }
-        if (estSurLeSol() && vy >= 0) {
-            vy = 0;
-            sautEnCours = false;
-        }
-    }
-
-    public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
-        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
-        for (Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
-                nposx = siCollisionX(dx, nposx, hitboxBloc);
-                nposy = siCollisionY(dy, nposy, hitboxBloc);
-                collision(true);
-            }
-        }
-        for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
-                decrementerVie();
-                nposx = siCollisionX(dx, nposx, hitboxBloc);
-                nposy = siCollisionY(dy, nposy, hitboxBloc);
-                collision(true);
-            }
-        }
-        xProperty.set(nposx);
-        yProperty.set(nposy);
-    }
-
-    public boolean collision(boolean collision){
-        return this.collision = collision;
-    }
-
-    public int siCollisionX(int dx, int nposx, Rectangle2D hitboxBloc){
-        if (dx != 0) {
-            if (dx > 0) {
-                nposx = (int) (hitboxBloc.getMinX() - largeurJoueur);
-            } else {
-                nposx = (int) (hitboxBloc.getMaxX());
-            }
-        }
-        return nposx;
-    }
-
-    public int siCollisionY(int dy, int nposy, Rectangle2D hitboxBloc){
-        if (dy != 0) {
-            if (dy > 0) {
-                nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
-                vy = 0;
-                sautEnCours = false;
-            } else {
-                nposy = (int) (hitboxBloc.getMaxY());
-                vy = 0;
-            }
-        }
-        return nposy;
     }
 
     public boolean decrementerVie() {
