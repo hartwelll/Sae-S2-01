@@ -8,21 +8,16 @@ public class Joueur {
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
-
     private int v;
     private int vSautInitial;
     private int vGravite;
     private boolean collision;
-
     private Map map;
-
     private int hauteurJoueur;
     private int largeurJoueur;
     private int vie;
-
     private boolean sautEnCours;
     private int vy;
-
     private final int minXMap = 0;
     private final int maxXMap = 1824;
     private final int minYMap = 0;
@@ -32,19 +27,19 @@ public class Joueur {
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
-        this.v = 8;
+        this.v = 8; //vitesse horizont droite/gauche
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.vie = 100;
-        this.vy = 0;
+        this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
     }
 
     public void deplacement(int dx, int dy) {
-        int nposx = getX() + v * dx;
+        int nposx = getX() + v * dx;  //nposx = nex position
         int nposy = getY();
 
         if (nposx < minXMap) {
@@ -75,7 +70,6 @@ public class Joueur {
             vy = 0;
             sautEnCours = false;
         }
-
         vy += vGravite;
         if (vy > 20) {
             vy = 20;
@@ -108,12 +102,6 @@ public class Joueur {
                 collision(true);
             }
         }
-        /*if (nposx <= 0 || nposx >= 1792){
-            setV(0);
-        }
-        if (nposy <= 0){
-            setvSautInitial(0);
-        }*/
         xProperty.set(nposx);
         yProperty.set(nposy);
     }

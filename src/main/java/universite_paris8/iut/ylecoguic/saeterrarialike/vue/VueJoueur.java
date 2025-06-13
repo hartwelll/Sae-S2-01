@@ -1,9 +1,8 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
+import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.HashMap;
 

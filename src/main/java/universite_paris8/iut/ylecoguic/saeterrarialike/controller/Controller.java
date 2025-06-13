@@ -9,8 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Inventaire;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,47 +17,38 @@ import java.util.Set;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
 
 public class Controller implements Initializable {
 
-    @FXML
-    private TilePane panneauDeJeu;
-    @FXML
-    private Pane panneauJoueur;
-    @FXML
-    private Pane craft;
-    @FXML
-    private Pane TableCraft;
-    @FXML
-    private Pane tuto;
-    @FXML
-    private Pane consignes;
-    @FXML
-    private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
-    private Map map;
-    private VueMap vueMap;
-    private Joueur joueur;
-    private VueJoueur vueJoueur;
-    private ArrayList<ImageView> coeurList;
-    private Set<KeyCode> touchesActives;
-    @FXML private Pane objetAffiche;
+    @FXML private TilePane panneauDeJeu;
+    @FXML private Pane panneauJoueur;
+    @FXML private Pane craft;
+    @FXML private Pane tuto;
+    @FXML private Pane consignes;
+    @FXML private Pane TableCraft;
+    @FXML private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
     @FXML private TableView<Objet> inventaireTable;
     @FXML private TableColumn<Objet, String> nomCol;
     @FXML private TableColumn<Objet, String> descCol;
     @FXML private TableColumn<Objet, String> quantCol;
-    @FXML
-    private Button pioche;
-    @FXML
-    private Button pelle;
-    @FXML
-    private Button epee;
-    @FXML
-    private Button tableDeCraft;
+    @FXML private Button pioche;
+    @FXML private Button pelle;
+    @FXML private Button epee;
+    @FXML private Button tableDeCraft;
+    @FXML private Pane objetAffiche;
+    private Map map;
+    private VueMap vueMap;
+    private Joueur joueur;
+    private VueJoueur vueJoueur;
+    private Ennemis ennemis;
+    private VueEnnemis vueEnnemis;
+    private ArrayList<ImageView> coeurList;
+    private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
 
     public void setupInput() {
@@ -71,8 +60,7 @@ public class Controller implements Initializable {
                         case C:
                             if (!craft.isVisible() && !TableCraft.isVisible()){
                                 craft.setVisible(true);
-                            }
-                            else{
+                            } else{
                                 craft.setVisible(false);
                             }
                             break;
@@ -80,8 +68,7 @@ public class Controller implements Initializable {
                             if (!tuto.isVisible()) {
                                 tuto.setVisible(true);
                                 consignes.setVisible(false);
-                            }
-                            else {
+                            } else {
                                 tuto.setVisible(false);
                             }
                     }
@@ -97,13 +84,10 @@ public class Controller implements Initializable {
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
-
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
-
         boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
-
         if (event.getButton() == MouseButton.PRIMARY) {
             casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
         }
@@ -244,7 +228,7 @@ public class Controller implements Initializable {
                             coeurList.remove(0);
                         }
                     }
-                    if(Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
+                    if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
                     joueur.appliquerMouvementVertival();
@@ -263,6 +247,10 @@ public class Controller implements Initializable {
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+        ennemis = new Ennemis(600, 625, map);
+        vueEnnemis = new VueEnnemis(panneauJoueur);
+        vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
+        vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
         coeurList = new ArrayList<>();
         coeurList.add(coeur1);
         coeurList.add(coeur2);

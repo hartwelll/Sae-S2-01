@@ -2,10 +2,7 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Objet;
-
 import java.net.URL;
 
 public class VueObjet extends ImageView {
@@ -28,8 +25,6 @@ public class VueObjet extends ImageView {
         setTranslateY(y);
         setFitWidth(width);
         setFitHeight(height);
-//        setFill(Color.GOLD);
-//        setStroke(Color.BLACK);
         setImage(creerImage(chemin));
 
         setPickOnBounds(true);
