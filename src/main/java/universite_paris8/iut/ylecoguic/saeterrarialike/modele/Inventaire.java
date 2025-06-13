@@ -9,7 +9,7 @@ public class Inventaire {
         return objets;
     }
 
-    public void addObjet(Objet nouvelObjet) {
+    public void addObjet(Objet nouvelObjet, int nbAajouter) {
         for (Objet objetExistant : objets) {
             if (objetExistant.estMemeType(nouvelObjet)) {
                 objetExistant.incrementerQuantite();
@@ -17,6 +17,7 @@ public class Inventaire {
             }
         }
         objets.add(nouvelObjet);
+        nouvelObjet.incrementerQuantite(nbAajouter-1);
     }
 
     public void removeObjet(Objet objetAremove, int nbAremove) {

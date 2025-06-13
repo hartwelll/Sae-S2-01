@@ -9,6 +9,8 @@
 <!-- quand ajout truc et fleche plus bouger mettre: focusTraversable="false" -->
 
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.cell.ImageGridCell?>
+<?import javafx.scene.control.skin.TabPaneSkin.TabContentRegion?>
 <StackPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
 
    <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true">
@@ -68,8 +70,7 @@
       </ImageView>
    </HBox>
 
-   <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200" prefWidth="250" StackPane.alignment="CENTER" opacity="0.5">
-      <VBox alignment="TOP_CENTER">
+   <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200" prefWidth="500" StackPane.alignment="CENTER" opacity="0.5">
          <HBox style="-fx-background-color: yellow;">
             <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
                <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">
@@ -86,7 +87,7 @@
       </VBox>
    </Pane>
 
-   <Pane fx:id="TableCraft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400" prefWidth="750" StackPane.alignment="CENTER" opacity="0.5">
+   <Pane fx:id="TableCraft" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200" prefWidth="750" StackPane.alignment="CENTER" opacity="0.5">
          <HBox style="-fx-background-color: white;">
             <AnchorPane style="-fx-border-color: black" prefHeight="200" prefWidth="250">
                <HBox alignment="CENTER_LEFT" AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="5.0">

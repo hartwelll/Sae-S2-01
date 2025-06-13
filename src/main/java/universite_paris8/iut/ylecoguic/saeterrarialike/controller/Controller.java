@@ -9,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +19,6 @@ import java.util.Set;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
@@ -40,6 +41,7 @@ public class Controller implements Initializable {
     @FXML private Button pelle;
     @FXML private Button epee;
     @FXML private Button tableDeCraft;
+    @FXML private Button caisse;
     @FXML private Pane objetAffiche;
     private Map map;
     private VueMap vueMap;
@@ -84,10 +86,13 @@ public class Controller implements Initializable {
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
+
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
+
         boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
+
         if (event.getButton() == MouseButton.PRIMARY) {
             casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
         }
@@ -98,12 +103,17 @@ public class Controller implements Initializable {
     }
 
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
+        int nbAajouter;
         if (adjacent) {
             int idBloc = map.getCase(ligneTileClick, colTileClick);
             if (idBloc != 0 && idBloc != 3) {
                 Objet objetCasse = creerObjetDepuisBloc(idBloc);
                 if (objetCasse != null) {
-                    inventaire.addObjet(objetCasse);
+                    nbAajouter = 1;
+                    if(idBloc == 2){
+                        nbAajouter = 2;
+                    }
+                    inventaire.addObjet(objetCasse, nbAajouter);
                 }
                 map.setCase(ligneTileClick, colTileClick, 0);
             }
@@ -140,7 +150,7 @@ public class Controller implements Initializable {
         switch (objet.getNom()) {
             case "Pierre":
                 return 1;
-            case "Bois":
+            case "Caisse En Bois":
                 return 2;
             case "Table De Craft":
                 return 4;
@@ -151,6 +161,7 @@ public class Controller implements Initializable {
 
     public void craft() {
         craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
+        craftItemButton(caisse, "Caisse En Bois", "une caisse qui caisse", 2, 0);
     }
 
     public void craftDansTableCraft(){
@@ -181,9 +192,9 @@ public class Controller implements Initializable {
     private Objet creerObjetDepuisBloc(int idBloc) {
         switch (idBloc) {
             case 1:
-                return new Objet("Pierre", "Bloc de pierre");
-            case 2:
-                return new Objet("Bois", "Caisse de bois");
+                return new Objet("Pierre", "De la pierre");
+            case 2, 5:
+                return new Objet("Bois", "Du bois");
             case 4:
                 return new Objet("Table De Craft", "une simple table de craft");
             default:
