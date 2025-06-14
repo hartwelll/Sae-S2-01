@@ -15,7 +15,6 @@ public class Joueur extends Entite {
     private Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
-    private int vie;
     private boolean sautEnCours;
     private int vy;
     private final int minXMap = 0;
@@ -23,12 +22,11 @@ public class Joueur extends Entite {
     private final int minYMap = 0;
     private final int maxYMap = 1024;
 
-    public Joueur(int x, int y, Map map) {
-        super(x, y, map);
+    public Joueur(int x, int y, Map map, int vie) {
+        super(x, y, map, vie);
         this.v = 8; //vitesse horizale droite/gauchey)
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
-        this.vie = 100;
     }
 
     public boolean decrementerVie() {

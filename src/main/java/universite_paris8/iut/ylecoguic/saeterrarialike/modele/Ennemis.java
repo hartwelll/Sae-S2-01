@@ -8,8 +8,8 @@ public class Ennemis extends Joueur {
     private int hauteurEnnemis;
     private int largeurEnnemis;
 
-    public Ennemis(int x, int y, Map map) {
-        super(x, y, map);
+    public Ennemis(int x, int y, Map map, int vie) {
+        super(x, y, map, vie);
         this.direction = 1;
         this.vMarche = 2;
         this.enMarche = true;

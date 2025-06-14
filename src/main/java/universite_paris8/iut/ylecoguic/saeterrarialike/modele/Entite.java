@@ -26,7 +26,7 @@ public class Entite {
     private final int maxYMap = 1024;
 
 
-    public Entite (int x, int y, Map map){
+    public Entite (int x, int y, Map map, int vie){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
@@ -38,6 +38,7 @@ public class Entite {
         this.largeurJoueur = 30;
         this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
+        this.vie = vie;
     }
 
     public void deplacement(int dx, int dy) {
