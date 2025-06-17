@@ -17,7 +17,7 @@
          <Image url="@../../../../Tile/bg1Fit.png" />
    </ImageView>
 
-   <TilePane fx:id="panneauDeJeu" />
+   <TilePane fx:id="panneauDeJeu" prefTileHeight="32" prefTileWidth="32" prefColumns="60" prefRows="33"/>
    <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
    <Pane fx:id="objetAffiche" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0" focusTraversable="false"/>

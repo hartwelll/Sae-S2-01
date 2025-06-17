@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
