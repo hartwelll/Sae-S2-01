@@ -256,11 +256,11 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
-        joueur = new Joueur(500, 725, map, 100);
+        joueur = new Joueur(500, 725, map, 100, 8);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        ennemis = new Ennemis(600, 625, map, 50);
+        ennemis = new Ennemis(664, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());

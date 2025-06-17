@@ -198,4 +198,8 @@ public class Entite {
     public IntegerProperty getyProperty() {
         return yProperty;
     }
+
+    public void setV(int v) {
+        this.v = v;
+    }
 }
