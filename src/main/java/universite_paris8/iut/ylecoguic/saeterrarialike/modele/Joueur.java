@@ -6,27 +6,16 @@ import javafx.geometry.Rectangle2D;
 
 public class Joueur extends Entite {
 
-    private IntegerProperty xProperty;
-    private IntegerProperty yProperty;
-    private int v;
-    private int vSautInitial;
-    private int vGravite;
-    private boolean collision;
-    private Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
-    private boolean sautEnCours;
-    private int vy;
-    private final int minXMap = 0;
-    private final int maxXMap = 1824;
-    private final int minYMap = 0;
-    private final int maxYMap = 1024;
+    private Inventaire inv;
 
-    public Joueur(int x, int y, Map map, int vie) {
-        super(x, y, map, vie, 8);
-        this.v = 8; //vitesse horizale droite/gauchey)
+
+    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv) {
+        super(x, y, map, vie, v);
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
+        this.inv = inv;
     }
 
     public boolean decrementerVie() {
@@ -35,5 +24,9 @@ public class Joueur extends Entite {
             System.exit(0);
         }
         return true;
+    }
+
+    public void attaque (){
+        System.out.println("T more");
     }
 }
