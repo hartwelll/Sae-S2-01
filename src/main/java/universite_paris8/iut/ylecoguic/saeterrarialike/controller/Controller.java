@@ -243,6 +243,7 @@ public class Controller implements Initializable {
                     }
                     joueur.appliquerMouvementVertival();
                     ennemis.appliquerMouvementVertival();
+                    ennemis.deplacement();
                     lastUpdate = now;
                 }
             }

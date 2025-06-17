@@ -23,7 +23,7 @@ public class Joueur extends Entite {
     private final int maxYMap = 1024;
 
     public Joueur(int x, int y, Map map, int vie) {
-        super(x, y, map, vie);
+        super(x, y, map, vie, 8);
         this.v = 8; //vitesse horizale droite/gauchey)
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;

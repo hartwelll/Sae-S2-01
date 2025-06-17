@@ -26,11 +26,11 @@ public class Entite {
     private final int maxYMap = 1024;
 
 
-    public Entite (int x, int y, Map map, int vie){
+    public Entite (int x, int y, Map map, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
-        this.v = 8; //vitesse horizale droite/gauchey)
+        this.v = v; //vitesse horizale droite/gauchey)
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;

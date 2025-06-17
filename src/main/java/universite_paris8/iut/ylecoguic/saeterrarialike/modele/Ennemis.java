@@ -1,6 +1,6 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-public class Ennemis extends Joueur {
+public class Ennemis extends Entite {
 
     private int direction;
     private int vMarche;
@@ -9,22 +9,24 @@ public class Ennemis extends Joueur {
     private int largeurEnnemis;
 
     public Ennemis(int x, int y, Map map, int vie) {
-        super(x, y, map, vie);
+        super(x, y, map, vie, 4);
+        this.vMarche = 4;
         this.direction = 1;
-        this.vMarche = 2;
         this.enMarche = true;
         this.hauteurEnnemis = 60;
         this.largeurEnnemis = 30;
     }
 
-    @Override
-    public void deplacement(int dx, int dy) {
-        super.deplacement(dx * vMarche, dy);
+    public void deplacement() {
+        int dx = (int) (Math.random()*3);
+        int dy = (int) (Math.random()*2);
+        if(dx == 2){
+            dx = -1;
+        }
+        super.deplacement(dx, dy);
     }
 
-    public void appliquerMouvementVertival(){
-        super.appliquerMouvementVertival();
-    }
+
 
     @Override
     public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
