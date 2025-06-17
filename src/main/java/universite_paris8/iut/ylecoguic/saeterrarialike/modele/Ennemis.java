@@ -40,4 +40,3 @@ public class Ennemis extends Entite {
         this.enMarche = enMarche;
     }
 }
-

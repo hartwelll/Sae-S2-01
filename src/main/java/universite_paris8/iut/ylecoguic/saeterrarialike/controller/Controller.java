@@ -1,7 +1,10 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -10,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;

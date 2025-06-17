@@ -20,7 +20,7 @@ public class Joueur extends Entite {
 
     public boolean decrementerVie() {
         super.decrementerVie();
-         if(this.getVie() <= 0) {
+        if(this.getVie() <= 0) {
             System.exit(0);
         }
         return true;
