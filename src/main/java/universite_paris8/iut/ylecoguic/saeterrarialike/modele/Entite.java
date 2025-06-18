@@ -21,7 +21,7 @@ public class Entite {
     private int vie;
 
     private final int minXMap = 0;
-    private final int maxXMap = 1824;
+    private final int maxXMap = 1854;
     private final int minYMap = 0;
     private final int maxYMap = 1024;
 
@@ -30,7 +30,7 @@ public class Entite {
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
-        this.v = v; //vitesse horizale droite/gauchey)
+        this.v = v; //vitesse horizale droite/gauche
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;

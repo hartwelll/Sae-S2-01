@@ -13,7 +13,7 @@ public class Ennemis extends Entite {
         this.largeurEnnemis = 30;
     }
 
-    public void deplacement() {
+    public void deplacement() { //passe a didjtra  this.demarrerSaut
         int dx = (int) (Math.random()*3);
         int dy = (int) (Math.random()*2);
         if(dx == 2){
