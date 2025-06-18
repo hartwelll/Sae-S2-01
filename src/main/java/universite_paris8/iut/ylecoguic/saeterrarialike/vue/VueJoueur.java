@@ -43,4 +43,6 @@ public class VueJoueur {
     public ImageView getImageView() {
         return imageView;
     }
+
+
 }

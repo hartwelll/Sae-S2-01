@@ -166,7 +166,8 @@
          <Text text="Craft : C" />
          <Text text="Table De Craft : Click Droit" />
          <Text text="Fabriquer : Click Gauche Sur Le Bouton" />
-         <Text text="Acceder Au Tuto : Echap" />
+         <Text text="Attaquer : Click Gauche Sur Ennemi" />
+         <Text text="Acceder Au Touche : Echap" />
       </VBox>
    </Pane>
 </StackPane>
