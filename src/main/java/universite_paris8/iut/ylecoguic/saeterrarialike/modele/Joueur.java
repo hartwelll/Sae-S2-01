@@ -17,14 +17,12 @@ public class Joueur extends Entite {
     }
 
     public boolean decrementerVie() {
-        super.decrementerVie();
+        super.decrementerVie(1);
          if(this.getVie() <= 0) {
             System.exit(0);
         }
         return true;
     }
 
-    public void attaque(){
 
-    }
 }

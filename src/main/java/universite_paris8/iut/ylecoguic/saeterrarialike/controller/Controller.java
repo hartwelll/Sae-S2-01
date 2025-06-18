@@ -52,6 +52,7 @@ public class Controller implements Initializable {
     private ArrayList<ImageView> coeurList;
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
+    private ArrayList<Entite> entites = new ArrayList<>();
 
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
@@ -94,7 +95,10 @@ public class Controller implements Initializable {
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
 
         if (event.getButton() == MouseButton.PRIMARY) {
-            casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+            if (colTileCliquer == ennemis.getTileX() && ligneTileCliquer == ennemis.getTileY()){
+                joueur.attaque(ennemis, estAdjacentCasseBlock);
+            }else casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+
         }
         else if (event.getButton() == MouseButton.SECONDARY) {
             poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
@@ -242,6 +246,12 @@ public class Controller implements Initializable {
                     if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
+                    for(int i = 0 ; i < entites.size(); i++){
+                        if (entites.get(i).estMort()){
+                            panneauJoueur.getChildren().remove(i);
+                            entites.remove(i);
+                        }
+                    }
                     joueur.appliquerMouvementVertival();
                     ennemis.appliquerMouvementVertival();
                     ennemis.deplacement();
@@ -260,10 +270,12 @@ public class Controller implements Initializable {
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        ennemis = new Ennemis(664, 625, map, 50, 4);
+        ennemis = new Ennemis(500, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+        entites.add(joueur);
+        entites.add(ennemis);
         coeurList = new ArrayList<>();
         coeurList.add(coeur1);
         coeurList.add(coeur2);

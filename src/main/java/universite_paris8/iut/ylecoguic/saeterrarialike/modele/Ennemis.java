@@ -24,14 +24,6 @@ public class Ennemis extends Entite {
         super.deplacement(dx, dy);
     }
 
-    public boolean decrementerVie() {
-        super.decrementerVie();
-        if(this.getVie() <= 0) {
-            this.setV(0);
-        }
-        return true;
-    }
-
     @Override
     public int getTileX() {
         return (getX() + (largeurEnnemis / 2)) / 32;
