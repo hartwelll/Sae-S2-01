@@ -93,65 +93,12 @@ public class Controller implements Initializable {
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
 
         if (event.getButton() == MouseButton.PRIMARY) {
-            casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+            joueur.casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
         }
         else if (event.getButton() == MouseButton.SECONDARY) {
-            poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
+            joueur.poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
         }
         vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
-    }
-
-    public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
-        int nbAajouter;
-        if (adjacent) {
-            int idBloc = map.getCase(ligneTileClick, colTileClick);
-            if (idBloc != 0 && idBloc != 3) {
-                Objet objetCasse = creerObjetDepuisBloc(idBloc);
-                if (objetCasse != null) {
-                    nbAajouter = 1;
-                    if(idBloc == 2){
-                        nbAajouter = 2;
-                    }
-                    inventaire.addObjet(objetCasse, nbAajouter);
-                }
-                map.setCase(ligneTileClick, colTileClick, 0);
-            }
-        }
-    }
-
-    public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
-        if (adjacent) {
-            int idBlocCible = map.getCase(ligneTileClick, colTileClick);
-            if (idBlocCible == 0) {
-                Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
-                if (objetSelectionne != null) {
-                    if (objetSelectionne.getQuantite() > 0) {
-                        int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
-                        if (idBlocAPoser != 0) {
-                            inventaire.removeObjet(objetSelectionne, 1);
-                            map.creeCase(ligneTileClick, colTileClick, idBlocAPoser);
-                        }
-                    }
-                }
-            } else if (idBlocCible == 4) {
-                if(Math.abs(joueur.getX() / 32 - map.getColId(4)) <= 2 && Math.abs(joueur.getY() / 32 - map.getLigneId(4)) <= 2) {
-                    TableCraft.setVisible(!TableCraft.isVisible() && !craft.isVisible());
-                }
-            }
-        }
-    }
-
-    private int getIdBlocDepuisObjet(Objet objet) {
-        switch (objet.getNom()) {
-            case "Pierre":
-                return 1;
-            case "Caisse En Bois":
-                return 2;
-            case "Table De Craft":
-                return 4;
-            default:
-                return 0;
-        }
     }
 
     public void craft() {
@@ -171,8 +118,8 @@ public class Controller implements Initializable {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     Objet objet = new Objet(itemName, itemDescription);
                     VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
-                    Objet boisARemove = creerObjetDepuisBloc(2);
-                    Objet pierreARemove = creerObjetDepuisBloc(1);
+                    Objet boisARemove = joueur.creerObjetDepuisBloc(2);
+                    Objet pierreARemove = joueur.creerObjetDepuisBloc(1);
 
                     inventaire.removeObjet(boisARemove, nbBois);
                     inventaire.removeObjet(pierreARemove, nbPierre);
@@ -184,18 +131,6 @@ public class Controller implements Initializable {
         });
     }
 
-    private Objet creerObjetDepuisBloc(int idBloc) {
-        switch (idBloc) {
-            case 1:
-                return new Objet("Pierre", "De la pierre");
-            case 2, 5:
-                return new Objet("Bois", "Du bois");
-            case 4:
-                return new Objet("Table De Craft", "une simple table de craft");
-            default:
-                return null;
-        }
-    }
 
     private void spawnObjects() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
@@ -251,7 +186,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
-        joueur = new Joueur(500, 725, map, 100, 8, inventaire);
+        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());

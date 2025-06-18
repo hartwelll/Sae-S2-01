@@ -15,7 +15,7 @@ public class Entite {
     private boolean sautEnCours;
 
     private boolean collision;
-    private Map map;
+    public Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
     private int vie;
