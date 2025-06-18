@@ -19,6 +19,7 @@ public class Entite {
     private int hauteurEntite;
     private int largeurEntite;
     private int vie;
+    private Rectangle2D hitboxEntites;
 
     private final int minXMap = 0;
     private final int maxXMap = 1854;
@@ -39,6 +40,7 @@ public class Entite {
         this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
         this.vie = vie;
+        this.hitboxEntites = new Rectangle2D(x, y, largeurEntite, hauteurEntite);
     }
 
     public void deplacement(int dx, int dy) {
@@ -89,16 +91,16 @@ public class Entite {
     }
 
     public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
-        Rectangle2D hiboxEntite = new Rectangle2D(nposx, nposy, largeurEntite, hauteurEntite);
+        Rectangle2D hitboxEntite = new Rectangle2D(nposx, nposy, largeurEntite, hauteurEntite);
         for (Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hiboxEntite.intersects(hitboxBloc)) {
+            if (hitboxEntite.intersects(hitboxBloc)) {
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
                 collision(true);
             }
         }
         for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
-            if (hiboxEntite.intersects(hitboxBloc)) {
+            if (hitboxEntite.intersects(hitboxBloc)) {
                 decrementerVie(1);
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
@@ -111,6 +113,13 @@ public class Entite {
 
     public boolean collision(boolean collision){
         return this.collision = collision;
+    }
+
+    public boolean collisionAvecEntite(Rectangle2D hitbox, Rectangle2D hitboxCible){
+        if (hitbox.intersects(hitboxCible)){
+            return true;
+        }
+        return false;
     }
 
     public int siCollisionX(int dx, int nposx, Rectangle2D hitboxBloc){
@@ -148,9 +157,9 @@ public class Entite {
         return false;
     }
 
-    public void attaque(Entite cible, boolean adjacent){
-        if (adjacent) {
-            cible.decrementerVie(10);
+    public void attaque(Entite cible, int dgt){
+        if (collisionAvecEntite()) {
+            cible.decrementerVie(dgt);
         }
     }
 
@@ -212,5 +221,9 @@ public class Entite {
 
     public void setV(int v) {
         this.v = v;
+    }
+
+    public void setXHitbox(int xHitbox) {
+        this.hitboxEntites.getMaxX() = xHitbox;
     }
 }

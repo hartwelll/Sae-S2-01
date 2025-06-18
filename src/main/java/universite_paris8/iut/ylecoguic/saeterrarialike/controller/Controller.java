@@ -53,6 +53,7 @@ public class Controller implements Initializable {
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
     private ArrayList<Entite> entites = new ArrayList<>();
+    boolean estAdjacentCasseBlock;
 
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
@@ -96,7 +97,7 @@ public class Controller implements Initializable {
 
         if (event.getButton() == MouseButton.PRIMARY) {
             if (colTileCliquer == ennemis.getTileX() && ligneTileCliquer == ennemis.getTileY()){
-                joueur.attaque(ennemis, estAdjacentCasseBlock);
+                joueur.attaque(ennemis, 10);
             }else casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
 
         }
@@ -238,7 +239,7 @@ public class Controller implements Initializable {
                         joueur.demarrerSaut();
                     }
                     if (!coeurList.isEmpty()) {
-                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
+                        if (joueur.getVie() % 10 == 0 && joueur.getVie() <= 90 && joueur.decrementerVie()) {
                             coeurList.get(0).setVisible(false);
                             coeurList.remove(0);
                         }
@@ -255,6 +256,7 @@ public class Controller implements Initializable {
                     joueur.appliquerMouvementVertival();
                     ennemis.appliquerMouvementVertival();
                     ennemis.deplacement();
+                    ennemis.attaque(joueur, 2);
                     lastUpdate = now;
                 }
             }
