@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
 
 public class Joueur extends Entite {
@@ -12,15 +13,19 @@ public class Joueur extends Entite {
     private int hauteurJoueur;
     private int largeurJoueur;
     private Inventaire inventaire;
+    private VueCoeur vueCoeur;
+    private Coeur coeur;
     private TableView<Objet> inventaireTable;
     Pane craft;
     Pane TableCraft;
 
-    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft) {
+    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur) {
         super(x, y, map, vie, v);
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
+        this.vueCoeur = vueCoeur;
+        this.coeur = coeur;
         this.inventaireTable = inventaireTable;
         this.craft = craft;
         this.TableCraft = TableCraft;
@@ -28,14 +33,11 @@ public class Joueur extends Entite {
 
     public boolean decrementerVie() {
         super.decrementerVie();
+        vueCoeur.enleverCoeurVue(this, coeur);
         if(this.getVie() <= 0) {
             System.exit(0);
         }
         return true;
-    }
-
-    public void attaque (){
-        System.out.println("T more");
     }
 
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){

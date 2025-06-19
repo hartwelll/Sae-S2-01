@@ -194,7 +194,6 @@ public class Controller implements Initializable {
                     if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
-                    coeur.enleverCoeur();
                     joueur.appliquerMouvementVertival();
                     ennemis.appliquerMouvementVertival();
                     ennemis.deplacement();
@@ -208,12 +207,13 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
         vueMap = new VueMap(panneauDeJeu, map);
-        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft);
+        vueCoeur = new VueCoeur(coeurs);
+        coeur = new Coeur(vueCoeur);
+        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        vueCoeur = new VueCoeur(coeurs);
-        coeur = new Coeur(joueur, vueCoeur);
+
         ennemis = new Ennemis(600, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());

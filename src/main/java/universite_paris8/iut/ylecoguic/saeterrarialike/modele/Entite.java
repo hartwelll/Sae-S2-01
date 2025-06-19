@@ -151,6 +151,8 @@ public class Entite {
     public boolean decrementerVie() {
         if (this.vie > 0) {
             this.vie -= 1;
+        } else if (this.getClass().equals(Joueur.class)) {
+            System.exit(0);
         }
         return true;
     }
