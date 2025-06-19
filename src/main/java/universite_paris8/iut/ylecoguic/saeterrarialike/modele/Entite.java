@@ -9,6 +9,7 @@ public class Entite {
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
     private int v;
+    private int vDeBase;
     private int vSautInitial;
     private int vGravite;
     private int vy;
@@ -31,6 +32,7 @@ public class Entite {
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
         this.v = v; //vitesse horizale droite/gauche
+        this.vDeBase = v;
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;
@@ -50,8 +52,8 @@ public class Entite {
         } else if (nposx + largeurEntite > maxXMap) {
             nposx = maxXMap - largeurEntite;
         }
-
         collisionDetectee(dx, dy, nposx, nposy);
+        setV(vDeBase);
     }
 
     public void demarrerSaut() {
@@ -99,7 +101,9 @@ public class Entite {
         }
         for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
             if (hitboxEntite.intersects(hitboxBloc)) {
-                decrementerVie(1);
+                int vBarbele = v/2;
+                decrementerVie(2);
+                setV(vBarbele);
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
                 collision(true);
@@ -163,13 +167,13 @@ public class Entite {
         }
     }
 
-    public boolean decrementerVie(int vieAenlever) {
+    public void decrementerVie(int vieAenlever) {
         if (this.vie > 0) {
             this.vie -= vieAenlever;
+            System.out.println(this.getVie());
         } else if (this.getClass().equals(Joueur.class)) {
             System.exit(0);
         }
-        return true;
     }
 
     public int getX() {

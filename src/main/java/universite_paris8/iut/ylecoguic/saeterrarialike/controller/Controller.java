@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
@@ -22,10 +23,7 @@ import java.util.Set;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.*;
 
 public class Controller implements Initializable {
 
@@ -239,6 +237,9 @@ public class Controller implements Initializable {
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+        entites = new ArrayList();
+        entites.add(joueur);
+        entites.add(ennemis);
         craft.setVisible(false);
         TableCraft.setVisible(false);
         tuto.setVisible(false);
