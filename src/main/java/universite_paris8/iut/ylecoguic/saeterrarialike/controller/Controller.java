@@ -226,6 +226,7 @@ public class Controller implements Initializable {
         AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
             private final long frameInterval = 16_666_666;
+            long delay = 0;
 
             @Override
             public void handle(long now) {
@@ -254,9 +255,15 @@ public class Controller implements Initializable {
                         }
                     }
                     joueur.appliquerMouvementVertival();
-                    ennemis.appliquerMouvementVertival();
-                    ennemis.deplacement();
-                    ennemis.attaque(joueur, 2);
+                    if(ennemis.getVie() >= 0) {
+                        ennemis.appliquerMouvementVertival();
+                        ennemis.deplacement();
+                        if (delay >= 600_000_000) {
+                            ennemis.attaque(joueur, 2);
+                            delay = 0;
+                        } else delay += frameInterval;
+                    }
+
                     lastUpdate = now;
                 }
             }

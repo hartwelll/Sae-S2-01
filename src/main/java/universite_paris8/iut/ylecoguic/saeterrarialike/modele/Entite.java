@@ -158,7 +158,9 @@ public class Entite {
     }
 
     public void attaque(Entite cible, int dgt){
-        if (collisionAvecEntite()) {
+        Rectangle2D hitboxEntite = new Rectangle2D(getX(), getY(), hauteurEntite, largeurEntite);
+        Rectangle2D hitboxCible = new Rectangle2D(cible.getX(), cible.getY(), hauteurEntite, largeurEntite);
+        if (collisionAvecEntite(hitboxEntite, hitboxCible)) {
             cible.decrementerVie(dgt);
         }
     }
@@ -167,7 +169,6 @@ public class Entite {
         if (this.vie > 0) {
             this.vie -= vieAenlever;
         }
-        System.out.println(vie);
         return true;
     }
 
@@ -221,9 +222,5 @@ public class Entite {
 
     public void setV(int v) {
         this.v = v;
-    }
-
-    public void setXHitbox(int xHitbox) {
-        this.hitboxEntites.getMaxX() = xHitbox;
     }
 }
