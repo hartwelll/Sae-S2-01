@@ -11,7 +11,7 @@ public class TerrariaApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TerrariaApplication.class.getResource("menu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         stage.setTitle("The Custest Story Of The Unicorn Slayer");
         stage.setScene(scene);
         stage.show();

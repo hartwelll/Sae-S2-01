@@ -23,7 +23,7 @@
 
    <Pane fx:id="objetAffiche" focusTraversable="false" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0" />
 
-   <TableView fx:id="inventaireTable" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_RIGHT">
+   <TableView fx:id="inventaireTable" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_LEFT">
       <columns>
          <TableColumn fx:id="nomCol" text="Nom" />
          <TableColumn fx:id="descCol" text="Description" />
@@ -34,41 +34,7 @@
       </StackPane.margin>
    </TableView>
 
-   <HBox maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_LEFT">
-      <StackPane.margin>
-         <Insets left="10.0" top="10.0" />
-      </StackPane.margin>
-      <ImageView fx:id="coeur10">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur9">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur8">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur7">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur6">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur5">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur4">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur3">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur2">
-         <Image url="@coeur.png" />
-      </ImageView>
-      <ImageView fx:id="coeur1">
-         <Image url="@coeur.png" />
-      </ImageView>
-   </HBox>
+   <HBox fx:id="coeurs" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_RIGHT"/>
 
    <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="200" prefWidth="500" StackPane.alignment="CENTER">
          <HBox style="-fx-background-color: yellow;">
@@ -81,7 +47,7 @@
                      <Image url="@../../../../Tile/tableCraftHD.png" />
                   </ImageView>
                </HBox>
-               <Button fx:id="tableDeCraft" focusTraversable="false" onAction="#craft" text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               <Button fx:id="tableDeCraft" onAction="#craft" focusTraversable="false"  text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
             </AnchorPane>
 
             <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -93,7 +59,7 @@
                      <Image url="@../../../../Tile/caisseBois.png" />
                   </ImageView>
                </HBox>
-               <Button fx:id="caisse" focusTraversable="false" onAction="#craft" text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               <Button fx:id="caisse" onAction="#craft" focusTraversable="false"  text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
             </AnchorPane>
          </HBox>
    </Pane>
@@ -110,7 +76,7 @@
                      <Image url="@../../../../Objet/EpiocheHD.gif" />
                   </ImageView>
                </HBox>
-               <Button fx:id="pioche" focusTraversable="false" onAction="#craftDansTableCraft" text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               <Button fx:id="pioche" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
             </AnchorPane>
 
             <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -125,7 +91,7 @@
                      </image>
                   </ImageView>
                </HBox>
-               <Button fx:id="pelle" focusTraversable="false" onAction="#craftDansTableCraft" text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               <Button fx:id="pelle" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
             </AnchorPane>
 
             <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -142,7 +108,7 @@
                      </image>
                   </ImageView>
                </HBox>
-               <Button fx:id="epee" focusTraversable="false" onAction="#craftDansTableCraft" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               <Button fx:id="epee" onAction="#craftDansTableCraft" focusTraversable="false" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
             </AnchorPane>
          </HBox>
    </Pane>
@@ -150,6 +116,34 @@
    <Pane fx:id="consignes" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-font-size: 25px" StackPane.alignment="TOP_CENTER">
       <VBox>
          <Text text="Appuyez Sur ECHAP Pour Acceder Au Menu" />
+      </VBox>
+   </Pane>
+
+   <Pane fx:id="menu" StackPane.alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+      <VBox alignment="CENTER"  minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <Label text="Pause Menu" textFill="WHITE">
+            <font>
+               <Font size="36.0" />
+            </font>
+         </Label>
+         <Button fx:id="continueButton" onAction="#retourJeu" text="Continue">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
+         <Button fx:id="tutoButton" onAction="#showTuto" text="Controls">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
+         <Button fx:id="quitButton" onAction="#quitGame" text="Quit to Menu">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
       </VBox>
    </Pane>
 
@@ -170,32 +164,6 @@
       </VBox>
    </Pane>
 
-   <Pane fx:id="menu">
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <Label text="Pause Menu" textFill="WHITE">
-            <font>
-               <Font size="36.0" />
-            </font>
-         </Label>
-         <Button fx:id="continueButton" onAction="#retourJeu" text="Continue">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-         <Button fx:id="tutoButton" onAction="#showTuto" text="Control">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-         <Button fx:id="quitButton" onAction="#retourMenu" text="Quit to Menu">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-      </VBox>
-   </Pane>
+
 
 </StackPane>

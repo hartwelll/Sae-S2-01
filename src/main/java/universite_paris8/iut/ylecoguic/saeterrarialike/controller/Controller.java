@@ -1,20 +1,15 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
-import universite_paris8.iut.ylecoguic.saeterrarialike.TerrariaApplication;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,13 +18,7 @@ import java.util.Set;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
-import universite_paris8.iut.ylecoguic.saeterrarialike.TerrariaApplication;
-
-import static javafx.application.Application.launch;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.*;
 
 public class Controller implements Initializable {
 
@@ -40,7 +29,7 @@ public class Controller implements Initializable {
     @FXML private Pane tuto;
     @FXML private Pane consignes;
     @FXML private Pane TableCraft;
-    @FXML private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
+    @FXML private HBox coeurs;
     @FXML private TableView<Objet> inventaireTable;
     @FXML private TableColumn<Objet, String> nomCol;
     @FXML private TableColumn<Objet, String> descCol;
@@ -55,18 +44,33 @@ public class Controller implements Initializable {
     private VueMap vueMap;
     private Joueur joueur;
     private VueJoueur vueJoueur;
+    private Coeur coeur;
+    private VueCoeur vueCoeur;
     private Ennemis ennemis;
     private VueEnnemis vueEnnemis;
-    private ArrayList<ImageView> coeurList;
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
+    private ArrayList<Button> buttonList = new ArrayList<>();
 
-    public void retourJeu() {menu.setVisible(false);}
-    public void showTuto() {tuto.setVisible(true);}
-    public void retourMenu() {;
-        launch(TerrariaApplication.class);
+    private AnimationTimer gameTimer;
+
+
+    public void retourJeu() {
+        menu.setVisible(false);
+        if (gameTimer != null) {
+            gameTimer.start();
+        }
     }
-
+    public void showTuto() {
+        tuto.setVisible(true);
+        menu.setVisible(false);
+        if (gameTimer != null) {
+            gameTimer.start();
+        }
+    }
+    public void quitGame() {
+        System.exit(0);
+    }
 
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
@@ -78,15 +82,24 @@ public class Controller implements Initializable {
                             craft.setVisible(!craft.isVisible() && !TableCraft.isVisible());
                             break;
                         case ESCAPE:
-                                if (tuto.isVisible()) {
-                                    tuto.setVisible(false);
+                            if (tuto.isVisible()) {
+                                tuto.setVisible(false);
+                                if (gameTimer != null && !menu.isVisible()) {
+                                    gameTimer.start();
                                 }
-                                if (!menu.isVisible()) {
-                                    menu.setVisible(true);
-                                    consignes.setVisible(false);
-                                } else {
-                                    menu.setVisible(false);
+                            } else if (!menu.isVisible()) {
+                                menu.setVisible(true);
+                                consignes.setVisible(false);
+                                if (gameTimer != null) {
+                                    gameTimer.stop();
                                 }
+                            } else {
+                                menu.setVisible(false);
+                                if (gameTimer != null) {
+                                    gameTimer.start();
+                                }
+                            }
+                            break;
                     }
                 });
                 sceneActuel.setOnKeyReleased(event -> {
@@ -115,6 +128,7 @@ public class Controller implements Initializable {
         }
         vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
     }
+
 
     public void craft() {
         craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
@@ -146,7 +160,6 @@ public class Controller implements Initializable {
         });
     }
 
-
     private void spawnObjects() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
         VueObjet sabre = new VueObjet(objet, 100, 762, 32, 32, "/Objet/lightSaberDrop.png");
@@ -162,10 +175,10 @@ public class Controller implements Initializable {
         objetAffiche.getChildren().add(sabre);
     }
 
-    public void startAnimationTimer() {
-        AnimationTimer timer = new AnimationTimer() {
+    public void animationTimer() {
+        gameTimer = new AnimationTimer() {
             private long lastUpdate = 0;
-            private final long frameInterval = 16_666_666;
+            private final long frameInterval = 16_666_666; // Environ 60 FPS
 
             @Override
             public void handle(long now) {
@@ -178,15 +191,10 @@ public class Controller implements Initializable {
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
-                    if (!coeurList.isEmpty()) {
-                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
-                            coeurList.get(0).setVisible(false);
-                            coeurList.remove(0);
-                        }
-                    }
                     if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
+                    coeur.enleverCoeur();
                     joueur.appliquerMouvementVertival();
                     ennemis.appliquerMouvementVertival();
                     ennemis.deplacement();
@@ -194,42 +202,48 @@ public class Controller implements Initializable {
                 }
             }
         };
-        timer.start();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
+        vueMap = new VueMap(panneauDeJeu, map);
         joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+        vueCoeur = new VueCoeur(coeurs);
+        coeur = new Coeur(joueur, vueCoeur);
         ennemis = new Ennemis(600, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
-        coeurList = new ArrayList<>();
-        coeurList.add(coeur1);
-        coeurList.add(coeur2);
-        coeurList.add(coeur3);
-        coeurList.add(coeur4);
-        coeurList.add(coeur5);
-        coeurList.add(coeur6);
-        coeurList.add(coeur7);
-        coeurList.add(coeur8);
-        coeurList.add(coeur9);
-        coeurList.add(coeur10);
         craft.setVisible(false);
         TableCraft.setVisible(false);
         tuto.setVisible(false);
+        menu.setVisible(false);
+
         touchesActives = new HashSet<>();
+        buttonList = new ArrayList<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
         inventaireTable.setItems(inventaire.getObjets());
         spawnObjects();
         setupInput();
-        startAnimationTimer();
+        animationTimer();
+
+        menu.visibleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                gameTimer.stop();
+                System.out.println("Timer arrêté (menu visible)");
+            } else {
+                gameTimer.start();
+                System.out.println("Timer démarré (menu invisible)");
+            }
+        });
+        if (!menu.isVisible()) {
+            gameTimer.start();
+        }
     }
 }

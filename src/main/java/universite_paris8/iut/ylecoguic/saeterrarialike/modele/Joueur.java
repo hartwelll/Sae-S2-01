@@ -78,6 +78,7 @@ public class Joueur extends Entite {
         }
     }
 
+
     private int getIdBlocDepuisObjet(Objet objet) {
         switch (objet.getNom()) {
             case "Pierre":
@@ -90,8 +91,6 @@ public class Joueur extends Entite {
                 return 0;
         }
     }
-
-
 
     public Objet creerObjetDepuisBloc(int idBloc) {
         switch (idBloc) {

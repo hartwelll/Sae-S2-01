@@ -25,7 +25,7 @@ public class VueJoueur {
 
     public void ajoutPoses(int id, String chemin){
         Image image = creerImage(chemin);
-            imagesJoueur.put(id, image);
+        imagesJoueur.put(id, image);
     }
 
     public void initializePlayer(){

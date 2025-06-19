@@ -52,12 +52,9 @@ public class VueMap {
     public void affichage(){
         pane.getChildren().clear();
         for (int i = 0; i < pane.getPrefRows(); i++) {
-            System.out.println("nb lign" +map.getLigne());
-
             for (int j = 0; j < pane.getPrefColumns(); j++) {
                 int tileId = map.getCase(i, j);
                 Image image = tileImages.get(tileId);
-                //System.out.println("j"+j + "v pane"+ pane.getPrefColumns());
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(32);
