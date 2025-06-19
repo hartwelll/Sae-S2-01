@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseButton;
+import universite_paris8.iut.ylecoguic.saeterrarialike.TerrariaApplication;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
 
 import java.net.URL;
@@ -26,9 +27,13 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueMap;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
+import universite_paris8.iut.ylecoguic.saeterrarialike.TerrariaApplication;
+
+import static javafx.application.Application.launch;
 
 public class Controller implements Initializable {
 
+    @FXML private Pane menu;
     @FXML private TilePane panneauDeJeu;
     @FXML private Pane panneauJoueur;
     @FXML private Pane craft;
@@ -56,6 +61,13 @@ public class Controller implements Initializable {
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
 
+    public void retourJeu() {menu.setVisible(false);}
+    public void showTuto() {tuto.setVisible(true);}
+    public void retourMenu() {;
+        launch(TerrariaApplication.class);
+    }
+
+
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
             if (sceneActuel != null) {
@@ -66,12 +78,15 @@ public class Controller implements Initializable {
                             craft.setVisible(!craft.isVisible() && !TableCraft.isVisible());
                             break;
                         case ESCAPE:
-                            if (!tuto.isVisible()) {
-                                tuto.setVisible(true);
-                                consignes.setVisible(false);
-                            } else {
-                                tuto.setVisible(false);
-                            }
+                                if (tuto.isVisible()) {
+                                    tuto.setVisible(false);
+                                }
+                                if (!menu.isVisible()) {
+                                    menu.setVisible(true);
+                                    consignes.setVisible(false);
+                                } else {
+                                    menu.setVisible(false);
+                                }
                     }
                 });
                 sceneActuel.setOnKeyReleased(event -> {

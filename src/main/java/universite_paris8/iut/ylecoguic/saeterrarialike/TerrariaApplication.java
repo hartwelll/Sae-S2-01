@@ -10,8 +10,8 @@ import java.io.IOException;
 public class TerrariaApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TerrariaApplication.class.getResource("view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 400);
+        FXMLLoader fxmlLoader = new FXMLLoader(TerrariaApplication.class.getResource("menu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 400);
         stage.setTitle("The Custest Story Of The Unicorn Slayer");
         stage.setScene(scene);
         stage.show();

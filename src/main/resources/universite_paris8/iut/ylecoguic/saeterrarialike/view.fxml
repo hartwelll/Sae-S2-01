@@ -149,7 +149,7 @@
 
    <Pane fx:id="consignes" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-font-size: 25px" StackPane.alignment="TOP_CENTER">
       <VBox>
-         <Text text="Appuyez Sur ECHAP Pour Acceder Aux Touches" />
+         <Text text="Appuyez Sur ECHAP Pour Acceder Au Menu" />
       </VBox>
    </Pane>
 
@@ -169,4 +169,33 @@
          <Text text="Acceder Au Tuto : Echap" />
       </VBox>
    </Pane>
+
+   <Pane fx:id="menu">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <Label text="Pause Menu" textFill="WHITE">
+            <font>
+               <Font size="36.0" />
+            </font>
+         </Label>
+         <Button fx:id="continueButton" onAction="#retourJeu" text="Continue">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
+         <Button fx:id="tutoButton" onAction="#showTuto" text="Control">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
+         <Button fx:id="quitButton" onAction="#retourMenu" text="Quit to Menu">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
+      </VBox>
+   </Pane>
+
 </StackPane>
