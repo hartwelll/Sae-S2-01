@@ -19,14 +19,12 @@ public class Joueur extends Entite {
     }
 
     public boolean decrementerVie() {
-        super.decrementerVie();
-        if(this.getVie() <= 0) {
+        super.decrementerVie(1);
+         if(this.getVie() <= 0) {
             System.exit(0);
         }
         return true;
     }
 
-    public void attaque (){
-        System.out.println("T more");
-    }
+
 }

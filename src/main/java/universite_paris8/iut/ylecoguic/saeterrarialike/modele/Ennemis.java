@@ -1,5 +1,7 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
+
 public class Ennemis extends Entite {
 
     private boolean enMarche;

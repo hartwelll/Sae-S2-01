@@ -16,12 +16,12 @@ public class Entite {
 
     private boolean collision;
     private Map map;
-    private int hauteurJoueur;
-    private int largeurJoueur;
+    private int hauteurEntite;
+    private int largeurEntite;
     private int vie;
 
     private final int minXMap = 0;
-    private final int maxXMap = 1824;
+    private final int maxXMap = 1854;
     private final int minYMap = 0;
     private final int maxYMap = 1024;
 
@@ -34,8 +34,8 @@ public class Entite {
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;
-        this.hauteurJoueur = 60;
-        this.largeurJoueur = 30;
+        this.hauteurEntite = 60;
+        this.largeurEntite = 30;
         this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
         this.vie = vie;
@@ -47,8 +47,8 @@ public class Entite {
 
         if (nposx < minXMap) {
             nposx = minXMap;
-        } else if (nposx + largeurJoueur > maxXMap) {
-            nposx = maxXMap - largeurJoueur;
+        } else if (nposx + largeurEntite > maxXMap) {
+            nposx = maxXMap - largeurEntite;
         }
 
         collisionDetectee(dx, dy, nposx, nposy);
@@ -68,8 +68,8 @@ public class Entite {
         if (nposy < minYMap) {
             nposy = minYMap;
             vy = 0;
-        } else if (nposy + hauteurJoueur > maxYMap) {
-            nposy = maxYMap - hauteurJoueur;
+        } else if (nposy + hauteurEntite > maxYMap) {
+            nposy = maxYMap - hauteurEntite;
             vy = 0;
             sautEnCours = false;
         }
@@ -89,17 +89,17 @@ public class Entite {
     }
 
     public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
-        Rectangle2D hitboxJoueur = new Rectangle2D(nposx, nposy, largeurJoueur, hauteurJoueur);
+        Rectangle2D hitboxEntite = new Rectangle2D(nposx, nposy, largeurEntite, hauteurEntite);
         for (Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
+            if (hitboxEntite.intersects(hitboxBloc)) {
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
                 collision(true);
             }
         }
         for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
-            if (hitboxJoueur.intersects(hitboxBloc)) {
-                decrementerVie();
+            if (hitboxEntite.intersects(hitboxBloc)) {
+                decrementerVie(1);
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
                 collision(true);
@@ -113,10 +113,17 @@ public class Entite {
         return this.collision = collision;
     }
 
+    public boolean collisionAvecEntite(Rectangle2D hitbox, Rectangle2D hitboxCible){
+        if (hitbox.intersects(hitboxCible)){
+            return true;
+        }
+        return false;
+    }
+
     public int siCollisionX(int dx, int nposx, Rectangle2D hitboxBloc){
         if (dx != 0) {
             if (dx > 0) {
-                nposx = (int) (hitboxBloc.getMinX() - largeurJoueur);
+                nposx = (int) (hitboxBloc.getMinX() - largeurEntite);
             } else {
                 nposx = (int) (hitboxBloc.getMaxX());
             }
@@ -127,7 +134,7 @@ public class Entite {
     public int siCollisionY(int dy, int nposy, Rectangle2D hitboxBloc){
         if (dy != 0) {
             if (dy > 0) {
-                nposy = (int) (hitboxBloc.getMinY() - hauteurJoueur);
+                nposy = (int) (hitboxBloc.getMinY() - hauteurEntite);
                 vy = 0;
                 sautEnCours = false;
             } else {
@@ -139,18 +146,26 @@ public class Entite {
     }
 
     public boolean estSurLeSol() {
-        Rectangle2D hitboxSousJoueur = new Rectangle2D(this.getX(), getY() + hauteurJoueur + 1, largeurJoueur, 1);
+        Rectangle2D hitboxSousEntite = new Rectangle2D(this.getX(), getY() + hauteurEntite + 1, largeurEntite, 1);
         for (Rectangle2D hitboxBloc : map.getHitboxList()) {
-            if (hitboxSousJoueur.intersects(hitboxBloc)) {
+            if (hitboxSousEntite.intersects(hitboxBloc)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean decrementerVie() {
+    public void attaque(Entite cible, int dgt){
+        Rectangle2D hitboxEntite = new Rectangle2D(getX(), getY(), hauteurEntite, largeurEntite);
+        Rectangle2D hitboxCible = new Rectangle2D(cible.getX(), cible.getY(), hauteurEntite, largeurEntite);
+        if (collisionAvecEntite(hitboxEntite, hitboxCible)) {
+            cible.decrementerVie(dgt);
+        }
+    }
+
+    public boolean decrementerVie(int vieAenlever) {
         if (this.vie > 0) {
-            this.vie -= 1;
+            this.vie -= vieAenlever;
         }
         return true;
     }
@@ -176,11 +191,11 @@ public class Entite {
     }
 
     public int getTileX() {
-        return (getX() + (largeurJoueur / 2)) / 32;
+        return (getX() + (largeurEntite / 2)) / 32;
     }
 
     public int getTileY() {
-        return (getY() + (hauteurJoueur / 2)) / 32;
+        return (getY() + (hauteurEntite / 2)) / 32;
     }
 
     public boolean isSautEnCours() {
@@ -197,5 +212,13 @@ public class Entite {
 
     public IntegerProperty getyProperty() {
         return yProperty;
+    }
+
+    public boolean estMort() {
+        return this.vie <= 0;
+    }
+
+    public void setV(int v) {
+        this.v = v;
     }
 }

@@ -93,7 +93,10 @@ public class Controller implements Initializable {
         boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
 
         if (event.getButton() == MouseButton.PRIMARY) {
-            casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+            if (colTileCliquer == ennemis.getTileX() && ligneTileCliquer == ennemis.getTileY()){
+                joueur.attaque(ennemis, 10);
+            }else casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+
         }
         else if (event.getButton() == MouseButton.SECONDARY) {
             poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
@@ -216,6 +219,7 @@ public class Controller implements Initializable {
         AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
             private final long frameInterval = 16_666_666;
+            long delay = 0;
 
             @Override
             public void handle(long now) {
@@ -229,7 +233,7 @@ public class Controller implements Initializable {
                         joueur.demarrerSaut();
                     }
                     if (!coeurList.isEmpty()) {
-                        if (joueur.getVie() % 10 == 0 && joueur.decrementerVie() && joueur.getVie() <= 90) {
+                        if (joueur.getVie() % 10 == 0 && joueur.getVie() <= 90 && joueur.decrementerVie()) {
                             coeurList.get(0).setVisible(false);
                             coeurList.remove(0);
                         }
@@ -237,9 +241,22 @@ public class Controller implements Initializable {
                     if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
+                    for(int i = 0 ; i < entites.size(); i++){
+                        if (entites.get(i).estMort()){
+                            panneauJoueur.getChildren().remove(i);
+                            entites.remove(i);
+                        }
+                    }
                     joueur.appliquerMouvementVertival();
-                    ennemis.appliquerMouvementVertival();
-                    ennemis.deplacement();
+                    if(ennemis.getVie() >= 0) {
+                        ennemis.appliquerMouvementVertival();
+                        ennemis.deplacement();
+                        if (delay >= 600_000_000) {
+                            ennemis.attaque(joueur, 2);
+                            delay = 0;
+                        } else delay += frameInterval;
+                    }
+
                     lastUpdate = now;
                 }
             }
@@ -259,6 +276,8 @@ public class Controller implements Initializable {
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+        entites.add(joueur);
+        entites.add(ennemis);
         coeurList = new ArrayList<>();
         coeurList.add(coeur1);
         coeurList.add(coeur2);
