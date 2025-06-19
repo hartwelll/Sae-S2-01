@@ -21,10 +21,10 @@ public class Entite {
     private int largeurEntite;
     private int vie;
 
-    private final int minXMap = 0;
-    private final int maxXMap = 1854;
-    private final int minYMap = 0;
-    private final int maxYMap = 1024;
+    private int minXMap = 0;
+    private int maxXMap = 1854;
+    private int minYMap = 0;
+    private int maxYMap = 1024;
 
 
     public Entite (int x, int y, Map map, int vie, int v){
@@ -226,5 +226,21 @@ public class Entite {
 
     public void setV(int v) {
         this.v = v;
+    }
+
+    public void setLargeurEntite(int i) {
+        this.largeurEntite = i;
+    }
+
+    public void setMinXMap(int i) {
+        this.minXMap = i;
+    }
+
+    public void setMaxXMap(int i) {
+        this.maxXMap = i;
+    }
+
+    public int getV() {
+        return this.v;
     }
 }

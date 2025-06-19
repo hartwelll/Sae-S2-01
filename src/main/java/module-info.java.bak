@@ -6,7 +6,12 @@ module universite_paris8.iut.ylecoguic.saeterrarialike {
     requires java.desktop;
     requires javafx.graphics;
     requires javafx.base;
+    requires org.junit.jupiter.api;
+    requires junit;
+    requires java.base;
+    requires org.junit.platform.commons;
 
+    exports universite_paris8.iut.ylecoguic.saeterrarialike.test;
     opens universite_paris8.iut.ylecoguic.saeterrarialike to javafx.fxml;
     exports universite_paris8.iut.ylecoguic.saeterrarialike;
     exports universite_paris8.iut.ylecoguic.saeterrarialike.controller;

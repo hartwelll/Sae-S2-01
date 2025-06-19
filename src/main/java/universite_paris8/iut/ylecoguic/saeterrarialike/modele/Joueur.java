@@ -15,6 +15,8 @@ public class Joueur extends Entite {
     private TableView<Objet> inventaireTable;
     Pane craft;
     Pane TableCraft;
+    private int x;
+    private int y;
 
     public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur) {
         super(x, y, map, vie, v);
@@ -27,6 +29,14 @@ public class Joueur extends Entite {
         this.inventaireTable = inventaireTable;
         this.craft = craft;
         this.TableCraft = TableCraft;
+    }
+
+    public Joueur(Map map, Inventaire inventaire, int x, int y) {
+        super(x,y,map,1000000000,0);
+        this.map = map;
+        this.inventaire = inventaire;
+        this.x = x;
+        this.y = y;
     }
 
     public void decrementerVie(int vieAenlever) {
