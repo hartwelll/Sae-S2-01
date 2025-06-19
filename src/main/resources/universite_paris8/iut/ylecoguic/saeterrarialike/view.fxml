@@ -12,12 +12,17 @@
 <?import org.controlsfx.control.cell.ImageGridCell?>
 <?import javafx.scene.control.skin.TabPaneSkin.TabContentRegion?>
 <StackPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
+   <Pane prefHeight="1024.0" prefWidth="1920.0">
+      <children>
+         <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true">
+            <Image url="@../../../../Tile/bg1Fit.png" />
+         </ImageView>
+         <TilePane fx:id="panneauDeJeu" prefTileHeight="32" prefTileWidth="32" prefColumns="60" prefRows="32"/>
+      </children>
+   </Pane>
 
-   <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true">
-         <Image url="@../../../../Tile/bg1Fit.png" />
-   </ImageView>
 
-   <TilePane fx:id="panneauDeJeu" prefTileHeight="32" prefTileWidth="32" prefColumns="60" prefRows="33"/>
+
    <Pane fx:id="panneauJoueur" mouseTransparent="true" />
 
    <Pane fx:id="objetAffiche" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0" focusTraversable="false"/>

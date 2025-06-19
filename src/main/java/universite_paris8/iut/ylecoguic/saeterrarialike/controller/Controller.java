@@ -52,6 +52,7 @@ public class Controller implements Initializable {
     private VueJoueur vueJoueur;
     private Ennemis ennemis;
     private VueEnnemis vueEnnemis;
+    private ArrayList<Entite> entites;
     private ArrayList<ImageView> coeurList;
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
@@ -247,7 +248,6 @@ public class Controller implements Initializable {
                             entites.remove(i);
                         }
                     }
-                    joueur.appliquerMouvementVertival();
                     if(ennemis.getVie() >= 0) {
                         ennemis.appliquerMouvementVertival();
                         ennemis.deplacement();
@@ -256,7 +256,7 @@ public class Controller implements Initializable {
                             delay = 0;
                         } else delay += frameInterval;
                     }
-
+                    joueur.appliquerMouvementVertival();
                     lastUpdate = now;
                 }
             }
@@ -272,10 +272,11 @@ public class Controller implements Initializable {
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        ennemis = new Ennemis(600, 625, map, 50, 4);
+        ennemis = new Ennemis(500, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+        entites = new ArrayList<>();
         entites.add(joueur);
         entites.add(ennemis);
         coeurList = new ArrayList<>();

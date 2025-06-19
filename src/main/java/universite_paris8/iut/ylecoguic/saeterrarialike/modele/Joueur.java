@@ -25,6 +25,4 @@ public class Joueur extends Entite {
         }
         return true;
     }
-
-
 }

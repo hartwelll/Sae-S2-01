@@ -51,12 +51,14 @@ public class VueMap {
 
     public void affichage(){
         pane.getChildren().clear();
-        for (int i = 0; i < map.getLigne(); i++) {
-            for (int j = 0; j < map.getColonne(); j++) {
+        for (int i = 0; i < pane.getPrefRows(); i++) {
+            for (int j = 0; j < pane.getPrefColumns(); j++) {
                 int tileId = map.getCase(i, j);
                 Image image = tileImages.get(tileId);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(32);
+                    imageView.setFitWidth(32);
                     imageViewsTiles[i][j] = imageView;
                     pane.getChildren().add(imageView);
                 } else {
