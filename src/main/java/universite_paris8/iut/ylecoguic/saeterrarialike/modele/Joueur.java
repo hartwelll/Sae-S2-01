@@ -1,15 +1,12 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
 
 public class Joueur extends Entite {
 
+    private Map map;
     private int hauteurJoueur;
     private int largeurJoueur;
     private Inventaire inventaire;
@@ -21,6 +18,7 @@ public class Joueur extends Entite {
 
     public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur) {
         super(x, y, map, vie, v);
+        this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
@@ -31,13 +29,9 @@ public class Joueur extends Entite {
         this.TableCraft = TableCraft;
     }
 
-    public boolean decrementerVie() {
-        super.decrementerVie();
+    public void decrementerVie(int vieAenlever) {
+        super.decrementerVie(vieAenlever);
         vueCoeur.enleverCoeurVue(this, coeur);
-        if(this.getVie() <= 0) {
-            System.exit(0);
-        }
-        return true;
     }
 
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){

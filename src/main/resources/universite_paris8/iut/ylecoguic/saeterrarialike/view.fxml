@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.cell.ImageGridCell?>
 <?import javafx.scene.control.skin.TabPaneSkin.TabContentRegion?>
+<?import javafx.scene.text.Font?>
 <StackPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.Controller">
    <Pane prefHeight="1024.0" prefWidth="1920.0">
       <children>
@@ -41,80 +42,80 @@
    <HBox fx:id="coeurs" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_RIGHT"/>
 
    <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="200" prefWidth="500" StackPane.alignment="CENTER">
-         <HBox style="-fx-background-color: yellow;">
-            <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
-               <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                  <VBox alignment="CENTER_LEFT">
-                     <Text text="4 bois" />
-                  </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../../Tile/tableCraftHD.png" />
-                  </ImageView>
-               </HBox>
-               <Button fx:id="tableDeCraft" onAction="#craft" focusTraversable="false"  text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            </AnchorPane>
+      <HBox style="-fx-background-color: yellow;">
+         <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
+            <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <VBox alignment="CENTER_LEFT">
+                  <Text text="4 bois" />
+               </VBox>
+               <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../Tile/tableCraftHD.png" />
+               </ImageView>
+            </HBox>
+            <Button fx:id="tableDeCraft" onAction="#craft" focusTraversable="false"  text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+         </AnchorPane>
 
-            <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
-               <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                  <VBox alignment="CENTER_LEFT">
-                     <Text text="2 bois" />
-                  </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../../Tile/caisseBois.png" />
-                  </ImageView>
-               </HBox>
-               <Button fx:id="caisse" onAction="#craft" focusTraversable="false"  text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            </AnchorPane>
-         </HBox>
+         <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
+            <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <VBox alignment="CENTER_LEFT">
+                  <Text text="2 bois" />
+               </VBox>
+               <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../Tile/caisseBois.png" />
+               </ImageView>
+            </HBox>
+            <Button fx:id="caisse" onAction="#craft" focusTraversable="false"  text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+         </AnchorPane>
+      </HBox>
    </Pane>
 
    <Pane fx:id="TableCraft" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="200" prefWidth="750" StackPane.alignment="CENTER">
-         <HBox style="-fx-background-color: white;">
-            <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
-               <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                  <VBox alignment="CENTER_LEFT">
-                     <Text text="3 pierres" />
-                     <Text text="2 bois" />
-                  </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../../Objet/EpiocheHD.gif" />
-                  </ImageView>
-               </HBox>
-               <Button fx:id="pioche" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            </AnchorPane>
+      <HBox style="-fx-background-color: white;">
+         <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
+            <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <VBox alignment="CENTER_LEFT">
+                  <Text text="3 pierres" />
+                  <Text text="2 bois" />
+               </VBox>
+               <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../Objet/EpiocheHD.gif" />
+               </ImageView>
+            </HBox>
+            <Button fx:id="pioche" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+         </AnchorPane>
 
-            <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
-               <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                  <VBox alignment="CENTER_LEFT">
-                     <Text text="1 pierres" />
-                     <Text text="3 bois" />
-                  </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../Objet/pelleHD.gif" />
-                     </image>
-                  </ImageView>
-               </HBox>
-               <Button fx:id="pelle" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            </AnchorPane>
+         <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
+            <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <VBox alignment="CENTER_LEFT">
+                  <Text text="1 pierres" />
+                  <Text text="3 bois" />
+               </VBox>
+               <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../Objet/pelleHD.gif" />
+                  </image>
+               </ImageView>
+            </HBox>
+            <Button fx:id="pelle" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+         </AnchorPane>
 
-            <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
-               <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                  <VBox alignment="CENTER_LEFT">
-                     <children>
-                        <Text text="2 pierres" />
-                        <Text text="1 bois" />
-                     </children>
-                  </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../Objet/epeeHD.gif" />
-                     </image>
-                  </ImageView>
-               </HBox>
-               <Button fx:id="epee" onAction="#craftDansTableCraft" focusTraversable="false" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            </AnchorPane>
-         </HBox>
+         <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
+            <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <VBox alignment="CENTER_LEFT">
+                  <children>
+                     <Text text="2 pierres" />
+                     <Text text="1 bois" />
+                  </children>
+               </VBox>
+               <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../Objet/epeeHD.gif" />
+                  </image>
+               </ImageView>
+            </HBox>
+            <Button fx:id="epee" onAction="#craftDansTableCraft" focusTraversable="false" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+         </AnchorPane>
+      </HBox>
    </Pane>
 
    <Pane fx:id="consignes" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-font-size: 25px" StackPane.alignment="TOP_CENTER">
