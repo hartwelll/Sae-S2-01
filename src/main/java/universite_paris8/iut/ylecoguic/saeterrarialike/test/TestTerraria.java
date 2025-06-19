@@ -12,6 +12,7 @@ public class TestTerraria {
         Map map = new Map();
         Entite entite = new Entite(50, 50, map, 100, 10);
         entite.deplacement(1, 0);
+
         assertEquals(60, entite.getX());
         assertEquals(10, entite.getV());
     }
@@ -20,6 +21,7 @@ public class TestTerraria {
     public void testCasserBlock() {
         Map map = new Map();
         Inventaire inventaire = new Inventaire();
+
         Objet objet = new Objet("un objet", "c'est un objet");
         Joueur joueur = new Joueur(map, inventaire, 500, 725);
 
