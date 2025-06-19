@@ -1,9 +1,5 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Rectangle2D;
-
 public class Joueur extends Entite {
 
     private int hauteurJoueur;

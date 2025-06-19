@@ -30,7 +30,7 @@ public class Entite {
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;
-        this.v = v; //vitesse horizale droite/gauchey)
+        this.v = v; //vitesse horizale droite/gauche
         this.vSautInitial = 21;
         this.vGravite = 4;
         this.collision = false;
