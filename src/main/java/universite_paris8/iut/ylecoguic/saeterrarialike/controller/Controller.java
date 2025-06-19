@@ -191,6 +191,7 @@ public class Controller implements Initializable {
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
+                    joueur.appliquerMouvementVertival();
                     if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
                         joueur.deplacement(-1, 0);
                     } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
@@ -208,15 +209,14 @@ public class Controller implements Initializable {
                             entites.remove(i);
                         }
                     }
-                    if(ennemis.getVie() >= 0) {
+                    if(ennemis.getVie() > 0) {
                         ennemis.appliquerMouvementVertival();
-                        ennemis.deplacement();
+                        ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), 15);
                         if (delay >= 600_000_000) {
                             ennemis.attaque(joueur, 2);
                             delay = 0;
                         } else delay += frameInterval;
                     }
-                    joueur.appliquerMouvementVertival();
                     lastUpdate = now;
                 }
             }
