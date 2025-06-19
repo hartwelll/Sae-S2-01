@@ -50,8 +50,6 @@ public class Controller implements Initializable {
     private VueEnnemis vueEnnemis;
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
-    private ArrayList<Button> buttonList = new ArrayList<>();
-
     private AnimationTimer gameTimer;
 
 
@@ -224,7 +222,6 @@ public class Controller implements Initializable {
         menu.setVisible(false);
 
         touchesActives = new HashSet<>();
-        buttonList = new ArrayList<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
