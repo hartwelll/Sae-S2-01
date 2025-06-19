@@ -29,13 +29,14 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueObjet;
 
 public class Controller implements Initializable {
 
+    @FXML private Pane menu;
     @FXML private TilePane panneauDeJeu;
     @FXML private Pane panneauJoueur;
     @FXML private Pane craft;
     @FXML private Pane tuto;
     @FXML private Pane consignes;
     @FXML private Pane TableCraft;
-    @FXML private ImageView coeur1, coeur2, coeur3, coeur4, coeur5, coeur6, coeur7, coeur8, coeur9, coeur10;
+    @FXML private HBox coeurs;
     @FXML private TableView<Objet> inventaireTable;
     @FXML private TableColumn<Objet, String> nomCol;
     @FXML private TableColumn<Objet, String> descCol;
@@ -50,12 +51,32 @@ public class Controller implements Initializable {
     private VueMap vueMap;
     private Joueur joueur;
     private VueJoueur vueJoueur;
+    private Coeur coeur;
+    private VueCoeur vueCoeur;
     private Ennemis ennemis;
     private VueEnnemis vueEnnemis;
     private ArrayList<Entite> entites;
-    private ArrayList<ImageView> coeurList;
     private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
+    private AnimationTimer gameTimer;
+
+
+    public void retourJeu() {
+        menu.setVisible(false);
+        if (gameTimer != null) {
+            gameTimer.start();
+        }
+    }
+    public void showTuto() {
+        tuto.setVisible(true);
+        menu.setVisible(false);
+        if (gameTimer != null) {
+            gameTimer.start();
+        }
+    }
+    public void quitGame() {
+        System.exit(0);
+    }
 
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
@@ -67,12 +88,24 @@ public class Controller implements Initializable {
                             craft.setVisible(!craft.isVisible() && !TableCraft.isVisible());
                             break;
                         case ESCAPE:
-                            if (!tuto.isVisible()) {
-                                tuto.setVisible(true);
-                                consignes.setVisible(false);
-                            } else {
+                            if (tuto.isVisible()) {
                                 tuto.setVisible(false);
+                                if (gameTimer != null && !menu.isVisible()) {
+                                    gameTimer.start();
+                                }
+                            } else if (!menu.isVisible()) {
+                                menu.setVisible(true);
+                                consignes.setVisible(false);
+                                if (gameTimer != null) {
+                                    gameTimer.stop();
+                                }
+                            } else {
+                                menu.setVisible(false);
+                                if (gameTimer != null) {
+                                    gameTimer.start();
+                                }
                             }
+                            break;
                     }
                 });
                 sceneActuel.setOnKeyReleased(event -> {
@@ -96,67 +129,15 @@ public class Controller implements Initializable {
         if (event.getButton() == MouseButton.PRIMARY) {
             if (colTileCliquer == ennemis.getTileX() && ligneTileCliquer == ennemis.getTileY()){
                 joueur.attaque(ennemis, 10);
-            }else casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
+            }else joueur.casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
 
         }
         else if (event.getButton() == MouseButton.SECONDARY) {
-            poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
+            joueur.poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
         }
         vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
     }
 
-    public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
-        int nbAajouter;
-        if (adjacent) {
-            int idBloc = map.getCase(ligneTileClick, colTileClick);
-            if (idBloc != 0 && idBloc != 3) {
-                Objet objetCasse = creerObjetDepuisBloc(idBloc);
-                if (objetCasse != null) {
-                    nbAajouter = 1;
-                    if(idBloc == 2){
-                        nbAajouter = 2;
-                    }
-                    inventaire.addObjet(objetCasse, nbAajouter);
-                }
-                map.setCase(ligneTileClick, colTileClick, 0);
-            }
-        }
-    }
-
-    public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
-        if (adjacent) {
-            int idBlocCible = map.getCase(ligneTileClick, colTileClick);
-            if (idBlocCible == 0) {
-                Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
-                if (objetSelectionne != null) {
-                    if (objetSelectionne.getQuantite() > 0) {
-                        int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
-                        if (idBlocAPoser != 0) {
-                            inventaire.removeObjet(objetSelectionne, 1);
-                            map.creeCase(ligneTileClick, colTileClick, idBlocAPoser);
-                        }
-                    }
-                }
-            } else if (idBlocCible == 4) {
-                if(Math.abs(joueur.getX() / 32 - map.getColId(4)) <= 2 && Math.abs(joueur.getY() / 32 - map.getLigneId(4)) <= 2) {
-                    TableCraft.setVisible(!TableCraft.isVisible() && !craft.isVisible());
-                }
-            }
-        }
-    }
-
-    private int getIdBlocDepuisObjet(Objet objet) {
-        switch (objet.getNom()) {
-            case "Pierre":
-                return 1;
-            case "Caisse En Bois":
-                return 2;
-            case "Table De Craft":
-                return 4;
-            default:
-                return 0;
-        }
-    }
 
     public void craft() {
         craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
@@ -175,8 +156,8 @@ public class Controller implements Initializable {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     Objet objet = new Objet(itemName, itemDescription);
                     VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
-                    Objet boisARemove = creerObjetDepuisBloc(2);
-                    Objet pierreARemove = creerObjetDepuisBloc(1);
+                    Objet boisARemove = joueur.creerObjetDepuisBloc(2);
+                    Objet pierreARemove = joueur.creerObjetDepuisBloc(1);
 
                     inventaire.removeObjet(boisARemove, nbBois);
                     inventaire.removeObjet(pierreARemove, nbPierre);
@@ -186,19 +167,6 @@ public class Controller implements Initializable {
                 }
             }
         });
-    }
-
-    private Objet creerObjetDepuisBloc(int idBloc) {
-        switch (idBloc) {
-            case 1:
-                return new Objet("Pierre", "De la pierre");
-            case 2, 5:
-                return new Objet("Bois", "Du bois");
-            case 4:
-                return new Objet("Table De Craft", "une simple table de craft");
-            default:
-                return null;
-        }
     }
 
     private void spawnObjects() {
@@ -216,8 +184,8 @@ public class Controller implements Initializable {
         objetAffiche.getChildren().add(sabre);
     }
 
-    public void startAnimationTimer() {
-        AnimationTimer timer = new AnimationTimer() {
+    public void animationTimer() {
+        gameTimer = new AnimationTimer() {
             private long lastUpdate = 0;
             private final long frameInterval = 16_666_666;
             long delay = 0;
@@ -232,12 +200,6 @@ public class Controller implements Initializable {
                     }
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
-                    }
-                    if (!coeurList.isEmpty()) {
-                        if (joueur.getVie() % 10 == 0 && joueur.getVie() <= 90 && joueur.decrementerVie()) {
-                            coeurList.get(0).setVisible(false);
-                            coeurList.remove(0);
-                        }
                     }
                     if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
@@ -261,14 +223,15 @@ public class Controller implements Initializable {
                 }
             }
         };
-        timer.start();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map); // La VueMap gère maintenant toutes les ImageView
-        joueur = new Joueur(500, 725, map, 100, 8, inventaire);
+        vueMap = new VueMap(panneauDeJeu, map);
+        vueCoeur = new VueCoeur(coeurs);
+        coeur = new Coeur(vueCoeur);
+        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
@@ -276,23 +239,11 @@ public class Controller implements Initializable {
         vueEnnemis = new VueEnnemis(panneauJoueur);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
-        entites = new ArrayList<>();
-        entites.add(joueur);
-        entites.add(ennemis);
-        coeurList = new ArrayList<>();
-        coeurList.add(coeur1);
-        coeurList.add(coeur2);
-        coeurList.add(coeur3);
-        coeurList.add(coeur4);
-        coeurList.add(coeur5);
-        coeurList.add(coeur6);
-        coeurList.add(coeur7);
-        coeurList.add(coeur8);
-        coeurList.add(coeur9);
-        coeurList.add(coeur10);
         craft.setVisible(false);
         TableCraft.setVisible(false);
         tuto.setVisible(false);
+        menu.setVisible(false);
+
         touchesActives = new HashSet<>();
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
@@ -300,6 +251,19 @@ public class Controller implements Initializable {
         inventaireTable.setItems(inventaire.getObjets());
         spawnObjects();
         setupInput();
-        startAnimationTimer();
+        animationTimer();
+
+        menu.visibleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                gameTimer.stop();
+                System.out.println("Timer arrêté (menu visible)");
+            } else {
+                gameTimer.start();
+                System.out.println("Timer démarré (menu invisible)");
+            }
+        });
+        if (!menu.isVisible()) {
+            gameTimer.start();
+        }
     }
 }

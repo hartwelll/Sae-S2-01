@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.ylecoguic.saeterrarialike.controller.MenuController">
+    <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true">
+        <Image url="@../../../../Tile/bg1Fit.png" /> </ImageView>
+    <VBox alignment="CENTER" spacing="20">
+        <Label text="The Cutest Story Of The Unicorn Slayer" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="48.0" />
+            </font>
+        </Label>
+        <Button fx:id="startButton" onAction="#startGame" text="Démarrer le jeu">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Button>
+    </VBox>
+</StackPane>
