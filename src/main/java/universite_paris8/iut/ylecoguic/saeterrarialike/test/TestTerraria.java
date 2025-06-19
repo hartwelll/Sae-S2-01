@@ -3,7 +3,7 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.test;
 import org.junit.Test;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestTerraria {
 
@@ -34,7 +34,7 @@ public class TestTerraria {
         joueur.casserBlock(col, ligne, true);
         inventaire.addObjet(objet, 1);
 
-        assertEquals(0, map.getCase(ligne, col), "La case doit être cassée (0)");
+        assertEquals(0, map.getCase(ligne, col));
         assertEquals(1, inventaire.getQuantiteObjet("un objet"));
     }
 }
