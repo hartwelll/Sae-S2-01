@@ -15,8 +15,11 @@ public class VueEnnemis {
         this.pane = pane;
         this.imagesEnnemi = new HashMap<>();
         this.imageView = new ImageView();
+        imageView.setFitHeight(64);
+        imageView.setFitWidth(32);
+        pane.getChildren().add(imageView); // Ajout une seule fois
         initializeEnnemis();
-        affichage();
+        affichage(0); // Image par défaut (statique)
     }
 
     protected Image creerImage(String chemin) {
@@ -37,15 +40,14 @@ public class VueEnnemis {
 
     public void initializeEnnemis() {
         ajoutPoses(0, "/Perso/EnnemiArret.png");
+        ajoutPoses(1, "/Perso/EnnemisMarcheGauche.gif");
+        ajoutPoses(2, "/Perso/EnnemisMarcheDroite.gif");
     }
 
-    public void affichage() {
-        Image image = imagesEnnemi.get(0);
-        if (image != null) {
-            imageView.setImage(image);
-            imageView.setFitHeight(60);
-            imageView.setFitWidth(30);
-            pane.getChildren().add(imageView);
+    public void affichage(int id) {
+        Image nouvelleImage = imagesEnnemi.get(id);
+        if (nouvelleImage != null) {
+            imageView.setImage(nouvelleImage);
         }
     }
 

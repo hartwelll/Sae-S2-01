@@ -1,5 +1,7 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
+
 import java.util.List;
 
 public class Ennemis extends Entite {
@@ -8,14 +10,16 @@ public class Ennemis extends Entite {
     private boolean enMarche;
     private int hauteurEnnemis;
     private int largeurEnnemis;
+    private VueEnnemis vueEnnemis;
     private Dijkstra dijkstra;
 
-    public Ennemis(int x, int y, Map map, int vie, int v) {
+    public Ennemis(int x, int y, Map map, int vie, int v, VueEnnemis vueEnnemis) {
         super(x, y, map, vie, v);
         this.map = map;
         this.enMarche = true;
         this.hauteurEnnemis = 60;
         this.largeurEnnemis = 30;
+        this.vueEnnemis = vueEnnemis;
         this.dijkstra = new Dijkstra(map);
     }
     public boolean peutVoirJoueur(int ennemisX, int ennemisY, int joueurX, int joueurY, int distanceVision) {
@@ -108,6 +112,11 @@ public class Ennemis extends Entite {
                         super.demarrerSaut();
                     }
                 }
+                if (dx == -1){
+                    vueEnnemis.affichage(1);
+                } else if (dx == 1) {
+                    vueEnnemis.affichage(2);
+                } else vueEnnemis.affichage(0);
 
                 // Appliquer le déplacement
                 super.deplacement(dx, dy);

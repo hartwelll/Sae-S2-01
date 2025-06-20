@@ -234,8 +234,8 @@ public class Controller implements Initializable {
         joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-        ennemis = new Ennemis(500, 625, map, 50, 4);
         vueEnnemis = new VueEnnemis(panneauJoueur);
+        ennemis = new Ennemis(500, 625, map, 50, 4, vueEnnemis);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
         entites = new ArrayList();

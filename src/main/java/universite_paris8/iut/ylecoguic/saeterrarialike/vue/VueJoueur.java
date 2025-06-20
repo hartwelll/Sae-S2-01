@@ -49,8 +49,6 @@ public class VueJoueur {
         Image nouvelleImage = imagesJoueur.get(id);
         if (nouvelleImage != null) {
             imageView.setImage(nouvelleImage);
-        } else {
-            System.err.println("Aucune image associée à l'ID : " + id);
         }
     }
 
