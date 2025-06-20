@@ -193,10 +193,11 @@ public class Controller implements Initializable {
                 if (now - lastUpdate >= frameInterval) {
                     joueur.appliquerMouvementVertival();
                     if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
-                        joueur.deplacement(-1, 0);
+                        joueur.deplacement(-1, 0, 1);
                     } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
-                        joueur.deplacement(1, 0);
+                        joueur.deplacement(1, 0, 2);
                     }
+                    else vueJoueur.affichage(0);
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
@@ -229,8 +230,8 @@ public class Controller implements Initializable {
         vueMap = new VueMap(panneauDeJeu, map);
         vueCoeur = new VueCoeur(coeurs);
         coeur = new Coeur(vueCoeur);
-        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur);
         vueJoueur = new VueJoueur(panneauJoueur);
+        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
         ennemis = new Ennemis(500, 625, map, 50, 4);

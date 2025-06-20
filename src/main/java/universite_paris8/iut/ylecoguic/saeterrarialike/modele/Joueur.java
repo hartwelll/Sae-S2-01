@@ -3,6 +3,7 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
+import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 
 public class Joueur extends Entite {
 
@@ -11,22 +12,29 @@ public class Joueur extends Entite {
     private int largeurJoueur;
     private Inventaire inventaire;
     private VueCoeur vueCoeur;
+    private VueJoueur vueJoueur;
     private Coeur coeur;
     private TableView<Objet> inventaireTable;
     Pane craft;
     Pane TableCraft;
 
-    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur) {
+    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur, VueJoueur vuejoueur) {
         super(x, y, map, vie, v);
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
         this.vueCoeur = vueCoeur;
+        this.vueJoueur = vuejoueur;
         this.coeur = coeur;
         this.inventaireTable = inventaireTable;
         this.craft = craft;
         this.TableCraft = TableCraft;
+    }
+
+    public void deplacement(int dx, int dy, int id){
+        vueJoueur.affichage(id);
+        super.deplacement(dx, dy);
     }
 
     public void decrementerVie(int vieAenlever) {
