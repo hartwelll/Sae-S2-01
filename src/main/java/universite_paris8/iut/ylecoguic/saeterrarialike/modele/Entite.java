@@ -4,7 +4,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
 
+//devient abstract
+
+/*
+ *
+ */
 public class Entite {
+
+    private Map map;
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -15,12 +22,15 @@ public class Entite {
     private int vy;
     private boolean sautEnCours;
 
-    private boolean collision;
-    private Map map;
+    private boolean collision;  //TODO voir si ça ne devrait pas être une variables qq part
     private int hauteurEntite;
     private int largeurEntite;
+
+
     private int vie;
 
+
+    //TODO méthodes dans terrain
     private final int minXMap = 0;
     private final int maxXMap = 1854;
     private final int minYMap = 0;
@@ -63,7 +73,7 @@ public class Entite {
         }
     }
 
-    public void appliquerMouvementVertival() {
+    public void appliquerMouvementVertical() {
         int nposx = getX();
         int nposy = getY() + vy;
 

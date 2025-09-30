@@ -1,12 +1,8 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.controller;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -114,6 +110,7 @@ public class Controller implements Initializable {
         });
     }
 
+    //à déplacer dans joueur ?
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
@@ -137,17 +134,20 @@ public class Controller implements Initializable {
     }
 
 
+    //à déplacer dans joueur
     public void craft() {
         craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
         craftItemButton(caisse, "Caisse En Bois", "une caisse qui caisse", 2, 0);
     }
 
+    //à déplacer dans joueur
     public void craftDansTableCraft(){
         craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
         craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
         craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
     }
 
+    //à déplacer dans joueur
     private void craftItemButton(Button bouttonItem, String itemName, String itemDescription, int nbBois, int nbPierre) {
         bouttonItem.setOnMouseClicked(e -> {
             if(inventaire.getQuantiteObjet("Bois") >= nbBois && inventaire.getQuantiteObjet("Pierre") >= nbPierre) {
@@ -191,7 +191,7 @@ public class Controller implements Initializable {
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
-                    joueur.appliquerMouvementVertival();
+                    joueur.appliquerMouvementVertical();
                     if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
                         joueur.deplacement(-1, 0, 1);
                     } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
@@ -211,7 +211,7 @@ public class Controller implements Initializable {
                         }
                     }
                     if(ennemis.getVie() > 0) {
-                        ennemis.appliquerMouvementVertival();
+                        ennemis.appliquerMouvementVertical();
                         ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), 15);
                         if (delay >= 600_000_000) {
                             ennemis.attaque(joueur, 2);

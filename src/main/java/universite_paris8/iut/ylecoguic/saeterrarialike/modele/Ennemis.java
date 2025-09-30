@@ -136,7 +136,7 @@ public class Ennemis extends Entite {
         deplacementVersJoueur(joueurTileX, joueurTileY, distanceVue);
 
         // Appliquer la gravité et les mouvements verticaux
-        super.appliquerMouvementVertival();
+        super.appliquerMouvementVertical();
     }
     @Override
     public int getTileX() {
