@@ -6,14 +6,14 @@ import java.util.List;
 
 public class Ennemis extends Entite {
 
-    private Map map;
+    private Terrain map;
     private boolean enMarche;
     private int hauteurEnnemis;
     private int largeurEnnemis;
     private VueEnnemis vueEnnemis;
     private Dijkstra dijkstra;
 
-    public Ennemis(int x, int y, Map map, int vie, int v, VueEnnemis vueEnnemis) {
+    public Ennemis(int x, int y, Terrain map, int vie, int v, VueEnnemis vueEnnemis) {
         super(x, y, map, vie, v);
         this.map = map;
         this.enMarche = true;
@@ -45,7 +45,7 @@ public class Ennemis extends Entite {
 
         for (int n = 1 + dx + dy; n > 0; n--) {
             if (x != ennemisX || y != ennemisY) {
-                int idCase = map.getCase(y, x);
+                int idCase = map.codeTuile(y, x);
                 if (idCase != 0 && idCase != 3) {
                     return false;
                 }
@@ -104,8 +104,8 @@ public class Ennemis extends Entite {
 
                 if ((dx == 1 || dx == -1) && dy != 0) {
                     // Vérifie si un obstacle bloque horizontalement
-                    int idCaseDevant = map.getCase(ennemisY, ennemisX + dx);
-                    int idCaseDessus = map.getCase(ennemisY-1, ennemisX + dx);
+                    int idCaseDevant = map.codeTuile(ennemisY, ennemisX + dx);
+                    int idCaseDessus = map.codeTuile(ennemisY-1, ennemisX + dx);
 
                     if (idCaseDevant != 0 && idCaseDessus == 0) {
                         // Si obstacle devant mais espace au-dessus, on saute

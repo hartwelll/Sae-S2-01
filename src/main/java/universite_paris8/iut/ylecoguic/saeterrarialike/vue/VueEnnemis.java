@@ -18,7 +18,7 @@ public class VueEnnemis {
         imageView.setFitHeight(64);
         imageView.setFitWidth(32);
         pane.getChildren().add(imageView); // Ajout une seule fois
-        initializeEnnemis();
+        initialiserEnnemis();
         affichage(0); // Image par défaut (statique)
     }
 
@@ -38,7 +38,7 @@ public class VueEnnemis {
         }
     }
 
-    public void initializeEnnemis() {
+    public void initialiserEnnemis() {
         ajoutPoses(0, "/Perso/EnnemiArret.png");
         ajoutPoses(1, "/Perso/EnnemisMarcheGauche.gif");
         ajoutPoses(2, "/Perso/EnnemisMarcheDroite.gif");

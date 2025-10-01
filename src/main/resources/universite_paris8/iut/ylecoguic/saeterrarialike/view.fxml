@@ -139,12 +139,12 @@
                <Font size="20.0" />
             </font>
          </Button>
-         <Button fx:id="tutoButton" onAction="#showTuto" text="Controls">
+         <Button fx:id="tutoButton" onAction="#afficherTuto" text="Controls">
             <font>
                <Font size="20.0" />
             </font>
          </Button>
-         <Button fx:id="quitButton" onAction="#quitGame" text="Quit to Menu">
+         <Button fx:id="quitButton" onAction="#quitterPartie" text="Quit to Menu">
             <font>
                <Font size="20.0" />
             </font>

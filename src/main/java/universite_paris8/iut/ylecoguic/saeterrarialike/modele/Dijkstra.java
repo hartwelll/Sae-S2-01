@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Dijkstra {
 
-    private Map map;
+    private Terrain map;
     private int largeurMap;
     private int hauteurMap;
 
@@ -49,10 +49,10 @@ public class Dijkstra {
         }
     }
 
-    public Dijkstra(Map map) {
+    public Dijkstra(Terrain map) {
         this.map = map;
-        this.largeurMap = map.getColonne();
-        this.hauteurMap = map.getLigne();
+        this.largeurMap = map.nbDeColonnes();
+        this.hauteurMap = map.nbDeLignes();
     }
 
     public List<int[]> trouverChemin(int ennemisX, int ennemisY, int joueurX, int joueurY) {
@@ -135,14 +135,14 @@ public class Dijkstra {
             return false;
         }
 
-        int idCaseDestination = map.getCase(versY, versX);
+        int idCaseDestination = map.codeTuile(versY, versX);
 
         // Cas simple : la destination est vide (sol ou air)
         if (idCaseDestination == 0) {
             // Vérifie que l'on ne traverse pas des coins bloqués en diagonale
             if (Math.abs(versX - depuisX) == 1 && Math.abs(versY - depuisY) == 1) {
-                int idCaseX = map.getCase(depuisY, versX);
-                int idCaseY = map.getCase(versY, depuisX);
+                int idCaseX = map.codeTuile(depuisY, versX);
+                int idCaseY = map.codeTuile(versY, depuisX);
 
                 if ((idCaseX != 0) || (idCaseY != 0)) {
                     return false;
@@ -157,8 +157,8 @@ public class Dijkstra {
 
         if (dy == -1 && Math.abs(dx) == 1) {
             // Saut de 1 bloc vers le haut + côté
-            int obstacleDevant = map.getCase(depuisY, versX);
-            int espaceAuDessus = map.getCase(depuisY - 1, versX);
+            int obstacleDevant = map.codeTuile(depuisY, versX);
+            int espaceAuDessus = map.codeTuile(depuisY - 1, versX);
 
             if ((obstacleDevant != 0) && (espaceAuDessus == 0)) {
                 return true;
@@ -167,9 +167,9 @@ public class Dijkstra {
 
         if (dy == -2 && Math.abs(dx) == 1) {
             // Saut de 2 blocs vers le haut + côté
-            int obstacleDevant = map.getCase(depuisY, versX);
-            int espace1 = map.getCase(depuisY - 1, versX);
-            int espace2 = map.getCase(depuisY - 2, versX);
+            int obstacleDevant = map.codeTuile(depuisY, versX);
+            int espace1 = map.codeTuile(depuisY - 1, versX);
+            int espace2 = map.codeTuile(depuisY - 2, versX);
 
             if ((obstacleDevant != 0) && espace1 == 0 && espace2 == 0) {
                 return true;

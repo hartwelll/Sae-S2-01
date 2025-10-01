@@ -19,7 +19,7 @@ public class VueJoueur {
         imageView.setFitHeight(64);
         imageView.setFitWidth(32);
         pane.getChildren().add(imageView); // Ajout une seule fois
-        initializePlayer();
+        initialiserJoueur();
         affichage(0); // Image par défaut (statique)
     }
 
@@ -39,7 +39,7 @@ public class VueJoueur {
         }
     }
 
-    public void initializePlayer() {
+    public void initialiserJoueur() {
         ajoutPoses(0, "/Perso/JoueurArret.png");
         ajoutPoses(1, "/Perso/JoueurMarcheGauche.gif");
         ajoutPoses(2, "/Perso/JoueurMarcheDroite.gif");

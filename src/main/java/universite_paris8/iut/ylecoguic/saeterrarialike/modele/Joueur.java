@@ -7,7 +7,7 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 
 public class Joueur extends Entite {
 
-    private Map map;
+    private Terrain map;
     private int hauteurJoueur;
     private int largeurJoueur;
     private Inventaire inventaire;
@@ -18,7 +18,7 @@ public class Joueur extends Entite {
     Pane craft;
     Pane TableCraft;
 
-    public Joueur(int x, int y, Map map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur, VueJoueur vuejoueur) {
+    public Joueur(int x, int y, Terrain map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur, VueJoueur vuejoueur) {
         super(x, y, map, vie, v);
         this.map = map;
         this.hauteurJoueur = 60;
@@ -45,7 +45,7 @@ public class Joueur extends Entite {
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
         int nbAajouter;
         if (adjacent) {
-            int idBloc = map.getCase(ligneTileClick, colTileClick);
+            int idBloc = map.codeTuile(ligneTileClick, colTileClick);
             if (idBloc != 0 && idBloc != 3) {
                 Objet objetCasse = creerObjetDepuisBloc(idBloc);
                 if (objetCasse != null) {
@@ -53,7 +53,7 @@ public class Joueur extends Entite {
                     if(idBloc == 2){
                         nbAajouter = 2;
                     }
-                    inventaire.addObjet(objetCasse, nbAajouter);
+                    inventaire.ajouterObjet(objetCasse, nbAajouter);
                 }
                 map.setCase(ligneTileClick, colTileClick, 0);
             }
@@ -62,14 +62,14 @@ public class Joueur extends Entite {
 
     public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
         if (adjacent) {
-            int idBlocCible = map.getCase(ligneTileClick, colTileClick);
+            int idBlocCible = map.codeTuile(ligneTileClick, colTileClick);
             if (idBlocCible == 0) {
                 Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
                 if (objetSelectionne != null) {
                     if (objetSelectionne.getQuantite() > 0) {
                         int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
                         if (idBlocAPoser != 0) {
-                            inventaire.removeObjet(objetSelectionne, 1);
+                            inventaire.supprimerObjet(objetSelectionne, 1);
                             map.creeCase(ligneTileClick, colTileClick, idBlocAPoser);
                         }
                     }

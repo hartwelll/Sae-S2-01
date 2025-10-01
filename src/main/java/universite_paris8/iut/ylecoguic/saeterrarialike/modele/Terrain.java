@@ -3,7 +3,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.geometry.Rectangle2D;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO : faire des constantes pour les types de tuiles
 
@@ -12,10 +11,9 @@ import java.util.HashMap;
  * Cette classe définit le terrain, c'est-à-dire qu'elle stocke quelle code de tuile on a à quel endroit.
  * Ses reponsabilités sont :
  *    modifier le code de tuile d'un case
- *
  */
-public class Map {
-    private static int[][] map = {
+public class Terrain {
+    private static int[][] terrain = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -55,29 +53,29 @@ public class Map {
     private ArrayList<Rectangle2D> hurtboxList;
     private int tailleTuile;
 
-    public Map(){
+    public Terrain(){
         tailleTuile = 32;
         hitboxList = new ArrayList<>();
         hurtboxList = new ArrayList<>();
-        buildHitboxes();
+        creeHitbox();
     }
 
-    public void buildHitboxes(){
-        for(int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
+    public void creeHitbox(){
+        for(int i = 0; i < terrain.length; i++) {
+            for (int j = 0; j < terrain[i].length; j++) {
                 int x = j * tailleTuile;
                 int y = i * tailleTuile;
                 hitboxBlock = new Rectangle2D(x, y, tailleTuile, tailleTuile);
-                if (map[i][j] != 0 && map[i][j] != 3) {
+                if (terrain[i][j] != 0 && terrain[i][j] != 3) {
                     hitboxList.add(hitboxBlock);
-                } else if (map[i][j] == 3) {
+                } else if (terrain[i][j] == 3) {
                     hurtboxList.add(hitboxBlock);
                 }
             }
         }
     }
 
-    public void removeHitbox(int ligne, int colonne, int newId){
+    public void supprimerHitbox(int ligne, int colonne, int newId){
         int x = colonne * tailleTuile;
         int y = ligne * tailleTuile;
         Rectangle2D affectedHitbox = new Rectangle2D(x, y, tailleTuile, tailleTuile);
@@ -86,40 +84,40 @@ public class Map {
     }
 
     public void setCase(int ligne, int colonne, int newId) {
-        if (ligne >= 0 && ligne < map.length && colonne >= 0 && colonne < map[0].length) {
-            map[ligne][colonne] = newId;
-            removeHitbox(ligne, colonne, newId);
+        if (ligne >= 0 && ligne < terrain.length && colonne >= 0 && colonne < terrain[0].length) {
+            terrain[ligne][colonne] = newId;
+            supprimerHitbox(ligne, colonne, newId);
         }
     }
 
     public void creeCase(int ligneTileCliquer, int colTileCliquer, int idBlocAPoser) {
-        if (ligneTileCliquer >= 0 && ligneTileCliquer < map.length && colTileCliquer >= 0 && colTileCliquer < map[0].length) {
-            map[ligneTileCliquer][colTileCliquer] = idBlocAPoser;
-            addHitbox(ligneTileCliquer, colTileCliquer, idBlocAPoser);
+        if (ligneTileCliquer >= 0 && ligneTileCliquer < terrain.length && colTileCliquer >= 0 && colTileCliquer < terrain[0].length) {
+            terrain[ligneTileCliquer][colTileCliquer] = idBlocAPoser;
+            ajouterHitbox(ligneTileCliquer, colTileCliquer, idBlocAPoser);
         }
     }
 
-    public void addHitbox(int ligne, int colonne, int idBlock) {
+    public void ajouterHitbox(int ligne, int colonne, int idBlock) {
         int x = colonne * tailleTuile;
         int y = ligne * tailleTuile;
         Rectangle2D affectedHitbox = new Rectangle2D(x, y, tailleTuile, tailleTuile);
         hitboxList.add(affectedHitbox);
     }
 
-    //TODO doit s'appeler nbDeColonnes
-    public  int getColonne(){
-        return map[0].length;
+
+    public  int nbDeColonnes(){
+        return terrain[0].length;
     }
 
-    public int getLigne(){
-        return map.length;
+    public int nbDeLignes(){
+        return terrain.length;
     }
 
     // doit s'appeler codeTuile
     // Attention, x et y ne sont pas des pixels mais des ligne colonne
-    public int getCase(int x, int y){
-        if (x >= 0 && x < map.length && y >= 0 && y < map[0].length){
-            return map[x][y];
+    public int codeTuile(int colonnes, int lignes){
+        if (colonnes >= 0 && colonnes < terrain.length && lignes >= 0 && lignes < terrain[0].length){
+            return terrain[colonnes][lignes];
         }
         return 0;
     }
@@ -128,9 +126,9 @@ public class Map {
 
      */
     public int getLigneId(int id){
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[0].length ;j++){
-                if (map[i][j] == id) {
+        for(int i = 0; i < terrain.length; i++){
+            for(int j = 0; j < terrain[0].length ; j++){
+                if (terrain[i][j] == id) {
                     return i;
                 }
             }
@@ -139,9 +137,9 @@ public class Map {
     }
 
     public int getColId(int id){
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[0].length ;j++){
-                if (map[i][j] == id) {
+        for(int i = 0; i < terrain.length; i++){
+            for(int j = 0; j < terrain[0].length ; j++){
+                if (terrain[i][j] == id) {
                     return j;
                 }
             }
@@ -167,6 +165,6 @@ public class Map {
     }
 
     public int[][] getMap() {
-        return map;
+        return terrain;
     }
 }

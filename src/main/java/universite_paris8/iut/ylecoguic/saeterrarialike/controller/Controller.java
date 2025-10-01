@@ -41,8 +41,8 @@ public class Controller implements Initializable {
     @FXML private Button tableDeCraft;
     @FXML private Button caisse;
     @FXML private Pane objetAffiche;
-    private Map map;
-    private VueMap vueMap;
+    private Terrain terrain;
+    private VueMap vueTerrain;
     private Joueur joueur;
     private VueJoueur vueJoueur;
     private Coeur coeur;
@@ -61,14 +61,14 @@ public class Controller implements Initializable {
             gameTimer.start();
         }
     }
-    public void showTuto() {
+    public void afficherTuto() {
         tuto.setVisible(true);
         menu.setVisible(false);
         if (gameTimer != null) {
             gameTimer.start();
         }
     }
-    public void quitGame() {
+    public void quitterPartie() {
         System.exit(0);
     }
 
@@ -130,7 +130,7 @@ public class Controller implements Initializable {
         else if (event.getButton() == MouseButton.SECONDARY) {
             joueur.poserBlock(colTileCliquer, ligneTileCliquer, estAdjacentPoseBlock);
         }
-        vueMap.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
+        vueTerrain.miseAJourAffichage(ligneTileCliquer, colTileCliquer);
     }
 
 
@@ -157,10 +157,10 @@ public class Controller implements Initializable {
                     Objet boisARemove = joueur.creerObjetDepuisBloc(2);
                     Objet pierreARemove = joueur.creerObjetDepuisBloc(1);
 
-                    inventaire.removeObjet(boisARemove, nbBois);
-                    inventaire.removeObjet(pierreARemove, nbPierre);
+                    inventaire.supprimerObjet(boisARemove, nbBois);
+                    inventaire.supprimerObjet(pierreARemove, nbPierre);
                     System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
-                    inventaire.addObjet(nouvelItem.getObjet(), 1);
+                    inventaire.ajouterObjet(nouvelItem.getObjet(), 1);
                     System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
                 }
             }
@@ -174,7 +174,7 @@ public class Controller implements Initializable {
         sabre.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
-                inventaire.addObjet(sabre.getObjet(), 1);
+                inventaire.ajouterObjet(sabre.getObjet(), 1);
                 objetAffiche.getChildren().remove(sabre);
                 System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }
@@ -201,7 +201,7 @@ public class Controller implements Initializable {
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
-                    if (Math.abs(joueur.getX() / 32 - map.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - map.getLigneId(4)) >= 4) {
+                    if (Math.abs(joueur.getX() / 32 - terrain.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - terrain.getLigneId(4)) >= 4) {
                         TableCraft.setVisible(false);
                     }
                     for(int i = 0 ; i < entites.size(); i++){
@@ -226,16 +226,16 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        map = new Map();
-        vueMap = new VueMap(panneauDeJeu, map);
+        terrain = new Terrain();
+        vueTerrain = new VueMap(panneauDeJeu, terrain);
         vueCoeur = new VueCoeur(coeurs);
         coeur = new Coeur(vueCoeur);
         vueJoueur = new VueJoueur(panneauJoueur);
-        joueur = new Joueur(500, 725, map, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
+        joueur = new Joueur(500, 725, terrain, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
         vueEnnemis = new VueEnnemis(panneauJoueur);
-        ennemis = new Ennemis(500, 625, map, 50, 4, vueEnnemis);
+        ennemis = new Ennemis(500, 625, terrain, 50, 4, vueEnnemis);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
         entites = new ArrayList();

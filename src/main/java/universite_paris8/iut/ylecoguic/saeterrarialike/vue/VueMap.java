@@ -3,23 +3,23 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Map;
+import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Terrain;
 import java.net.URL;
 import java.util.HashMap;
 
 public class VueMap {
     private HashMap<Integer, Image> tileImages;
-    private Map map;
+    private Terrain map;
     private TilePane pane;
     private ImageView[][] imageViewsTiles;
 
-    public VueMap(TilePane pane, Map map){
+    public VueMap(TilePane pane, Terrain map){
         this.tileImages = new HashMap<>();
         this.map = map;
         this.pane = pane;
         this.pane.setPrefTileWidth(32);
         this.pane.setPrefTileHeight(32);
-        this.imageViewsTiles = new ImageView[map.getLigne()][map.getColonne()];
+        this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         initialiseTile();
         affichage();
     }
@@ -53,7 +53,7 @@ public class VueMap {
         pane.getChildren().clear();
         for (int i = 0; i < pane.getPrefRows(); i++) {
             for (int j = 0; j < pane.getPrefColumns(); j++) {
-                int tileId = map.getCase(i, j);
+                int tileId = map.codeTuile(i, j);
                 Image image = tileImages.get(tileId);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
@@ -69,7 +69,7 @@ public class VueMap {
     }
 
     public void miseAJourAffichage(int ligne, int colonne){
-        int tileId = map.getCase(ligne, colonne);
+        int tileId = map.codeTuile(ligne, colonne);
         Image newImage = tileImages.get(tileId);
 
         if (imageViewsTiles[ligne][colonne] != null) {

@@ -11,7 +11,7 @@ import javafx.geometry.Rectangle2D;
  */
 public class Entite {
 
-    private Map map;
+    private Terrain map;
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -37,7 +37,7 @@ public class Entite {
     private final int maxYMap = 1024;
 
 
-    public Entite (int x, int y, Map map, int vie, int v){
+    public Entite (int x, int y, Terrain map, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.map = map;

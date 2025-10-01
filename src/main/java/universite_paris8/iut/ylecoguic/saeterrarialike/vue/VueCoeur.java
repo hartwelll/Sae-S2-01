@@ -17,10 +17,10 @@ public class VueCoeur {
     public VueCoeur(HBox coeurs){
         coeurList = new ArrayList<>();
         this.coeurs = coeurs;
-        initializeCoeurs();
+        initialiserCoeur();
     }
 
-    public void initializeCoeurs(){
+    public void initialiserCoeur(){
         for (int i = 0; i < 10; i++) {
             ImageView coeurImageView = new ImageView(creerImage("/Coeur/coeur.png"));
             coeurImageView.setFitHeight(60);
