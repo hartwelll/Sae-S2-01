@@ -11,7 +11,7 @@ import javafx.geometry.Rectangle2D;
  */
 public class Entite {
 
-    private Terrain map;
+    private Terrain terrain;
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -29,18 +29,10 @@ public class Entite {
 
     private int vie;
 
-
-    //TODO méthodes dans terrain
-    private final int minXMap = 0;
-    private final int maxXMap = 1854;
-    private final int minYMap = 0;
-    private final int maxYMap = 1024;
-
-
-    public Entite (int x, int y, Terrain map, int vie, int v){
+    public Entite (int x, int y, Terrain terrain, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
-        this.map = map;
+        this.terrain = terrain;
         this.v = v; //vitesse horizale droite/gauche
         this.vDeBase = v;
         this.vSautInitial = 21;
@@ -57,10 +49,10 @@ public class Entite {
         int nposx = getX() + v * dx;  //nposx = nex position
         int nposy = getY();
 
-        if (nposx < minXMap) {
-            nposx = minXMap;
-        } else if (nposx + largeurEntite > maxXMap) {
-            nposx = maxXMap - largeurEntite;
+        if (nposx < terrain.getMinXMap()) {
+            nposx = terrain.getMinXMap();
+        } else if (nposx + largeurEntite > terrain.getMaxXMap()) {
+            nposx = terrain.getMaxXMap() - largeurEntite;
         }
         collisionDetectee(dx, dy, nposx, nposy);
         setV(vDeBase);
@@ -77,11 +69,11 @@ public class Entite {
         int nposx = getX();
         int nposy = getY() + vy;
 
-        if (nposy < minYMap) {
-            nposy = minYMap;
+        if (nposy < terrain.getMinYMap()) {
+            nposy = terrain.getMaxYMap();
             vy = 0;
-        } else if (nposy + hauteurEntite > maxYMap) {
-            nposy = maxYMap - hauteurEntite;
+        } else if (nposy + hauteurEntite > terrain.getMaxYMap()) {
+            nposy = terrain.getMaxYMap() - hauteurEntite;
             vy = 0;
             sautEnCours = false;
         }
@@ -102,14 +94,14 @@ public class Entite {
 
     public void collisionDetectee(int dx, int dy, int nposx, int nposy) {
         Rectangle2D hitboxEntite = new Rectangle2D(nposx, nposy, largeurEntite, hauteurEntite);
-        for (Rectangle2D hitboxBloc : map.getHitboxList()) {
+        for (Rectangle2D hitboxBloc : terrain.getHitboxList()) {
             if (hitboxEntite.intersects(hitboxBloc)) {
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
                 collision(true);
             }
         }
-        for (Rectangle2D hitboxBloc : map.getHurtboxList()) {
+        for (Rectangle2D hitboxBloc : terrain.getHurtboxList()) {
             if (hitboxEntite.intersects(hitboxBloc)) {
                 int vBarbele = v/2;
                 decrementerVie(2);
@@ -161,7 +153,7 @@ public class Entite {
 
     public boolean estSurLeSol() {
         Rectangle2D hitboxSousEntite = new Rectangle2D(this.getX(), getY() + hauteurEntite + 1, largeurEntite, 1);
-        for (Rectangle2D hitboxBloc : map.getHitboxList()) {
+        for (Rectangle2D hitboxBloc : terrain.getHitboxList()) {
             if (hitboxSousEntite.intersects(hitboxBloc)) {
                 return true;
             }

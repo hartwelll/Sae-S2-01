@@ -53,6 +53,11 @@ public class Terrain {
     private ArrayList<Rectangle2D> hurtboxList;
     private int tailleTuile;
 
+    private final int minXMap =0;
+    private final int maxXMap = 1854;
+    private final int minYMap = 0;
+    private final int maxYMap = 1024;
+
     public Terrain(){
         tailleTuile = 32;
         hitboxList = new ArrayList<>();
@@ -166,5 +171,21 @@ public class Terrain {
 
     public int[][] getMap() {
         return terrain;
+    }
+
+    public int getMinXMap() {
+        return minXMap;
+    }
+
+    public int getMinYMap() {
+        return minYMap;
+    }
+
+    public int getMaxXMap() {
+        return maxXMap;
+    }
+
+    public int getMaxYMap() {
+        return maxYMap;
     }
 }

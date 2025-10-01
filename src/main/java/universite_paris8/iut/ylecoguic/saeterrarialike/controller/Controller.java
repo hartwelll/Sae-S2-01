@@ -42,7 +42,7 @@ public class Controller implements Initializable {
     @FXML private Button caisse;
     @FXML private Pane objetAffiche;
     private Terrain terrain;
-    private VueMap vueTerrain;
+    private VueTerrain vueTerrain;
     private Joueur joueur;
     private VueJoueur vueJoueur;
     private Coeur coeur;
@@ -227,7 +227,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         terrain = new Terrain();
-        vueTerrain = new VueMap(panneauDeJeu, terrain);
+        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
         vueCoeur = new VueCoeur(coeurs);
         coeur = new Coeur(vueCoeur);
         vueJoueur = new VueJoueur(panneauJoueur);
@@ -258,12 +258,11 @@ public class Controller implements Initializable {
         menu.visibleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) {
                 gameTimer.stop();
-                System.out.println("Timer arrêté (menu visible)");
             } else {
                 gameTimer.start();
-                System.out.println("Timer démarré (menu invisible)");
             }
         });
+
         if (!menu.isVisible()) {
             gameTimer.start();
         }

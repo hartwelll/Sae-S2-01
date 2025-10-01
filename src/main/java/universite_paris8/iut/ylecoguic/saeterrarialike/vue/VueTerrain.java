@@ -7,18 +7,19 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Terrain;
 import java.net.URL;
 import java.util.HashMap;
 
-public class VueMap {
+public class VueTerrain {
     private HashMap<Integer, Image> tileImages;
     private Terrain map;
     private TilePane pane;
     private ImageView[][] imageViewsTiles;
 
-    public VueMap(TilePane pane, Terrain map){
+    public VueTerrain(TilePane pane, Terrain map){
         this.tileImages = new HashMap<>();
         this.map = map;
         this.pane = pane;
         this.pane.setPrefTileWidth(32);
         this.pane.setPrefTileHeight(32);
+        this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         initialiseTile();
         affichage();
