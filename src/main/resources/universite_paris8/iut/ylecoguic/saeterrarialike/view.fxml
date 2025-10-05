@@ -52,7 +52,7 @@
                   <Image url="@../../../../Tile/tableCraftHD.png" />
                </ImageView>
             </HBox>
-            <Button fx:id="tableDeCraft" onAction="#craft" focusTraversable="false"  text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="tableDeCraft" onAction="#fabrication" focusTraversable="false" text="fabriquer table de craft" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </AnchorPane>
 
          <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -64,7 +64,7 @@
                   <Image url="@../../../../Tile/caisseBois.png" />
                </ImageView>
             </HBox>
-            <Button fx:id="caisse" onAction="#craft" focusTraversable="false"  text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="caisse" onAction="#fabrication" focusTraversable="false" text="fabriquer caisse en bois posable" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </AnchorPane>
       </HBox>
    </Pane>
@@ -81,7 +81,7 @@
                   <Image url="@../../../../Objet/EpiocheHD.gif" />
                </ImageView>
             </HBox>
-            <Button fx:id="pioche" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="pioche" onAction="#fabricationDansTableDeFabrication" focusTraversable="false" text="fabriquer pioche" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </AnchorPane>
 
          <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -96,7 +96,7 @@
                   </image>
                </ImageView>
             </HBox>
-            <Button fx:id="pelle" onAction="#craftDansTableCraft" focusTraversable="false"  text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="pelle" onAction="#fabricationDansTableDeFabrication" focusTraversable="false" text="fabriquer pelle" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </AnchorPane>
 
          <AnchorPane prefHeight="200" prefWidth="250" style="-fx-border-color: black">
@@ -113,7 +113,7 @@
                   </image>
                </ImageView>
             </HBox>
-            <Button fx:id="epee" onAction="#craftDansTableCraft" focusTraversable="false" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="epee" onAction="#fabricationDansTableDeFabrication" focusTraversable="false" text="fabriquer épée" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </AnchorPane>
       </HBox>
    </Pane>

@@ -7,10 +7,13 @@ import java.util.ArrayList;
 // TODO : faire des constantes pour les types de tuiles
 
 
-/*
- * Cette classe définit le terrain, c'est-à-dire qu'elle stocke quelle code de tuile on a à quel endroit.
- * Ses reponsabilités sont :
- *    modifier le code de tuile d'un case
+/**
+ * Cette class represente le terrain de jeu sous forme de grille de tuiles.
+ * Responsabilités :
+ * - Stocker la carte du monde (types de tuiles)
+ * - Gérer les hitbox et hurtbox des blocs
+ * - Permettre la modification des cases (casser/poser des blocs)
+ * - Fournir les informations sur les limites de la carte
  */
 public class Terrain {
     private static int[][] terrain = {

@@ -4,12 +4,16 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
 
-//devient abstract
 
-/*
- *
+/**
+ * Cette class represente une entité du jeu (joueur, ennemi, etc.).
+ * Responsabilités :
+ * - Gérer la position et le déplacement
+ * - Appliquer la physique (gravité, saut)
+ * - Détecter les collisions avec le terrain
+ * - Gérer les points de vie et les attaques
  */
-public class Entite {
+public abstract class Entite {
 
     private Terrain terrain;
 

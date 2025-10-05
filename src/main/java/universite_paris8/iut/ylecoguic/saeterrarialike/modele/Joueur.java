@@ -5,6 +5,16 @@ import javafx.scene.layout.Pane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 
+import java.util.ArrayList;
+
+/**
+ * Cette class represente le joueur contrôlé par l'utilisateur.
+ * Responsabilités :
+ * - Casser et poser des blocs dans le terrain
+ * - Gérer l'inventaire et le crafting
+ * - Interagir avec les objets du monde (table de craft, etc.)
+ * - Convertir entre objets et IDs de blocs
+ */
 public class Joueur extends Entite {
 
     private Terrain map;
@@ -17,6 +27,7 @@ public class Joueur extends Entite {
     private TableView<Objet> inventaireTable;
     Pane craft;
     Pane TableCraft;
+    private CraftingSystem craftingSystem;
 
     public Joueur(int x, int y, Terrain map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur, VueJoueur vuejoueur) {
         super(x, y, map, vie, v);
@@ -30,6 +41,7 @@ public class Joueur extends Entite {
         this.inventaireTable = inventaireTable;
         this.craft = craft;
         this.TableCraft = TableCraft;
+        this.craftingSystem = new CraftingSystem();
     }
 
     public void deplacement(int dx, int dy, int id){
@@ -107,5 +119,17 @@ public class Joueur extends Entite {
             default:
                 return null;
         }
+    }
+
+    public Objet tenterCraft(String nomObjet, boolean aProcheTableCraft) {
+        return craftingSystem.crafter(nomObjet, inventaire, aProcheTableCraft);
+    }
+
+    public boolean peutCrafter(String nomObjet, boolean aProcheTableCraft) {
+        return craftingSystem.peutCrafter(nomObjet, inventaire, aProcheTableCraft);
+    }
+
+    public ArrayList<Recette> getRecettesDisponibles(boolean aProcheTableCraft) {
+        return craftingSystem.getRecettesDisponibles(aProcheTableCraft);
     }
 }

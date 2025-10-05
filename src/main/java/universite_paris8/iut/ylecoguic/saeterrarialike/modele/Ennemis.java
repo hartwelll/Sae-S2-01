@@ -4,6 +4,14 @@ import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
 
 import java.util.List;
 
+/**
+ * Cette class represente un ennemi hostile avec intelligence artificielle.
+ * Responsabilités :
+ * - Détecter le joueur (distance et ligne de vue)
+ * - Se déplacer intelligemment vers le joueur (pathfinding avec Dijkstra)
+ * - Effectuer des déplacements aléatoires quand le joueur n'est pas visible
+ * - Gérer les sauts pour franchir les obstacles
+ */
 public class Ennemis extends Entite {
 
     private Terrain map;

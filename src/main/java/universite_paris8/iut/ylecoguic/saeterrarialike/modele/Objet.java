@@ -5,7 +5,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-
+/**
+ * Cette class represente un objet de l'inventaire (item).
+ * Responsabilités :
+ * - Stocker les informations d'un objet (nom, description, quantité)
+ * - Gérer la quantité via des properties JavaFX pour le binding
+ * - Comparer les objets pour déterminer s'ils sont du même type
+ */
 public class Objet {
     private final StringProperty nom;
     private final StringProperty desc;

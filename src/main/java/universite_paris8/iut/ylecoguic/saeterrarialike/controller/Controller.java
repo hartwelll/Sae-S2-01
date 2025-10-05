@@ -21,6 +21,15 @@ import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.*;
 
+/**
+ * Cette class represente le contrôleur principal de l'application JavaFX.
+ * Responsabilités :
+ * - Initialiser le modèle et les vues
+ * - Gérer les entrées utilisateur (clavier, souris)
+ * - Orchestrer la boucle de jeu (AnimationTimer)
+ * - Gérer les menus et interfaces
+ * - Faire le lien entre le modèle et les vues
+ */
 public class Controller implements Initializable {
 
     @FXML private Pane menu;
@@ -110,7 +119,6 @@ public class Controller implements Initializable {
         });
     }
 
-    //à déplacer dans joueur ?
     private void clickBlock(MouseEvent event) {
         int colTileCliquer = (int) (event.getX() / 32);
         int ligneTileCliquer = (int) (event.getY() / 32);
@@ -134,40 +142,36 @@ public class Controller implements Initializable {
     }
 
 
-    //à déplacer dans joueur
-    public void craft() {
-        craftItemButton(tableDeCraft, "Table De Craft", "une simple table de craft", 4, 0);
-        craftItemButton(caisse, "Caisse En Bois", "une caisse qui caisse", 2, 0);
+    //à déplacer dans class fab
+    public void fabrication() {
+        configurerBoutonCraft(tableDeCraft, "Table De Craft");
+        configurerBoutonCraft(caisse, "Caisse En Bois");
     }
 
-    //à déplacer dans joueur
-    public void craftDansTableCraft(){
-        craftItemButton(pioche, "Pioche", "Une pioche brillante",2,3 );
-        craftItemButton(pelle, "Pelle", "Une pelle brillante",3,1);
-        craftItemButton(epee, "Épée", "Une épée brillante", 1, 2);
+    //à déplacer dans class fab
+    public void fabricationDansTableDeFabrication(){
+        configurerBoutonCraft(pioche, "Pioche");
+        configurerBoutonCraft(pelle, "Pelle");
+        configurerBoutonCraft(epee, "Épée");
     }
 
-    //à déplacer dans joueur
-    private void craftItemButton(Button bouttonItem, String itemName, String itemDescription, int nbBois, int nbPierre) {
-        bouttonItem.setOnMouseClicked(e -> {
-            if(inventaire.getQuantiteObjet("Bois") >= nbBois && inventaire.getQuantiteObjet("Pierre") >= nbPierre) {
-                if (e.getButton() == MouseButton.PRIMARY) {
-                    Objet objet = new Objet(itemName, itemDescription);
-                    VueObjet nouvelItem = new VueObjet(objet, 100, 730, 60, 60);
-                    Objet boisARemove = joueur.creerObjetDepuisBloc(2);
-                    Objet pierreARemove = joueur.creerObjetDepuisBloc(1);
+    private void configurerBoutonCraft(Button bouton, String nomObjet) {
+        bouton.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                boolean aProcheTableCraft = TableCraft.isVisible();
+                Objet objetCrafte = joueur.tenterCraft(nomObjet, aProcheTableCraft);
 
-                    inventaire.supprimerObjet(boisARemove, nbBois);
-                    inventaire.supprimerObjet(pierreARemove, nbPierre);
-                    System.out.println("Ajout à l'inventaire : " + nouvelItem.getObjet().getNom());
-                    inventaire.ajouterObjet(nouvelItem.getObjet(), 1);
-                    System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
+                if (objetCrafte != null) {
+                    inventaire.ajouterObjet(objetCrafte, 1);
+                    System.out.println("Crafté : " + objetCrafte.getNom());
+                } else {
+                    System.out.println("Craft impossible : ingrédients manquants");
                 }
             }
         });
     }
 
-    private void spawnObjects() {
+        private void apparitionObjets() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
         VueObjet sabre = new VueObjet(objet, 100, 762, 32, 32, "/Objet/lightSaberDrop.png");
 
@@ -251,7 +255,7 @@ public class Controller implements Initializable {
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
         inventaireTable.setItems(inventaire.getObjets());
-        spawnObjects();
+        apparitionObjets();
         setupInput();
         animationTimer();
 

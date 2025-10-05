@@ -3,6 +3,14 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Cette class gère l'inventaire du joueur.
+ * Responsabilités :
+ * - Stocker la liste des objets possédés
+ * - Ajouter des objets (en fusionnant les stacks du même type)
+ * - Supprimer des objets (par objet ou par nom)
+ * - Consulter la quantité d'un objet spécifique
+ */
 public class Inventaire {
     private final ObservableList<Objet> objets = FXCollections.observableArrayList();
     public ObservableList<Objet> getObjets() {
@@ -31,6 +39,18 @@ public class Inventaire {
             }
         }
         objets.remove(objetAremove);
+    }
+
+    public void supprimerObjetParNom(String nomObjet, int nbAremove) {
+        for (Objet objetExistant : objets) {
+            if (objetExistant.getNom().equals(nomObjet)) {
+                objetExistant.decrementerQuantite(nbAremove);
+                if (objetExistant.getQuantite() <= 0) {
+                    objets.remove(objetExistant);
+                }
+                return;
+            }
+        }
     }
 
     public int getQuantiteObjet(String nomObjet) {
