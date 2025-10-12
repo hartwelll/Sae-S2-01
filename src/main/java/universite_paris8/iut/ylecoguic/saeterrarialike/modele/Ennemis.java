@@ -3,6 +3,10 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
 
 import java.util.List;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
+
 
 /**
  * Cette class represente un ennemi hostile avec intelligence artificielle.
@@ -54,7 +58,7 @@ public class Ennemis extends Entite {
         for (int n = 1 + dx + dy; n > 0; n--) {
             if (x != ennemisX || y != ennemisY) {
                 int idCase = map.codeTuile(y, x);
-                if (idCase != 0 && idCase != 3) {
+                if (idCase != TUILE_VIDE && idCase != TUILE_BARBELE) {
                     return false;
                 }
             }
@@ -115,16 +119,16 @@ public class Ennemis extends Entite {
                     int idCaseDevant = map.codeTuile(ennemisY, ennemisX + dx);
                     int idCaseDessus = map.codeTuile(ennemisY-1, ennemisX + dx);
 
-                    if (idCaseDevant != 0 && idCaseDessus == 0) {
+                    if (idCaseDevant != TUILE_VIDE && idCaseDessus == TUILE_VIDE) {
                         // Si obstacle devant mais espace au-dessus, on saute
                         super.demarrerSaut();
                     }
                 }
                 if (dx == -1){
-                    vueEnnemis.affichage(1);
+                    vueEnnemis.affichage(ANIMATION_MARCHE_GAUCHE);
                 } else if (dx == 1) {
-                    vueEnnemis.affichage(2);
-                } else vueEnnemis.affichage(0);
+                    vueEnnemis.affichage(ANIMATION_MARCHE_GAUCHE);
+                } else vueEnnemis.affichage(ANIMATION_ARRET);
 
                 // Appliquer le déplacement
                 super.deplacement(dx, dy);
@@ -137,8 +141,8 @@ public class Ennemis extends Entite {
 
     public void mettreAJourComportement(int joueurX, int joueurY, int distanceVue) {
         // Convertir les coordonnées du joueur en coordonnées de tuile
-        int joueurTileX = joueurX / 32;
-        int joueurTileY = joueurY / 32;
+        int joueurTileX = joueurX / TAILLE_TUILE;
+        int joueurTileY = joueurY / TAILLE_TUILE;
 
         // Appeler le déplacement vers le joueur
         deplacementVersJoueur(joueurTileX, joueurTileY, distanceVue);
@@ -148,12 +152,12 @@ public class Ennemis extends Entite {
     }
     @Override
     public int getTileX() {
-        return (getX() + (largeurEnnemis / 2)) / 32;
+        return (getX() + (largeurEnnemis / 2)) / TAILLE_TUILE;
     }
 
     @Override
     public int getTileY() {
-        return (getY() + (hauteurEnnemis / 2)) / 32;
+        return (getY() + (hauteurEnnemis / 2)) / TAILLE_TUILE;
     }
 
     public boolean isEnMarche() {

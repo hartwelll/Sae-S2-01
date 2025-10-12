@@ -6,6 +6,8 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Terrain;
 import java.net.URL;
 import java.util.HashMap;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
+
 
 public class VueTerrain {
     private HashMap<Integer, Image> tileImages;
@@ -17,8 +19,8 @@ public class VueTerrain {
         this.tileImages = new HashMap<>();
         this.map = map;
         this.pane = pane;
-        this.pane.setPrefTileWidth(32);
-        this.pane.setPrefTileHeight(32);
+        this.pane.setPrefTileWidth(TAILLE_TUILE);
+        this.pane.setPrefTileHeight(TAILLE_TUILE);
         this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         initialiseTile();

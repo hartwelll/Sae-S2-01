@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Coeur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,10 +24,10 @@ public class VueCoeur {
     }
 
     public void initialiserCoeur(){
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NOMBRE_COEURS_MAX; i++) {
             ImageView coeurImageView = new ImageView(creerImage("/Coeur/coeur.png"));
-            coeurImageView.setFitHeight(60);
-            coeurImageView.setFitWidth(60);
+            coeurImageView.setFitHeight(TAILLE_COEUR);
+            coeurImageView.setFitWidth(TAILLE_COEUR);
             coeurImageView.setPreserveRatio(true);
             coeurList.add(coeurImageView);
             coeurs.getChildren().add(coeurImageView);

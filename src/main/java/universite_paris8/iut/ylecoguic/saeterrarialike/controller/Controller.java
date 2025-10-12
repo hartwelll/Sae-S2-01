@@ -21,6 +21,11 @@ import javafx.scene.control.TableView;
 import javafx.animation.AnimationTimer;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.*;
 
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
+
+
 /**
  * Cette class represente le contrôleur principal de l'application JavaFX.
  * Responsabilités :
@@ -120,18 +125,18 @@ public class Controller implements Initializable {
     }
 
     private void clickBlock(MouseEvent event) {
-        int colTileCliquer = (int) (event.getX() / 32);
-        int ligneTileCliquer = (int) (event.getY() / 32);
+        int colTileCliquer = (int) (event.getX() / TAILLE_TUILE);
+        int ligneTileCliquer = (int) (event.getY() / TAILLE_TUILE);
 
         int joueurPoseTileX = joueur.getTileX();
         int joueurPoseTileY = joueur.getTileY();
 
-        boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 1 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 1;
-        boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= 2 && Math.abs(ligneTileCliquer - joueurPoseTileY) <= 2;
+        boolean estAdjacentCasseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= PORTEE_CASSER_BLOC && Math.abs(ligneTileCliquer - joueurPoseTileY) <= PORTEE_CASSER_BLOC;
+        boolean estAdjacentPoseBlock = Math.abs(colTileCliquer - joueurPoseTileX) <= PORTEE_POSER_BLOC && Math.abs(ligneTileCliquer - joueurPoseTileY) <= PORTEE_POSER_BLOC;
 
         if (event.getButton() == MouseButton.PRIMARY) {
             if (colTileCliquer == ennemis.getTileX() && ligneTileCliquer == ennemis.getTileY()){
-                joueur.attaque(ennemis, 10);
+                joueur.attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
             }else joueur.casserBlock(colTileCliquer, ligneTileCliquer, estAdjacentCasseBlock);
 
         }
@@ -173,7 +178,7 @@ public class Controller implements Initializable {
 
         private void apparitionObjets() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
-        VueObjet sabre = new VueObjet(objet, 100, 762, 32, 32, "/Objet/lightSaberDrop.png");
+        VueObjet sabre = new VueObjet(objet, OBJET_SABRE_X, OBJET_SABRE_Y, TAILLE_OBJET_DROP, TAILLE_OBJET_DROP, "/Objet/lightSaberDrop.png");
 
         sabre.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -189,7 +194,7 @@ public class Controller implements Initializable {
     public void animationTimer() {
         gameTimer = new AnimationTimer() {
             private long lastUpdate = 0;
-            private final long frameInterval = 16_666_666;
+            private final long frameInterval = FRAME_INTERVAL_NANOSEC;
             long delay = 0;
 
             @Override
@@ -205,7 +210,7 @@ public class Controller implements Initializable {
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
                         joueur.demarrerSaut();
                     }
-                    if (Math.abs(joueur.getX() / 32 - terrain.getColId(4)) >= 4 || Math.abs(joueur.getY() / 32 - terrain.getLigneId(4)) >= 4) {
+                    if (Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT+2 || Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT+2) {
                         TableCraft.setVisible(false);
                     }
                     for(int i = 0 ; i < entites.size(); i++){
@@ -216,9 +221,9 @@ public class Controller implements Initializable {
                     }
                     if(ennemis.getVie() > 0) {
                         ennemis.appliquerMouvementVertical();
-                        ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), 15);
-                        if (delay >= 600_000_000) {
-                            ennemis.attaque(joueur, 2);
+                        ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), ENNEMI_DISTANCE_VISION);
+                        if (delay >= DELAI_ATTAQUE_ENNEMI_NANOSEC) {
+                            ennemis.attaque(joueur, ENNEMI_DEGATS_ATTAQUE);
                             delay = 0;
                         } else delay += frameInterval;
                     }
@@ -235,11 +240,11 @@ public class Controller implements Initializable {
         vueCoeur = new VueCoeur(coeurs);
         coeur = new Coeur(vueCoeur);
         vueJoueur = new VueJoueur(panneauJoueur);
-        joueur = new Joueur(500, 725, terrain, 100, 8, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
+        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART, terrain, JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire, inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
         vueEnnemis = new VueEnnemis(panneauJoueur);
-        ennemis = new Ennemis(500, 625, terrain, 50, 4, vueEnnemis);
+        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART, terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE, vueEnnemis);
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
         vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
         entites = new ArrayList();

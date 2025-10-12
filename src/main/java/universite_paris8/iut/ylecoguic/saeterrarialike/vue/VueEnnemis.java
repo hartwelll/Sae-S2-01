@@ -3,6 +3,8 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+
 
 import java.util.HashMap;
 
@@ -15,8 +17,8 @@ public class VueEnnemis {
         this.pane = pane;
         this.imagesEnnemi = new HashMap<>();
         this.imageView = new ImageView();
-        imageView.setFitHeight(64);
-        imageView.setFitWidth(32);
+        imageView.setFitHeight(HAUTEUR_SPRITE);
+        imageView.setFitWidth(LARGEUR_SPRITE);
         pane.getChildren().add(imageView); // Ajout une seule fois
         initialiserEnnemis();
         affichage(0); // Image par défaut (statique)

@@ -1,6 +1,8 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+
 
 /**
  * Cette class gère la logique d'affichage des cœurs représentant la vie du joueur.
@@ -17,7 +19,7 @@ public class Coeur {
     }
 
     public void enleverCoeur(Joueur joueur){
-        if (joueur.getVie() % 10 == 0 && joueur.getVie() <= 90) {
+        if (joueur.getVie() % VIE_PAR_COEUR == 0 && joueur.getVie() <= (NOMBRE_COEURS_MAX -1) * VIE_PAR_COEUR) {
             vueCoeur.getCoeurList().get(0).setVisible(false);
             vueCoeur.getCoeurList().remove(0);
         }

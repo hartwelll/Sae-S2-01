@@ -4,6 +4,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+
 
 import java.util.ArrayList;
 
@@ -58,11 +61,11 @@ public class Joueur extends Entite {
         int nbAajouter;
         if (adjacent) {
             int idBloc = map.codeTuile(ligneTileClick, colTileClick);
-            if (idBloc != 0 && idBloc != 3) {
+            if (idBloc != TUILE_VIDE && idBloc != TUILE_BARBELE) {
                 Objet objetCasse = creerObjetDepuisBloc(idBloc);
                 if (objetCasse != null) {
                     nbAajouter = 1;
-                    if(idBloc == 2){
+                    if(idBloc == TUILE_CAISSE_BOIS){
                         nbAajouter = 2;
                     }
                     inventaire.ajouterObjet(objetCasse, nbAajouter);
@@ -75,7 +78,7 @@ public class Joueur extends Entite {
     public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
         if (adjacent) {
             int idBlocCible = map.codeTuile(ligneTileClick, colTileClick);
-            if (idBlocCible == 0) {
+            if (idBlocCible == TUILE_VIDE) {
                 Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
                 if (objetSelectionne != null) {
                     if (objetSelectionne.getQuantite() > 0) {
@@ -86,8 +89,8 @@ public class Joueur extends Entite {
                         }
                     }
                 }
-            } else if (idBlocCible == 4) {
-                if(Math.abs(getX() / 32 - map.getColId(4)) <= 2 && Math.abs(getY() / 32 - map.getLigneId(4)) <= 2) {
+            } else if (idBlocCible == TUILE_TABLE_CRAFT) {
+                if(Math.abs(getX() / TAILLE_TUILE - map.getColId(TUILE_TABLE_CRAFT)) <= PORTEE_TABLE_CRAFT && Math.abs(getY() / TAILLE_TUILE - map.getLigneId(TUILE_TABLE_CRAFT)) <= PORTEE_TABLE_CRAFT) {
                     TableCraft.setVisible(!TableCraft.isVisible() && !craft.isVisible());
                 }
             }
@@ -98,23 +101,23 @@ public class Joueur extends Entite {
     private int getIdBlocDepuisObjet(Objet objet) {
         switch (objet.getNom()) {
             case "Pierre":
-                return 1;
+                return TUILE_PIERRE;
             case "Caisse En Bois":
-                return 2;
+                return TUILE_CAISSE_BOIS;
             case "Table De Craft":
-                return 4;
+                return TUILE_TABLE_CRAFT;
             default:
-                return 0;
+                return TUILE_VIDE;
         }
     }
 
     public Objet creerObjetDepuisBloc(int idBloc) {
         switch (idBloc) {
-            case 1:
+            case TUILE_PIERRE:
                 return new Objet("Pierre", "De la pierre");
-            case 2, 5:
+            case TUILE_CAISSE_BOIS, TUILE_BOIS:
                 return new Objet("Bois", "Du bois");
-            case 4:
+            case TUILE_TABLE_CRAFT:
                 return new Objet("Table De Craft", "une simple table de craft");
             default:
                 return null;

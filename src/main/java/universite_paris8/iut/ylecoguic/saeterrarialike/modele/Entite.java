@@ -3,7 +3,8 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Rectangle2D;
-
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.TAILLE_TUILE;
 
 /**
  * Cette class represente une entité du jeu (joueur, ennemi, etc.).
@@ -39,11 +40,11 @@ public abstract class Entite {
         this.terrain = terrain;
         this.v = v; //vitesse horizale droite/gauche
         this.vDeBase = v;
-        this.vSautInitial = 21;
-        this.vGravite = 4;
+        this.vSautInitial = VITESSE_SAUT_INITIAL;
+        this.vGravite = VITESSE_GRAVITE;
         this.collision = false;
-        this.hauteurEntite = 60;
-        this.largeurEntite = 30;
+        this.hauteurEntite = HAUTEUR_ENTITE;
+        this.largeurEntite = LARGEUR_ENTITE;
         this.vy = 0; //vitesse en y(vertical) monte/descent
         this.sautEnCours = false;
         this.vie = vie;
@@ -82,8 +83,8 @@ public abstract class Entite {
             sautEnCours = false;
         }
         vy += vGravite;
-        if (vy > 20) {
-            vy = 20;
+        if (vy > VITESSE_VERTICALE_MAX) {
+            vy = VITESSE_VERTICALE_MAX;
         }
         if (vy > 0){
             collisionDetectee(0, 1, nposx, nposy);
@@ -108,7 +109,7 @@ public abstract class Entite {
         for (Rectangle2D hitboxBloc : terrain.getHurtboxList()) {
             if (hitboxEntite.intersects(hitboxBloc)) {
                 int vBarbele = v/2;
-                decrementerVie(2);
+                decrementerVie(DEGATS_BARBELE);
                 setV(vBarbele);
                 nposx = siCollisionX(dx, nposx, hitboxBloc);
                 nposy = siCollisionY(dy, nposy, hitboxBloc);
@@ -203,11 +204,11 @@ public abstract class Entite {
     }
 
     public int getTileX() {
-        return (getX() + (largeurEntite / 2)) / 32;
+        return (getX() + (largeurEntite / 2)) / TAILLE_TUILE;
     }
 
     public int getTileY() {
-        return (getY() + (hauteurEntite / 2)) / 32;
+        return (getY() + (hauteurEntite / 2)) / TAILLE_TUILE;
     }
 
     public boolean isSautEnCours() {

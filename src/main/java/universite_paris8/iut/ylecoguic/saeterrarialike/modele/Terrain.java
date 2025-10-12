@@ -1,8 +1,10 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
 import javafx.geometry.Rectangle2D;
-
 import java.util.ArrayList;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
+
+
 
 // TODO : faire des constantes pour les types de tuiles
 
@@ -51,18 +53,17 @@ public class Terrain {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
     private Rectangle2D hitboxBlock;
-    private int id;
     private ArrayList<Rectangle2D> hitboxList;
     private ArrayList<Rectangle2D> hurtboxList;
     private int tailleTuile;
 
-    private final int minXMap =0;
-    private final int maxXMap = 1854;
-    private final int minYMap = 0;
-    private final int maxYMap = 1024;
+    private final int minXMap = MIN_X_MAP;
+    private final int maxXMap = MAX_X_MAP;
+    private final int minYMap = MIN_Y_MAP;
+    private final int maxYMap = MAX_Y_MAP;
 
     public Terrain(){
-        tailleTuile = 32;
+        tailleTuile = TAILLE_TUILE;
         hitboxList = new ArrayList<>();
         hurtboxList = new ArrayList<>();
         creeHitbox();
@@ -74,9 +75,9 @@ public class Terrain {
                 int x = j * tailleTuile;
                 int y = i * tailleTuile;
                 hitboxBlock = new Rectangle2D(x, y, tailleTuile, tailleTuile);
-                if (terrain[i][j] != 0 && terrain[i][j] != 3) {
+                if (terrain[i][j] != TUILE_VIDE && terrain[i][j] != TUILE_BARBELE) {
                     hitboxList.add(hitboxBlock);
-                } else if (terrain[i][j] == 3) {
+                } else if (terrain[i][j] == TUILE_BARBELE) {
                     hurtboxList.add(hitboxBlock);
                 }
             }
