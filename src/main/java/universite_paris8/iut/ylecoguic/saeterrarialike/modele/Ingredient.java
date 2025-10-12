@@ -21,8 +21,4 @@ public class Ingredient {
         return quantite;
     }
 
-    @Override
-    public String toString() {
-        return quantite + "x " + nom;
-    }
 }

@@ -14,7 +14,7 @@ public class Recette {
     private final String descriptionResultat;
     private final ArrayList<Ingredient> ingredients;
 
-    public Recette(String nomResultat, String descriptionResultat, Ingredient... ingredients) {
+    public Recette(String nomResultat, String descriptionResultat, ArrayList<Ingredient> ingredients) {
         this.nomResultat = nomResultat;
         this.descriptionResultat = descriptionResultat;
         this.ingredients = new ArrayList<>();
@@ -46,21 +46,5 @@ public class Recette {
 
     public String getDescriptionResultat() {
         return descriptionResultat;
-    }
-
-    public ArrayList<Ingredient> getIngredients() {
-        return new ArrayList<>(ingredients);
-    }
-
-    @Override
-    public String toString() {
-        String result = nomResultat + " : ";
-        for (int i = 0; i < ingredients.size(); i++) {
-            if (i > 0) {
-                result += ", ";
-            }
-            result += ingredients.get(i);
-        }
-        return result;
     }
 }

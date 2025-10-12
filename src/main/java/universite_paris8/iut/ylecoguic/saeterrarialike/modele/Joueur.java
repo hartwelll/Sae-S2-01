@@ -124,12 +124,4 @@ public class Joueur extends Entite {
     public Objet tenterCraft(String nomObjet, boolean aProcheTableCraft) {
         return craftingSystem.crafter(nomObjet, inventaire, aProcheTableCraft);
     }
-
-    public boolean peutCrafter(String nomObjet, boolean aProcheTableCraft) {
-        return craftingSystem.peutCrafter(nomObjet, inventaire, aProcheTableCraft);
-    }
-
-    public ArrayList<Recette> getRecettesDisponibles(boolean aProcheTableCraft) {
-        return craftingSystem.getRecettesDisponibles(aProcheTableCraft);
-    }
 }
