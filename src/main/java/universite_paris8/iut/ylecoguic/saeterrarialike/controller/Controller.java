@@ -55,6 +55,7 @@ public class Controller implements Initializable {
     @FXML private Button tableDeCraft;
     @FXML private Button caisse;
     @FXML private Pane objetAffiche;
+    private Environnement env;
     private Terrain terrain;
     private VueTerrain vueTerrain;
     private Joueur joueur;
@@ -200,11 +201,13 @@ public class Controller implements Initializable {
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= frameInterval) {
-                    joueur.appliquerMouvementVertical();
+                    env.unTour();
                     if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
-                        joueur.deplacement(-1, 0, 1);
+                        vueJoueur.affichage(1);
+                        joueur.deplacement(-1, 0);
                     } else if (touchesActives.contains(KeyCode.D) || touchesActives.contains(KeyCode.RIGHT)) {
-                        joueur.deplacement(1, 0, 2);
+                        vueJoueur.affichage(2);
+                        joueur.deplacement(1, 0);
                     }
                     else vueJoueur.affichage(0);
                     if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
@@ -212,20 +215,6 @@ public class Controller implements Initializable {
                     }
                     if (Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT+2 || Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT+2) {
                         TableCraft.setVisible(false);
-                    }
-                    for(int i = 0 ; i < entites.size(); i++){
-                        if (entites.get(i).estMort()){
-                            panneauJoueur.getChildren().remove(i);
-                            entites.remove(i);
-                        }
-                    }
-                    if(ennemis.getVie() > 0) {
-                        ennemis.appliquerMouvementVertical();
-                        ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), ENNEMI_DISTANCE_VISION);
-                        if (delay >= DELAI_ATTAQUE_ENNEMI_NANOSEC) {
-                            ennemis.attaque(joueur, ENNEMI_DEGATS_ATTAQUE);
-                            delay = 0;
-                        } else delay += frameInterval;
                     }
                     lastUpdate = now;
                 }
@@ -235,6 +224,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        env = new Environnement();
         terrain = new Terrain();
         vueTerrain = new VueTerrain(panneauDeJeu, terrain);
         vueCoeur = new VueCoeur(coeurs);

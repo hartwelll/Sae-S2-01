@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * - Vérifier si un inventaire contient les ingrédients requis
  * - Consommer les ingrédients d'un inventaire lors du crafting
  */
+
 public class Recette {
     private final String nomResultat;
     private final String descriptionResultat;

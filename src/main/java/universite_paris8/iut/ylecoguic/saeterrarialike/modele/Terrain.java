@@ -131,9 +131,6 @@ public class Terrain {
         return 0;
     }
 
-    /*
-
-     */
     public int getLigneId(int id){
         for(int i = 0; i < terrain.length; i++){
             for(int j = 0; j < terrain[0].length ; j++){
@@ -156,25 +153,12 @@ public class Terrain {
         return -1;
     }
 
-
-    public Rectangle2D getHitboxBlock(){
-        return hitboxBlock;
-    }
-
     public ArrayList<Rectangle2D> getHitboxList() {
         return hitboxList;
     }
 
     public ArrayList<Rectangle2D> getHurtboxList() {
         return hurtboxList;
-    }
-
-    public int getTailleTuile() {
-        return tailleTuile;
-    }
-
-    public int[][] getMap() {
-        return terrain;
     }
 
     public int getMinXMap() {

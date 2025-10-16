@@ -47,8 +47,7 @@ public class Joueur extends Entite {
         this.craftingSystem = new CraftingSystem();
     }
 
-    public void deplacement(int dx, int dy, int id){
-        vueJoueur.affichage(id);
+    public void deplacement(int dx, int dy){
         super.deplacement(dx, dy);
     }
 
