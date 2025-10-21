@@ -4,8 +4,12 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.*;
 import universite_paris8.iut.ylecoguic.saeterrarialike.vue.*;
 
@@ -16,95 +20,38 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 
 /**
- * Contrôleur principal du jeu Terraria-like.
- * Gère :
- * - le modèle et les vues
- * - les entrées clavier/souris
- * - la boucle de jeu (AnimationTimer)
- * - les menus, craft et interactions
+ * Contrôleur principal de l'application JavaFX.
+ * - Initialise le modèle et les vues
+ * - Gère les entrées utilisateur
+ * - Orchestration de la boucle de jeu (AnimationTimer)
+ * - Gestion des menus et interfaces
+ * - Lien entre le modèle et les vues
  */
 public class Controller implements Initializable {
 
-    // --- FXML ---
-    @FXML private Pane menu, panneauJoueur, craft, tuto, consignes, tableCraftPane, objetAffiche;
+    @FXML private Pane menu, panneauJoueur, craft, tuto, consignes, TableCraft, objetAffiche;
     @FXML private TilePane panneauDeJeu;
     @FXML private HBox coeurs;
     @FXML private TableView<Objet> inventaireTable;
     @FXML private TableColumn<Objet, String> nomCol, descCol, quantCol;
     @FXML private Button pioche, pelle, epee, tableDeCraft, caisse;
 
-    // --- Modèle et vues ---
     private Environnement env;
     private Terrain terrain;
     private VueTerrain vueTerrain;
     private Joueur joueur;
     private VueJoueur vueJoueur;
+    private Coeur coeur;
     private VueCoeur vueCoeur;
-    private VueEnnemis vueEnnemis;
     private Ennemis ennemis;
-    private final Inventaire inventaire = new Inventaire();
+    private VueEnnemis vueEnnemis;
+    private ArrayList<Entite> entites;
     private Set<KeyCode> touchesActives;
+    private final Inventaire inventaire = new Inventaire();
     private AnimationTimer gameTimer;
 
-    // =============================
-    // ========== MÉTHODES =========
-    // =============================
+    // ----- Gestion des menus -----
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initialiserModeleEtVues();
-        configurerInterface();
-        configurerInventaireTable();
-        apparaitreObjets();
-        setupInput();
-        demarrerBoucleJeu();
-    }
-
-    // --- Initialisation du modèle et des vues ---
-    private void initialiserModeleEtVues() {
-        env = new Environnement();
-        terrain = new Terrain();
-        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
-        vueCoeur = new VueCoeur(coeurs);
-
-        Coeur coeur = new Coeur(vueCoeur);
-        vueJoueur = new VueJoueur(panneauJoueur);
-        joueur = new Joueur(
-                JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART,
-                terrain, JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE,
-                inventaire, inventaireTable, craft, tableCraftPane,
-                vueCoeur, coeur, vueJoueur
-        );
-
-        vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
-        vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-
-        vueEnnemis = new VueEnnemis(panneauJoueur);
-        ennemis = new Ennemis(
-                ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART,
-                terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE, vueEnnemis
-        );
-
-        vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
-        vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
-    }
-
-    private void configurerInterface() {
-        craft.setVisible(false);
-        tableCraftPane.setVisible(false);
-        tuto.setVisible(false);
-        menu.setVisible(false);
-        touchesActives = new HashSet<>();
-    }
-
-    private void configurerInventaireTable() {
-        nomCol.setCellValueFactory(cell -> cell.getValue().nomProperty());
-        descCol.setCellValueFactory(cell -> cell.getValue().descProperty());
-        quantCol.setCellValueFactory(cell -> cell.getValue().quantiteProperty().asObject().asString());
-        inventaireTable.setItems(inventaire.getObjets());
-    }
-
-    // --- Gestion du menu ---
     public void retourJeu() {
         menu.setVisible(false);
         if (gameTimer != null) gameTimer.start();
@@ -120,25 +67,26 @@ public class Controller implements Initializable {
         System.exit(0);
     }
 
-    // --- Gestion des entrées clavier / souris ---
-    private void setupInput() {
+    // ----- Gestion des entrées -----
+
+    public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
             if (sceneActuel == null) return;
 
             sceneActuel.setOnKeyPressed(event -> {
                 touchesActives.add(event.getCode());
-                if (event.getCode() == KeyCode.C)
-                    craft.setVisible(!craft.isVisible() && !tableCraftPane.isVisible());
-                else if (event.getCode() == KeyCode.ESCAPE)
-                    gererEscape();
+                switch (event.getCode()) {
+                    case C -> craft.setVisible(!craft.isVisible() && !TableCraft.isVisible());
+                    case ESCAPE -> gererMenuOuTuto();
+                }
             });
 
             sceneActuel.setOnKeyReleased(event -> touchesActives.remove(event.getCode()));
-            sceneActuel.setOnMouseClicked(this::gererClicSouris);
+            sceneActuel.setOnMouseClicked(this::clickBlock);
         });
     }
 
-    private void gererEscape() {
+    private void gererMenuOuTuto() {
         if (tuto.isVisible()) {
             tuto.setVisible(false);
             if (gameTimer != null && !menu.isVisible()) gameTimer.start();
@@ -152,41 +100,43 @@ public class Controller implements Initializable {
         }
     }
 
-    private void gererClicSouris(MouseEvent event) {
-        int col = (int) (event.getX() / TAILLE_TUILE);
-        int ligne = (int) (event.getY() / TAILLE_TUILE);
+    // ----- Gestion des clics souris -----
+
+    private void clickBlock(MouseEvent event) {
+        int colTile = (int) (event.getX() / TAILLE_TUILE);
+        int ligneTile = (int) (event.getY() / TAILLE_TUILE);
+
         int joueurX = joueur.getTileX();
         int joueurY = joueur.getTileY();
 
-        boolean cassePossible = estDansPortee(col, ligne, joueurX, joueurY, PORTEE_CASSER_BLOC);
-        boolean posePossible = estDansPortee(col, ligne, joueurX, joueurY, PORTEE_POSER_BLOC);
+        boolean peutCasser = estDansPortee(colTile, ligneTile, joueurX, joueurY, PORTEE_CASSER_BLOC);
+        boolean peutPoser = estDansPortee(colTile, ligneTile, joueurX, joueurY, PORTEE_POSER_BLOC);
 
-        if (event.getButton() == MouseButton.PRIMARY)
-            gererClicGauche(col, ligne, cassePossible);
-        else if (event.getButton() == MouseButton.SECONDARY)
-            joueur.poserBlock(col, ligne, posePossible);
+        if (event.getButton() == MouseButton.PRIMARY) {
+            if (colTile == ennemis.getTileX() && ligneTile == ennemis.getTileY()) {
+                joueur.attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
+            } else {
+                joueur.casserBlock(colTile, ligneTile, peutCasser);
+            }
+        } else if (event.getButton() == MouseButton.SECONDARY) {
+            joueur.poserBlock(colTile, ligneTile, peutPoser);
+        }
 
-        vueTerrain.miseAJourAffichage(ligne, col);
+        vueTerrain.miseAJourAffichage(ligneTile, colTile);
     }
 
-    private void gererClicGauche(int col, int ligne, boolean cassePossible) {
-        if (col == ennemis.getTileX() && ligne == ennemis.getTileY())
-            joueur.attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
-        else
-            joueur.casserBlock(col, ligne, cassePossible);
+    private boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
+        return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
     }
 
-    private boolean estDansPortee(int col, int ligne, int x, int y, int portee) {
-        return Math.abs(col - x) <= portee && Math.abs(ligne - y) <= portee;
-    }
+    // ----- Gestion du craft -----
 
-    // --- Gestion du craft ---
     public void fabrication() {
         configurerBoutonCraft(tableDeCraft, "Table De Craft");
         configurerBoutonCraft(caisse, "Caisse En Bois");
     }
 
-    public void fabricationDansTable() {
+    public void fabricationDansTableDeFabrication() {
         configurerBoutonCraft(pioche, "Pioche");
         configurerBoutonCraft(pelle, "Pelle");
         configurerBoutonCraft(epee, "Épée");
@@ -195,57 +145,54 @@ public class Controller implements Initializable {
     private void configurerBoutonCraft(Button bouton, String nomObjet) {
         bouton.setOnMouseClicked(e -> {
             if (e.getButton() != MouseButton.PRIMARY) return;
-            boolean procheTable = tableCraftPane.isVisible();
-            Objet craft = joueur.tenterCraft(nomObjet, procheTable);
 
-            if (craft != null) {
-                inventaire.ajouterObjet(craft, 1);
-                System.out.println("Crafté : " + craft.getNom());
+            boolean aProcheTableCraft = TableCraft.isVisible();
+            Objet objetCrafte = joueur.tenterCraft(nomObjet, aProcheTableCraft);
+
+            if (objetCrafte != null) {
+                inventaire.ajouterObjet(objetCrafte, 1);
+                System.out.println("Crafté : " + objetCrafte.getNom());
             } else {
                 System.out.println("Craft impossible : ingrédients manquants");
             }
         });
     }
 
-    // --- Apparition d’un objet spécial ---
-    private void apparaitreObjets() {
-        Objet sabre = new Objet("Sabre Laser", "Un laser qui koupe !!! ");
-        VueObjet vueSabre = new VueObjet(sabre, OBJET_SABRE_X, OBJET_SABRE_Y,
-                TAILLE_OBJET_DROP, TAILLE_OBJET_DROP, "/Objet/lightSaberDrop.png");
+    // ----- Apparition d'objets -----
 
-        vueSabre.setOnMouseClicked(e -> {
-            if (e.getButton() != MouseButton.PRIMARY) return;
-            System.out.println("Ajout à l'inventaire : " + sabre.getNom());
-            inventaire.ajouterObjet(sabre, 1);
-            objetAffiche.getChildren().remove(vueSabre);
+    private void apparitionObjets() {
+        Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!!");
+        VueObjet sabre = new VueObjet(objet, OBJET_SABRE_X, OBJET_SABRE_Y, TAILLE_OBJET_DROP, TAILLE_OBJET_DROP, "/Objet/lightSaberDrop.png");
+
+        sabre.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
+                inventaire.ajouterObjet(sabre.getObjet(), 1);
+                objetAffiche.getChildren().remove(sabre);
+                System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
+            }
         });
 
-        objetAffiche.getChildren().add(vueSabre);
+        objetAffiche.getChildren().add(sabre);
     }
 
-    // --- Boucle de jeu principale ---
-    private void demarrerBoucleJeu() {
+    // ----- Boucle de jeu -----
+
+    public void animationTimer() {
         gameTimer = new AnimationTimer() {
             private long lastUpdate = 0;
 
             @Override
             public void handle(long now) {
                 if (now - lastUpdate < FRAME_INTERVAL_NANOSEC) return;
+                lastUpdate = now;
 
                 env.unTour();
                 gererDeplacements();
                 gererSaut();
-                verifierProximiteTableCraft();
-                lastUpdate = now;
+                verifierDistanceTableCraft();
             }
         };
-
-        menu.visibleProperty().addListener((obs, oldVal, visible) -> {
-            if (visible) gameTimer.stop();
-            else gameTimer.start();
-        });
-
-        gameTimer.start();
     }
 
     private void gererDeplacements() {
@@ -266,9 +213,64 @@ public class Controller implements Initializable {
         }
     }
 
-    private void verifierProximiteTableCraft() {
-        boolean tropLoin = Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT + 2
-                || Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT)) >= PORTEE_TABLE_CRAFT + 2;
-        if (tropLoin) tableCraftPane.setVisible(false);
+    private void verifierDistanceTableCraft() {
+        double distX = Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT));
+        double distY = Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT));
+        if (distX >= PORTEE_TABLE_CRAFT + 2 || distY >= PORTEE_TABLE_CRAFT + 2) {
+            TableCraft.setVisible(false);
+        }
+    }
+
+    // ----- Initialisation -----
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        env = new Environnement();
+        terrain = new Terrain();
+        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
+        vueCoeur = new VueCoeur(coeurs);
+        coeur = new Coeur(vueCoeur);
+        vueJoueur = new VueJoueur(panneauJoueur);
+        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART, terrain,
+                JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire,
+                inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
+
+        vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
+        vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+
+        vueEnnemis = new VueEnnemis(panneauJoueur);
+        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART,
+                terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE, vueEnnemis);
+
+        vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
+        vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+
+        entites = new ArrayList<>();
+        entites.add(joueur);
+        entites.add(ennemis);
+
+        craft.setVisible(false);
+        TableCraft.setVisible(false);
+        tuto.setVisible(false);
+        menu.setVisible(false);
+
+        touchesActives = new HashSet<>();
+
+        nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
+        descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
+        quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
+        inventaireTable.setItems(inventaire.getObjets());
+
+        apparitionObjets();
+        setupInput();
+        animationTimer();
+
+        menu.visibleProperty().addListener((obs, oldVal, newVal) -> {
+            if (gameTimer == null) return;
+            if (newVal) gameTimer.stop();
+            else gameTimer.start();
+        });
+
+        if (!menu.isVisible() && gameTimer != null) gameTimer.start();
     }
 }
