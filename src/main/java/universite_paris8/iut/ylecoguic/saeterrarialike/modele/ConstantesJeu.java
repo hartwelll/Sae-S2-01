@@ -8,6 +8,8 @@ public class ConstantesJeu {
     // Animation et timing
     public static final long FRAME_INTERVAL_NANOSEC = 16_666_666; // ~60 FPS
     public static final long DELAI_ATTAQUE_ENNEMI_NANOSEC = 600_000_000; // 0.6 secondes
+    public static int DELAY = 0;
+
 
     // IDs pour les animations/sprites
     public static final int ANIMATION_ARRET = 0;

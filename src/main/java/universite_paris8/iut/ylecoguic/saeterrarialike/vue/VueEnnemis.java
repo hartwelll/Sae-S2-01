@@ -19,7 +19,7 @@ public class VueEnnemis {
         this.imageView = new ImageView();
         imageView.setFitHeight(HAUTEUR_SPRITE);
         imageView.setFitWidth(LARGEUR_SPRITE);
-        pane.getChildren().add(imageView); // Ajout une seule fois
+        this.pane.getChildren().add(imageView); // Ajout une seule fois
         initialiserEnnemis();
         affichage(0); // Image par défaut (statique)
     }
@@ -51,6 +51,10 @@ public class VueEnnemis {
         if (nouvelleImage != null) {
             imageView.setImage(nouvelleImage);
         }
+    }
+
+    public void supprimerAffichage() {
+        this.pane.getChildren().remove(imageView);
     }
 
     public ImageView getImageView() {

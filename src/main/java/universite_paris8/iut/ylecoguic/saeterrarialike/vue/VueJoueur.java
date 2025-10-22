@@ -20,7 +20,7 @@ public class VueJoueur {
         this.imageView = new ImageView();
         imageView.setFitHeight(HAUTEUR_SPRITE);
         imageView.setFitWidth(LARGEUR_SPRITE);
-        pane.getChildren().add(imageView); // Ajout une seule fois
+        this.pane.getChildren().add(imageView); // Ajout une seule fois
         initialiserJoueur();
         affichage(0); // Image par défaut (statique)
     }
@@ -52,6 +52,10 @@ public class VueJoueur {
         if (nouvelleImage != null) {
             imageView.setImage(nouvelleImage);
         }
+    }
+
+    public void supprimerAffichage() {
+        this.pane.getChildren().remove(imageView);
     }
 
     public ImageView getImageView() {

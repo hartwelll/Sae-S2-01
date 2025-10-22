@@ -4,35 +4,34 @@ import java.util.ArrayList;
 
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.ENNEMI_DEGATS_ATTAQUE;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.ENNEMI_DISTANCE_VISION;
-import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.DELAI_ATTAQUE_ENNEMI_NANOSEC;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 
 public class Environnement {
 
-    private ArrayList<Entite> entites;
-    public Environnement() {
-        entites = new ArrayList<>();
+    private Joueur joueur;
+    private ArrayList<Ennemis> ennemis;
+
+    public Environnement(Joueur joueur) {
+        this.joueur = joueur;
+        ennemis = new ArrayList<>();
     }
 
-    public void ajouterEntite(Entite e){
-        entites.add(e);
+    public void ajouterEnnemis(Ennemis e){
+        ennemis.add(e);
     }
 
     public void unTour() {
         joueur.appliquerMouvementVertical();
 
-        for(Entite e : entites){
-            if (e.estMort()){
-                panneauJoueur.getChildren().remove(e);
-                entites.remove(e);
+        for(Ennemis e : ennemis){
+            if(e.getVie() > 0) {
+                e.appliquerMouvementVertical();
+                e.mettreAJourComportement(joueur.getX(), joueur.getY(), ENNEMI_DISTANCE_VISION);
+                if (DELAY >= DELAI_ATTAQUE_ENNEMI_NANOSEC) {
+                    e.attaque(joueur, ENNEMI_DEGATS_ATTAQUE);
+                    DELAY = 0;
+                } else DELAY += FRAME_INTERVAL_NANOSEC;
             }
-        }
-        if(ennemis.getVie() > 0) {
-            ennemis.appliquerMouvementVertical();
-            ennemis.mettreAJourComportement(joueur.getX(), joueur.getY(), ENNEMI_DISTANCE_VISION);
-            if (delay >= DELAI_ATTAQUE_ENNEMI_NANOSEC) {
-                ennemis.attaque(joueur, ENNEMI_DEGATS_ATTAQUE);
-                delay = 0;
-            } else delay += frameInterval;
         }
     }
 }

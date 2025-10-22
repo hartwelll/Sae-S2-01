@@ -190,6 +190,7 @@ public class Controller implements Initializable {
                 env.unTour();
                 gererDeplacements();
                 gererSaut();
+                gererMort();
                 verifierDistanceTableCraft();
             }
         };
@@ -213,6 +214,20 @@ public class Controller implements Initializable {
         }
     }
 
+    private void gererMort(){
+        ArrayList<Entite> morts = new ArrayList<>();
+
+        for(Entite e : entites){
+            if(e.estMort()){
+                if(e.getClass() == Ennemis.class){
+                    vueEnnemis.supprimerAffichage();
+                }else vueJoueur.supprimerAffichage();
+                morts.add(e);
+            }
+        }
+        entites.removeAll(morts);
+    }
+
     private void verifierDistanceTableCraft() {
         double distX = Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT));
         double distY = Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT));
@@ -225,7 +240,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        env = new Environnement();
         terrain = new Terrain();
         vueTerrain = new VueTerrain(panneauDeJeu, terrain);
         vueCoeur = new VueCoeur(coeurs);
@@ -248,6 +262,10 @@ public class Controller implements Initializable {
         entites = new ArrayList<>();
         entites.add(joueur);
         entites.add(ennemis);
+
+        env = new Environnement(joueur);
+
+        env.ajouterEnnemis(ennemis);
 
         craft.setVisible(false);
         TableCraft.setVisible(false);
