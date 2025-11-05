@@ -96,6 +96,25 @@ public class Joueur extends Entite {
         }
     }
 
+    public void clicGauche(int colTile, int ligneTile, Ennemis ennemis){
+        boolean peutCasser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_CASSER_BLOC);
+
+        if (colTile == ennemis.getTileX() && ligneTile == ennemis.getTileY()) {
+            attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
+        } else {
+            casserBlock(colTile, ligneTile, peutCasser);
+        }
+    }
+
+    public void clicDroit(int colTile, int ligneTile){
+        boolean peutPoser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_POSER_BLOC);
+
+        poserBlock(colTile, ligneTile, peutPoser);
+    }
+
+    private boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
+        return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
+    }
 
     private int getIdBlocDepuisObjet(Objet objet) {
         switch (objet.getNom()) {
@@ -125,5 +144,16 @@ public class Joueur extends Entite {
 
     public Objet tenterCraft(String nomObjet, boolean aProcheTableCraft) {
         return craftingSystem.crafter(nomObjet, inventaire, aProcheTableCraft);
+    }
+
+    public void craft(String nomObjet, boolean aProcheTableCraft){
+        Objet objetCrafte = tenterCraft(nomObjet, aProcheTableCraft);
+
+        if (objetCrafte != null) {
+            inventaire.ajouterObjet(objetCrafte, 1);
+            System.out.println("Crafté : " + objetCrafte.getNom());
+        } else {
+            System.out.println("Craft impossible : ingrédients manquants");
+        }
     }
 }

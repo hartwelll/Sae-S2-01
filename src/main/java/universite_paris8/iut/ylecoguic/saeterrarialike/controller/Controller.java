@@ -106,28 +106,17 @@ public class Controller implements Initializable {
         int colTile = (int) (event.getX() / TAILLE_TUILE);
         int ligneTile = (int) (event.getY() / TAILLE_TUILE);
 
-        int joueurX = joueur.getTileX();
-        int joueurY = joueur.getTileY();
-
-        boolean peutCasser = estDansPortee(colTile, ligneTile, joueurX, joueurY, PORTEE_CASSER_BLOC);
-        boolean peutPoser = estDansPortee(colTile, ligneTile, joueurX, joueurY, PORTEE_POSER_BLOC);
 
         if (event.getButton() == MouseButton.PRIMARY) {
-            if (colTile == ennemis.getTileX() && ligneTile == ennemis.getTileY()) {
-                joueur.attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
-            } else {
-                joueur.casserBlock(colTile, ligneTile, peutCasser);
-            }
+            joueur.clicGauche(colTile, ligneTile, ennemis);
         } else if (event.getButton() == MouseButton.SECONDARY) {
-            joueur.poserBlock(colTile, ligneTile, peutPoser);
+            joueur.clicDroit(colTile, ligneTile);
         }
 
         vueTerrain.miseAJourAffichage(ligneTile, colTile);
     }
 
-    private boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
-        return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
-    }
+
 
     // ----- Gestion du craft -----
 
@@ -147,14 +136,8 @@ public class Controller implements Initializable {
             if (e.getButton() != MouseButton.PRIMARY) return;
 
             boolean aProcheTableCraft = TableCraft.isVisible();
-            Objet objetCrafte = joueur.tenterCraft(nomObjet, aProcheTableCraft);
 
-            if (objetCrafte != null) {
-                inventaire.ajouterObjet(objetCrafte, 1);
-                System.out.println("Crafté : " + objetCrafte.getNom());
-            } else {
-                System.out.println("Craft impossible : ingrédients manquants");
-            }
+            joueur.craft(nomObjet, aProcheTableCraft);
         });
     }
 
