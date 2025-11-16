@@ -11,21 +11,23 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 
 public class VueTerrain {
     private HashMap<Integer, Image> tileImages;
-    private Terrain map;
+    private Terrain map; // Sera initialisé via le Singleton
     private TilePane pane;
     private ImageView[][] imageViewsTiles;
 
-    public VueTerrain(TilePane pane, Terrain map){
+    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
+    public VueTerrain(TilePane pane){
         this.tileImages = new HashMap<>();
-        this.map = map;
+        this.map = Terrain.getInstance(); // Utilise le Singleton
         this.pane = pane;
         this.pane.setPrefTileWidth(TAILLE_TUILE);
         this.pane.setPrefTileHeight(TAILLE_TUILE);
         this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
-        this.imageViewsTiles = new ImageView[map.nbDeLignes()][map.nbDeColonnes()];
         initialiseTile();
         affichage();
     }
+
+    // ... (Toutes les autres méthodes de VueTerrain restent inchangées) ...
 
     public Image creerImage(String chemin){
         URL url = getClass().getResource(chemin);
@@ -54,8 +56,8 @@ public class VueTerrain {
 
     public void affichage(){
         pane.getChildren().clear();
-        for (int i = 0; i < pane.getPrefRows(); i++) {
-            for (int j = 0; j < pane.getPrefColumns(); j++) {
+        for (int i = 0; i < map.nbDeLignes(); i++) {
+            for (int j = 0; j < map.nbDeColonnes(); j++) {
                 int tileId = map.codeTuile(i, j);
                 Image image = tileImages.get(tileId);
                 if (image != null) {

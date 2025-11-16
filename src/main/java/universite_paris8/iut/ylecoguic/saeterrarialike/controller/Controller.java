@@ -21,6 +21,7 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJ
 
 public class Controller implements Initializable {
 
+    // ... (Attributs FXML inchangés) ...
     @FXML private Pane menu, panneauJoueur, craft, tuto, consignes, TableCraft, objetAffiche;
     @FXML private TilePane panneauDeJeu;
     @FXML private HBox coeurs;
@@ -28,30 +29,29 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Objet, String> nomCol, descCol, quantCol;
     @FXML private Button pioche, pelle, epee, tableDeCraft, caisse;
 
+    // --- Modèle ---
     private Environnement env;
-    private Terrain terrain;
+    private Terrain terrain; // Garde une référence au Singleton
     private Joueur joueur;
     private Ennemis ennemis;
     private ArrayList<Entite> entites;
     private final Inventaire inventaire = new Inventaire();
 
+    // --- Vue ---
     private VueTerrain vueTerrain;
-    private VueCoeur vueCoeur;
-
     private VueJoueur vueJoueur;
+    private VueCoeur vueCoeur;
     private VueEnnemis vueEnnemis;
 
+    // ... (Gestionnaires d'état et de menus inchangés) ...
     private Set<KeyCode> touchesActives;
     private AnimationTimer gameTimer;
-
     public void retourJeu() { menu.setVisible(false); if (gameTimer != null) gameTimer.start(); }
     public void afficherTuto() { tuto.setVisible(true); menu.setVisible(false); if (gameTimer != null) gameTimer.start(); }
     public void quitterPartie() { System.exit(0); }
-
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
             if (sceneActuel == null) return;
-
             sceneActuel.setOnKeyPressed(event -> {
                 touchesActives.add(event.getCode());
                 switch (event.getCode()) {
@@ -59,12 +59,10 @@ public class Controller implements Initializable {
                     case ESCAPE -> gererMenuOuTuto();
                 }
             });
-
             sceneActuel.setOnKeyReleased(event -> touchesActives.remove(event.getCode()));
             sceneActuel.setOnMouseClicked(this::clickBlock);
         });
     }
-
     private void gererMenuOuTuto() {
         if (tuto.isVisible()) {
             tuto.setVisible(false);
@@ -79,16 +77,20 @@ public class Controller implements Initializable {
         }
     }
 
+    // ----- Gestion des clics (Inchangée, mais appelle maintenant la Stratégie) -----
     private void clickBlock(MouseEvent event) {
         int colTile = (int) (event.getX() / TAILLE_TUILE);
         int ligneTile = (int) (event.getY() / TAILLE_TUILE);
 
+
         if (event.getButton() == MouseButton.PRIMARY) {
+            // Le contrôleur appelle le joueur, qui DÉLÈGUE à sa stratégie
             joueur.clicGauche(colTile, ligneTile, env);
 
         } else if (event.getButton() == MouseButton.SECONDARY) {
             Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
 
+            // Le contrôleur appelle le joueur, qui DÉLÈGUE à sa stratégie
             joueur.clicDroit(colTile, ligneTile, objetSelectionne);
 
             int idBlocCible = terrain.codeTuile(ligneTile, colTile);
@@ -101,51 +103,41 @@ public class Controller implements Initializable {
         vueTerrain.miseAJourAffichage(ligneTile, colTile);
     }
 
+    // ... (méthodes de fabrication, apparition, boucle de jeu, etc. inchangées) ...
     public void fabrication() {
         configurerBoutonCraft(tableDeCraft, "Table De Craft");
         configurerBoutonCraft(caisse, "Caisse En Bois");
     }
-
     public void fabricationDansTableDeFabrication() {
         configurerBoutonCraft(pioche, "Pioche");
         configurerBoutonCraft(pelle, "Pelle");
         configurerBoutonCraft(epee, "Épée");
     }
-
     private void configurerBoutonCraft(Button bouton, String nomObjet) {
         bouton.setOnMouseClicked(e -> {
             if (e.getButton() != MouseButton.PRIMARY) return;
-
             boolean aProcheTableCraft = TableCraft.isVisible();
-
             joueur.craft(nomObjet, aProcheTableCraft);
         });
     }
-
     private void apparitionObjets() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!!");
         VueObjet sabre = new VueObjet(objet, OBJET_SABRE_X, OBJET_SABRE_Y, TAILLE_OBJET_DROP, TAILLE_OBJET_DROP, "/Objet/lightSaberDrop.png");
-
         sabre.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
-                System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
                 inventaire.ajouterObjet(sabre.getObjet(), 1);
                 objetAffiche.getChildren().remove(sabre);
             }
         });
-
         objetAffiche.getChildren().add(sabre);
     }
-
     public void animationTimer() {
         gameTimer = new AnimationTimer() {
             private long lastUpdate = 0;
-
             @Override
             public void handle(long now) {
                 if (now - lastUpdate < FRAME_INTERVAL_NANOSEC) return;
                 lastUpdate = now;
-
                 env.unTour();
                 gererDeplacements();
                 gererSaut();
@@ -154,7 +146,6 @@ public class Controller implements Initializable {
             }
         };
     }
-
     private void gererDeplacements() {
         if (touchesActives.contains(KeyCode.Q) || touchesActives.contains(KeyCode.LEFT)) {
             vueJoueur.affichage(1);
@@ -166,16 +157,13 @@ public class Controller implements Initializable {
             vueJoueur.affichage(0);
         }
     }
-
     private void gererSaut() {
         if (touchesActives.contains(KeyCode.Z) || touchesActives.contains(KeyCode.UP) || touchesActives.contains(KeyCode.SPACE)) {
             joueur.demarrerSaut();
         }
     }
-
     private void gererMort(){
         ArrayList<Entite> morts = new ArrayList<>();
-
         for(Entite e : entites){
             if(e.estMort()){
                 if(e.getClass() == Ennemis.class){
@@ -186,9 +174,7 @@ public class Controller implements Initializable {
         }
         entites.removeAll(morts);
     }
-
     private void verifierDistanceTableCraft() {
-
         double distX = Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT));
         double distY = Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT));
         if (distX >= PORTEE_TABLE_CRAFT + 2 || distY >= PORTEE_TABLE_CRAFT + 2) {
@@ -196,13 +182,19 @@ public class Controller implements Initializable {
         }
     }
 
+    // ----- Initialisation (SIMPLIFIÉE grâce au Singleton) -----
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        terrain = new Terrain();
+        // --- 1. Initialisation du Modèle ---
+        terrain = Terrain.getInstance(); // Obtient l'instance Singleton
 
-        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART, terrain, JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire);
-        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART, terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE);
+        // Constructeurs SIMPLIFIÉS (n'ont plus besoin de 'terrain')
+        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART,
+                JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire);
+
+        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART,
+                ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE);
 
         entites = new ArrayList<>();
         entites.add(joueur);
@@ -211,12 +203,16 @@ public class Controller implements Initializable {
         env = new Environnement(joueur);
         env.ajouterEnnemis(ennemis);
 
-        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
+        // --- 2. Initialisation de la Vue ---
+        // Constructeurs SIMPLIFIÉS (n'ont plus besoin de 'terrain')
+        vueTerrain = new VueTerrain(panneauDeJeu);
         vueCoeur = new VueCoeur(coeurs);
-
         vueJoueur = new VueJoueur(panneauJoueur);
         vueEnnemis = new VueEnnemis(panneauJoueur);
 
+
+        // --- 3. "Collage" MVC (Bindings et Listeners) ---
+        // (Inchangé par rapport au refactor précédent)
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
@@ -231,6 +227,7 @@ public class Controller implements Initializable {
             vueEnnemis.affichage(newVal.intValue());
         });
 
+        // --- 4. Reste de l'initialisation (inchangé) ---
         craft.setVisible(false);
         TableCraft.setVisible(false);
         tuto.setVisible(false);
@@ -241,7 +238,6 @@ public class Controller implements Initializable {
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
-
         inventaireTable.setItems(inventaire.getObjets());
 
         apparitionObjets();

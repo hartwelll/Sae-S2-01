@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 
 public class Terrain {
-    private static int[][] terrain = {
+
+    // 1. Instance statique privée et finale
+    private static final Terrain instance = new Terrain();
+
+    // 2. Tableau non-statique
+    private int[][] terrain = {
+            // ... (données du terrain) ...
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -49,13 +55,20 @@ public class Terrain {
     private final int minYMap = MIN_Y_MAP;
     private final int maxYMap = MAX_Y_MAP;
 
-    public Terrain(){
+    // 3. Constructeur privé
+    private Terrain(){
         tailleTuile = TAILLE_TUILE;
         hitboxList = new ArrayList<>();
         hurtboxList = new ArrayList<>();
         creeHitbox();
     }
 
+    // 4. Getter public statique
+    public static Terrain getInstance() {
+        return instance;
+    }
+
+    // ... (Toutes les autres méthodes de Terrain restent inchangées) ...
     public void creeHitbox(){
         for(int i = 0; i < terrain.length; i++) {
             for (int j = 0; j < terrain[i].length; j++) {

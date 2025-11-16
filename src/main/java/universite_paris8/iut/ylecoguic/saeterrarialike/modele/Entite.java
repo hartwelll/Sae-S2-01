@@ -8,7 +8,7 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 
 public abstract class Entite {
 
-    private Terrain terrain;
+    private Terrain terrain; // Sera initialisé via le Singleton
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -25,10 +25,11 @@ public abstract class Entite {
 
     private IntegerProperty vieProperty;
 
-    public Entite (int x, int y, Terrain terrain, int vie, int v){
+    // Constructeur SIMPLIFIÉ : 'Terrain terrain' a été supprimé
+    public Entite (int x, int y, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
-        this.terrain = terrain;
+        this.terrain = Terrain.getInstance(); // Utilise le Singleton
         this.v = v;
         this.vDeBase = v;
         this.vSautInitial = VITESSE_SAUT_INITIAL;
@@ -40,6 +41,8 @@ public abstract class Entite {
         this.sautEnCours = false;
         this.vieProperty = new SimpleIntegerProperty(vie);
     }
+
+    // ... (Toutes les autres méthodes de Entite restent inchangées) ...
 
     public void deplacement(int dx, int dy) {
         int nposx = getX() + v * dx;
@@ -170,36 +173,61 @@ public abstract class Entite {
             this.vieProperty.set(getVie() - vieAenlever);
             System.out.println(this.getVie());
         } else if (this.getClass().equals(Joueur.class)) {
-            // TODO: La mort devrait être gérée par le contrôleur via un Listener,
             System.exit(0);
         }
     }
 
-    public int getX() {return xProperty.getValue();}
+    public int getX() {
+        return xProperty.getValue();
+    }
 
-    public int getY() {return yProperty.getValue();}
+    public int getY() {
+        return yProperty.getValue();
+    }
 
-    public int getVie() {return vieProperty.get();}
+    public int getVie() {
+        return vieProperty.get();
+    }
 
-    public IntegerProperty vieProperty() {return vieProperty;}
+    public IntegerProperty vieProperty() {
+        return vieProperty;
+    }
 
-    public int getVGravite() {return vGravite;}
+    public int getVGravite() {
+        return vGravite;
+    }
 
-    public int getVSaut() {return vSautInitial;}
+    public int getVSaut() {
+        return vSautInitial;
+    }
 
-    public int getTileX() {return (getX() + (largeurEntite / 2)) / TAILLE_TUILE;}
+    public int getTileX() {
+        return (getX() + (largeurEntite / 2)) / TAILLE_TUILE;
+    }
 
-    public int getTileY() {return (getY() + (hauteurEntite / 2)) / TAILLE_TUILE;}
+    public int getTileY() {
+        return (getY() + (hauteurEntite / 2)) / TAILLE_TUILE;
+    }
 
-    public boolean isSautEnCours() {return sautEnCours;}
+    public boolean isSautEnCours() {
+        return sautEnCours;
+    }
 
-    public void setSautEnCours(boolean sautEnCours) {this.sautEnCours = sautEnCours;}
+    public void setSautEnCours(boolean sautEnCours) {
+        this.sautEnCours = sautEnCours;
+    }
 
-    public IntegerProperty getxProperty() {return xProperty;}
+    public IntegerProperty getxProperty() {
+        return xProperty;
+    }
 
-    public IntegerProperty getyProperty() {return yProperty;}
+    public IntegerProperty getyProperty() {
+        return yProperty;
+    }
 
-    public boolean estMort() {return this.getVie() <= 0;}
+    public boolean estMort() {
+        return this.getVie() <= 0;
+    }
 
     public void setV(int v) {
         this.v = v;

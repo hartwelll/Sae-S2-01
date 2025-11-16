@@ -10,10 +10,11 @@ import java.util.Set;
 
 public class Dijkstra {
 
-    private Terrain map;
+    private Terrain map; // Sera initialisé via le Singleton
     private int largeurMap;
     private int hauteurMap;
 
+    // ... (classe Noeud interne inchangée) ...
     private static class Noeud implements Comparable<Noeud> {
         int x, y;
         int distance;
@@ -49,11 +50,14 @@ public class Dijkstra {
         }
     }
 
-    public Dijkstra(Terrain map) {
-        this.map = map;
+    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
+    public Dijkstra() {
+        this.map = Terrain.getInstance(); // Utilise le Singleton
         this.largeurMap = map.nbDeColonnes();
         this.hauteurMap = map.nbDeLignes();
     }
+
+    // ... (Toutes les autres méthodes de Dijkstra restent inchangées) ...
 
     public List<int[]> trouverChemin(int ennemisX, int ennemisY, int joueurX, int joueurY) {
 
@@ -76,7 +80,6 @@ public class Dijkstra {
                 {-1, -1}, {-1, 1}, {1, -1}, {1, 1}, // diagonales
                 {-1, -2}, {1, -2} // sauts de 2 blocs vers la gauche/droite
         };
-
 
         while (!filepriorite.isEmpty()) {
             Noeud actuel = filepriorite.poll();
@@ -137,9 +140,7 @@ public class Dijkstra {
 
         int idCaseDestination = map.codeTuile(versY, versX);
 
-        // Cas simple : la destination est vide (sol ou air)
         if (idCaseDestination == 0) {
-            // Vérifie que l'on ne traverse pas des coins bloqués en diagonale
             if (Math.abs(versX - depuisX) == 1 && Math.abs(versY - depuisY) == 1) {
                 int idCaseX = map.codeTuile(depuisY, versX);
                 int idCaseY = map.codeTuile(versY, depuisX);
@@ -151,12 +152,10 @@ public class Dijkstra {
             return true;
         }
 
-        // Gérer les sauts par-dessus un obstacle horizontal
         int dx = versX - depuisX;
         int dy = versY - depuisY;
 
         if (dy == -1 && Math.abs(dx) == 1) {
-            // Saut de 1 bloc vers le haut + côté
             int obstacleDevant = map.codeTuile(depuisY, versX);
             int espaceAuDessus = map.codeTuile(depuisY - 1, versX);
 
@@ -166,7 +165,6 @@ public class Dijkstra {
         }
 
         if (dy == -2 && Math.abs(dx) == 1) {
-            // Saut de 2 blocs vers le haut + côté
             int obstacleDevant = map.codeTuile(depuisY, versX);
             int espace1 = map.codeTuile(depuisY - 1, versX);
             int espace2 = map.codeTuile(depuisY - 2, versX);
@@ -176,7 +174,7 @@ public class Dijkstra {
             }
         }
 
-        return false; // Sinon, on ne peut pas y aller
+        return false;
     }
 
 
@@ -189,12 +187,11 @@ public class Dijkstra {
         int[] prochainePposition = chemin.get(1);
 
         if (chemin == null || chemin.size() < 2) {
-                return null;
-            }
+            return null;
+        }
         return new int[]{
                 prochainePposition[0] - positionActuelle[0],
                 prochainePposition[1] - positionActuelle[1]
         };
     }
-
 }

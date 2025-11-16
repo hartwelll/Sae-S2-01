@@ -2,12 +2,13 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 
 public class Ennemis extends Entite {
 
-    Terrain map;
+    Terrain map; // Sera initialisé via le Singleton
     private boolean enMarche;
     private int hauteurEnnemis;
     private int largeurEnnemis;
@@ -16,16 +17,19 @@ public class Ennemis extends Entite {
 
     private IntegerProperty directionAnimation;
 
-    public Ennemis(int x, int y, Terrain map, int vie, int v) {
-        super(x, y, map, vie, v);
-        this.map = map;
+    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
+    public Ennemis(int x, int y, int vie, int v) {
+        super(x, y, vie, v); // Appelle le constructeur simplifié de Entite
+        this.map = Terrain.getInstance(); // Utilise le Singleton
         this.enMarche = true;
         this.hauteurEnnemis = 60;
         this.largeurEnnemis = 30;
-        this.dijkstra = new Dijkstra(map);
+        this.dijkstra = new Dijkstra(); // Utilise le constructeur simplifié de Dijkstra
         this.strategie = new DeplacementAleatoire();
         this.directionAnimation = new SimpleIntegerProperty(ANIMATION_ARRET);
     }
+
+    // ... (Toutes les autres méthodes de Ennemis restent inchangées) ...
 
     public boolean peutVoirJoueur(int ennemisX, int ennemisY, int joueurX, int joueurY, int distanceVision) {
         double distance = Math.sqrt(Math.pow(joueurX - ennemisX, 2) + Math.pow(joueurY - ennemisY, 2));
@@ -49,7 +53,7 @@ public class Ennemis extends Entite {
 
         for (int n = 1 + dx + dy; n > 0; n--) {
             if (x != ennemisX || y != ennemisY) {
-                int idCase = map.codeTuile(y, x); // ligne, colonne
+                int idCase = map.codeTuile(y, x);
                 if (idCase != TUILE_VIDE && idCase != TUILE_BARBELE) {
                     return false;
                 }
@@ -113,6 +117,8 @@ public class Ennemis extends Entite {
     }
 }
 
+// --- Stratégies (inchangées car elles obtiennent 'map' via 'ennemi.map') ---
+
 interface StrategieDeplacement {
     void deplacer(Ennemis ennemi, int joueurX, int joueurY, int distanceVue);
 }
@@ -123,7 +129,6 @@ class DeplacementAleatoire implements StrategieDeplacement {
         int dx = (int) (Math.random() * 3) - 1;
         int dy = (int) (Math.random() * 2);
         ennemi.deplacement(dx, dy);
-
 
         if(dx == -1) ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_GAUCHE);
         else if(dx == 1) ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_DROITE);
@@ -152,9 +157,6 @@ class DeplacementVersJoueur implements StrategieDeplacement {
             if (direction != null) {
                 int dx = direction[0];
                 int dy = direction[1];
-
-                int prochaineX = ennemisX + dx;
-                int prochaineY = ennemisY + dy;
 
                 int idCaseDevant = ennemi.map.codeTuile(ennemisY, ennemisX + dx);
                 int idCaseDessus = ennemi.map.codeTuile(ennemisY - 1, ennemisX + dx);

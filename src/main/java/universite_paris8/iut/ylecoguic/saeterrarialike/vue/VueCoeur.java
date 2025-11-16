@@ -3,8 +3,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-// import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Coeur; // SUPPRIMÉ
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
 

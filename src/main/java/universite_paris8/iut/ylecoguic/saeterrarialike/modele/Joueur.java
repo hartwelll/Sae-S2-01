@@ -3,10 +3,6 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
 
-/**
- * Cette class represente le joueur contrôlé par l'utilisateur.
- * Ne contient que la logique de jeu. Ne connaît pas la Vue.
- */
 public class Joueur extends Entite {
 
     private Terrain map;
@@ -15,26 +11,32 @@ public class Joueur extends Entite {
     private Inventaire inventaire;
     private CraftingSystem craftingSystem;
 
+    // NOUVEAU : Attribut pour la Stratégie
+    private ActionOutil outilEquipe;
 
-
-    public Joueur(int x, int y, Terrain map, int vie, int v, Inventaire inv) {
-        super(x, y, map, vie, v);
-        this.map = map;
+    // Constructeur SIMPLIFIÉ (Singleton) et initialisation de la Stratégie
+    public Joueur(int x, int y, int vie, int v, Inventaire inv) {
+        super(x, y, vie, v); // Appel au constructeur simplifié de Entite
+        this.map = Terrain.getInstance(); // Utilise le Singleton
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
         this.craftingSystem = new CraftingSystem();
+        this.outilEquipe = new ActionMain(); // Stratégie par défaut
     }
 
+    // ... (deplacement, decrementerVie inchangés) ...
     public void deplacement(int dx, int dy){
         super.deplacement(dx, dy);
     }
-
     @Override
     public void decrementerVie(int vieAenlever) {
         super.decrementerVie(vieAenlever);
     }
 
+    // Les méthodes 'casserBlock' et 'poserBlock' restent ici,
+    // car elles définissent les *capacités* de base du joueur,
+    // que les stratégies pourront utiliser.
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
         int nbAajouter;
         if (adjacent) {
@@ -66,72 +68,55 @@ public class Joueur extends Entite {
                         }
                     }
                 }
-            } else if (idBlocCible == TUILE_TABLE_CRAFT) {
-                if(estDansPortee(getTileX(), getTileY(), colTileClick, ligneTileClick, PORTEE_TABLE_CRAFT)) {
-                }
             }
+            // La logique de la table de craft est gérée par le Contrôleur (Vue)
+            // et la stratégie (Interaction)
         }
     }
 
+    // --- MODIFIÉ : Délégation à la Stratégie ---
+
     public void clicGauche(int colTile, int ligneTile, Environnement env){
-        boolean peutCasser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_CASSER_BLOC);
-        boolean aToucheEnnemi = false;
-
-        for (Ennemis ennemi : env.getEnnemis()) {
-            if (colTile == ennemi.getTileX() && ligneTile == ennemi.getTileY()) {
-                attaque(ennemi, DEGATS_ATTAQUE_JOUEUR);
-                aToucheEnnemi = true;
-                break;
-            }
-        }
-
-        if (!aToucheEnnemi) {
-            casserBlock(colTile, ligneTile, peutCasser);
-        }
+        // La logique a été déplacée dans ActionMain.java
+        // Le joueur ne fait que DÉLÉGUER l'action à son outil équipé.
+        outilEquipe.actionPrincipale(this, colTile, ligneTile, env);
     }
 
     public void clicDroit(int colTile, int ligneTile, Objet objetSelectionne){
-        boolean peutPoser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_POSER_BLOC);
-        poserBlock(colTile, ligneTile, peutPoser, objetSelectionne);
+        // La logique a été déplacée dans ActionMain.java
+        outilEquipe.actionSecondaire(this, colTile, ligneTile, objetSelectionne);
     }
 
+    // Setter pour changer de stratégie (par exemple, en équipant un outil)
+    public void setOutilEquipe(ActionOutil outilEquipe) {
+        this.outilEquipe = outilEquipe;
+    }
+
+    // ... (Les autres méthodes utilitaires restent inchangées) ...
     public boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
         return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
     }
-
     private int getIdBlocDepuisObjet(Objet objet) {
         switch (objet.getNom()) {
-            case "Pierre":
-                return TUILE_PIERRE;
-            case "Caisse En Bois":
-                return TUILE_CAISSE_BOIS;
-            case "Table De Craft":
-                return TUILE_TABLE_CRAFT;
-            default:
-                return TUILE_VIDE;
+            case "Pierre": return TUILE_PIERRE;
+            case "Caisse En Bois": return TUILE_CAISSE_BOIS;
+            case "Table De Craft": return TUILE_TABLE_CRAFT;
+            default: return TUILE_VIDE;
         }
     }
-
     public Objet creerObjetDepuisBloc(int idBloc) {
         switch (idBloc) {
-            case TUILE_PIERRE:
-                return new Objet("Pierre", "De la pierre");
-            case TUILE_CAISSE_BOIS, TUILE_BOIS:
-                return new Objet("Bois", "Du bois");
-            case TUILE_TABLE_CRAFT:
-                return new Objet("Table De Craft", "une simple table de craft");
-            default:
-                return null;
+            case TUILE_PIERRE: return new Objet("Pierre", "De la pierre");
+            case TUILE_CAISSE_BOIS, TUILE_BOIS: return new Objet("Bois", "Du bois");
+            case TUILE_TABLE_CRAFT: return new Objet("Table De Craft", "une simple table de craft");
+            default: return null;
         }
     }
-
     public Objet tenterCraft(String nomObjet, boolean aProcheTableCraft) {
         return craftingSystem.crafter(nomObjet, inventaire, aProcheTableCraft);
     }
-
     public void craft(String nomObjet, boolean aProcheTableCraft){
         Objet objetCrafte = tenterCraft(nomObjet, aProcheTableCraft);
-
         if (objetCrafte != null) {
             inventaire.ajouterObjet(objetCrafte, 1);
             System.out.println("Crafté : " + objetCrafte.getNom());
