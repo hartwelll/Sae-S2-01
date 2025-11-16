@@ -6,14 +6,6 @@ import javafx.geometry.Rectangle2D;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.TAILLE_TUILE;
 
-/**
- * Cette class represente une entité du jeu (joueur, ennemi, etc.).
- * Responsabilités :
- * - Gérer la position et le déplacement
- * - Appliquer la physique (gravité, saut)
- * - Détecter les collisions avec le terrain
- * - Gérer les points de vie et les attaques
- */
 public abstract class Entite {
 
     private Terrain terrain;
@@ -27,31 +19,30 @@ public abstract class Entite {
     private int vy;
     private boolean sautEnCours;
 
-    private boolean collision;  //TODO voir si ça ne devrait pas être une variables qq part
+    private boolean collision;
     private int hauteurEntite;
     private int largeurEntite;
 
-
-    private int vie;
+    private IntegerProperty vieProperty;
 
     public Entite (int x, int y, Terrain terrain, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
         this.terrain = terrain;
-        this.v = v; //vitesse horizale droite/gauche
+        this.v = v;
         this.vDeBase = v;
         this.vSautInitial = VITESSE_SAUT_INITIAL;
         this.vGravite = VITESSE_GRAVITE;
         this.collision = false;
         this.hauteurEntite = HAUTEUR_ENTITE;
         this.largeurEntite = LARGEUR_ENTITE;
-        this.vy = 0; //vitesse en y(vertical) monte/descent
+        this.vy = 0;
         this.sautEnCours = false;
-        this.vie = vie;
+        this.vieProperty = new SimpleIntegerProperty(vie);
     }
 
     public void deplacement(int dx, int dy) {
-        int nposx = getX() + v * dx;  //nposx = nex position
+        int nposx = getX() + v * dx;
         int nposy = getY();
 
         if (nposx < terrain.getMinXMap()) {
@@ -175,61 +166,40 @@ public abstract class Entite {
     }
 
     public void decrementerVie(int vieAenlever) {
-        if (this.vie > 0) {
-            this.vie -= vieAenlever;
+        if (getVie() > 0) {
+            this.vieProperty.set(getVie() - vieAenlever);
             System.out.println(this.getVie());
         } else if (this.getClass().equals(Joueur.class)) {
+            // TODO: La mort devrait être gérée par le contrôleur via un Listener,
             System.exit(0);
         }
     }
 
-    public int getX() {
-        return xProperty.getValue();
-    }
+    public int getX() {return xProperty.getValue();}
 
-    public int getY() {
-        return yProperty.getValue();
-    }
+    public int getY() {return yProperty.getValue();}
 
-    public int getVie() {
-        return vie;
-    }
+    public int getVie() {return vieProperty.get();}
 
-    public int getVGravite() {
-        return vGravite;
-    }
+    public IntegerProperty vieProperty() {return vieProperty;}
 
-    public int getVSaut() {
-        return vSautInitial;
-    }
+    public int getVGravite() {return vGravite;}
 
-    public int getTileX() {
-        return (getX() + (largeurEntite / 2)) / TAILLE_TUILE;
-    }
+    public int getVSaut() {return vSautInitial;}
 
-    public int getTileY() {
-        return (getY() + (hauteurEntite / 2)) / TAILLE_TUILE;
-    }
+    public int getTileX() {return (getX() + (largeurEntite / 2)) / TAILLE_TUILE;}
 
-    public boolean isSautEnCours() {
-        return sautEnCours;
-    }
+    public int getTileY() {return (getY() + (hauteurEntite / 2)) / TAILLE_TUILE;}
 
-    public void setSautEnCours(boolean sautEnCours) {
-        this.sautEnCours = sautEnCours;
-    }
+    public boolean isSautEnCours() {return sautEnCours;}
 
-    public IntegerProperty getxProperty() {
-        return xProperty;
-    }
+    public void setSautEnCours(boolean sautEnCours) {this.sautEnCours = sautEnCours;}
 
-    public IntegerProperty getyProperty() {
-        return yProperty;
-    }
+    public IntegerProperty getxProperty() {return xProperty;}
 
-    public boolean estMort() {
-        return this.vie <= 0;
-    }
+    public IntegerProperty getyProperty() {return yProperty;}
+
+    public boolean estMort() {return this.getVie() <= 0;}
 
     public void setV(int v) {
         this.v = v;

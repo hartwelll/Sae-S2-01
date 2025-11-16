@@ -4,19 +4,6 @@ import javafx.geometry.Rectangle2D;
 import java.util.ArrayList;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 
-
-
-// TODO : faire des constantes pour les types de tuiles
-
-
-/**
- * Cette class represente le terrain de jeu sous forme de grille de tuiles.
- * Responsabilités :
- * - Stocker la carte du monde (types de tuiles)
- * - Gérer les hitbox et hurtbox des blocs
- * - Permettre la modification des cases (casser/poser des blocs)
- * - Fournir les informations sur les limites de la carte
- */
 public class Terrain {
     private static int[][] terrain = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -122,11 +109,9 @@ public class Terrain {
         return terrain.length;
     }
 
-    // doit s'appeler codeTuile
-    // Attention, x et y ne sont pas des pixels mais des ligne colonne
-    public int codeTuile(int colonnes, int lignes){
-        if (colonnes >= 0 && colonnes < terrain.length && lignes >= 0 && lignes < terrain[0].length){
-            return terrain[colonnes][lignes];
+    public int codeTuile(int ligne, int colonne){
+        if (ligne >= 0 && ligne < terrain.length && colonne >= 0 && colonne < terrain[0].length){
+            return terrain[ligne][colonne];
         }
         return 0;
     }
@@ -161,19 +146,8 @@ public class Terrain {
         return hurtboxList;
     }
 
-    public int getMinXMap() {
-        return minXMap;
-    }
-
-    public int getMinYMap() {
-        return minYMap;
-    }
-
-    public int getMaxXMap() {
-        return maxXMap;
-    }
-
-    public int getMaxYMap() {
-        return maxYMap;
-    }
+    public int getMinXMap() { return minXMap; }
+    public int getMaxXMap() { return maxXMap; }
+    public int getMinYMap() { return minYMap; }
+    public int getMaxYMap() { return maxYMap; }
 }

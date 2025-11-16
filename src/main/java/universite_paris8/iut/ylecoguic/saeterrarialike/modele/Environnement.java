@@ -34,4 +34,8 @@ public class Environnement {
             }
         }
     }
+
+    public ArrayList<Ennemis> getEnnemis() {
+        return ennemis;
+    }
 }

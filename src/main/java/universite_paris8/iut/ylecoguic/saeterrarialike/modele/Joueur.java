@@ -1,22 +1,11 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-import javafx.scene.control.TableView;
-import javafx.scene.layout.Pane;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueCoeur;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueJoueur;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
 
-
-import java.util.ArrayList;
-
 /**
  * Cette class represente le joueur contrôlé par l'utilisateur.
- * Responsabilités :
- * - Casser et poser des blocs dans le terrain
- * - Gérer l'inventaire et le crafting
- * - Interagir avec les objets du monde (table de craft, etc.)
- * - Convertir entre objets et IDs de blocs
+ * Ne contient que la logique de jeu. Ne connaît pas la Vue.
  */
 public class Joueur extends Entite {
 
@@ -24,26 +13,16 @@ public class Joueur extends Entite {
     private int hauteurJoueur;
     private int largeurJoueur;
     private Inventaire inventaire;
-    private VueCoeur vueCoeur;
-    private VueJoueur vueJoueur;
-    private Coeur coeur;
-    private TableView<Objet> inventaireTable;
-    Pane craft;
-    Pane TableCraft;
     private CraftingSystem craftingSystem;
 
-    public Joueur(int x, int y, Terrain map, int vie, int v, Inventaire inv, TableView<Objet> inventaireTable, Pane craft, Pane TableCraft, VueCoeur vueCoeur, Coeur coeur, VueJoueur vuejoueur) {
+
+
+    public Joueur(int x, int y, Terrain map, int vie, int v, Inventaire inv) {
         super(x, y, map, vie, v);
         this.map = map;
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
-        this.vueCoeur = vueCoeur;
-        this.vueJoueur = vuejoueur;
-        this.coeur = coeur;
-        this.inventaireTable = inventaireTable;
-        this.craft = craft;
-        this.TableCraft = TableCraft;
         this.craftingSystem = new CraftingSystem();
     }
 
@@ -51,9 +30,9 @@ public class Joueur extends Entite {
         super.deplacement(dx, dy);
     }
 
+    @Override
     public void decrementerVie(int vieAenlever) {
         super.decrementerVie(vieAenlever);
-        vueCoeur.enleverCoeurVue(this, coeur);
     }
 
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
@@ -74,11 +53,10 @@ public class Joueur extends Entite {
         }
     }
 
-    public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
+    public void poserBlock(int colTileClick, int ligneTileClick, boolean adjacent, Objet objetSelectionne){
         if (adjacent) {
             int idBlocCible = map.codeTuile(ligneTileClick, colTileClick);
             if (idBlocCible == TUILE_VIDE) {
-                Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
                 if (objetSelectionne != null) {
                     if (objetSelectionne.getQuantite() > 0) {
                         int idBlocAPoser = getIdBlocDepuisObjet(objetSelectionne);
@@ -89,30 +67,35 @@ public class Joueur extends Entite {
                     }
                 }
             } else if (idBlocCible == TUILE_TABLE_CRAFT) {
-                if(Math.abs(getX() / TAILLE_TUILE - map.getColId(TUILE_TABLE_CRAFT)) <= PORTEE_TABLE_CRAFT && Math.abs(getY() / TAILLE_TUILE - map.getLigneId(TUILE_TABLE_CRAFT)) <= PORTEE_TABLE_CRAFT) {
-                    TableCraft.setVisible(!TableCraft.isVisible() && !craft.isVisible());
+                if(estDansPortee(getTileX(), getTileY(), colTileClick, ligneTileClick, PORTEE_TABLE_CRAFT)) {
                 }
             }
         }
     }
 
-    public void clicGauche(int colTile, int ligneTile, Ennemis ennemis){
+    public void clicGauche(int colTile, int ligneTile, Environnement env){
         boolean peutCasser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_CASSER_BLOC);
+        boolean aToucheEnnemi = false;
 
-        if (colTile == ennemis.getTileX() && ligneTile == ennemis.getTileY()) {
-            attaque(ennemis, DEGATS_ATTAQUE_JOUEUR);
-        } else {
+        for (Ennemis ennemi : env.getEnnemis()) {
+            if (colTile == ennemi.getTileX() && ligneTile == ennemi.getTileY()) {
+                attaque(ennemi, DEGATS_ATTAQUE_JOUEUR);
+                aToucheEnnemi = true;
+                break;
+            }
+        }
+
+        if (!aToucheEnnemi) {
             casserBlock(colTile, ligneTile, peutCasser);
         }
     }
 
-    public void clicDroit(int colTile, int ligneTile){
+    public void clicDroit(int colTile, int ligneTile, Objet objetSelectionne){
         boolean peutPoser = estDansPortee(colTile, ligneTile, getTileX(), getTileY(), PORTEE_POSER_BLOC);
-
-        poserBlock(colTile, ligneTile, peutPoser);
+        poserBlock(colTile, ligneTile, peutPoser, objetSelectionne);
     }
 
-    private boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
+    public boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
         return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
     }
 

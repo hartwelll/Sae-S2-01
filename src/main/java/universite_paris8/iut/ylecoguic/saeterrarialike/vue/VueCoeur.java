@@ -3,11 +3,10 @@ package universite_paris8.iut.ylecoguic.saeterrarialike.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Coeur;
+// import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Coeur; // SUPPRIMÉ
 import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Joueur;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesEntite.*;
-
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,9 +38,19 @@ public class VueCoeur {
         return new Image(url.toString());
     }
 
-    public void enleverCoeurVue(Joueur joueur, Coeur coeur){
-        if (!coeurList.isEmpty()){
-            coeur.enleverCoeur(joueur);
+    public void mettreAJourAffichage(int vieActuelle) {
+
+        int coeursVisibles = (int) Math.ceil((double) vieActuelle / VIE_PAR_COEUR);
+
+        if (vieActuelle < 0) coeursVisibles = 0;
+
+        for (int i = 0; i < coeurList.size(); i++) {
+            ImageView coeurImg = coeurList.get(i);
+            if (i < coeursVisibles) {
+                coeurImg.setVisible(true);
+            } else {
+                coeurImg.setVisible(false);
+            }
         }
     }
 

@@ -1,12 +1,8 @@
 package universite_paris8.iut.ylecoguic.saeterrarialike.modele;
 
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Dijkstra;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Entite;
-import universite_paris8.iut.ylecoguic.saeterrarialike.modele.Terrain;
-import universite_paris8.iut.ylecoguic.saeterrarialike.vue.VueEnnemis;
-
-import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.ANIMATION_ARRET;
-import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.ANIMATION_MARCHE_GAUCHE;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 
 public class Ennemis extends Entite {
@@ -15,22 +11,20 @@ public class Ennemis extends Entite {
     private boolean enMarche;
     private int hauteurEnnemis;
     private int largeurEnnemis;
-    private VueEnnemis vueEnnemis;
     private Dijkstra dijkstra;
-
-    // Pattern Strategy : comportement de déplacement interchangeable
     private StrategieDeplacement strategie;
 
-    public Ennemis(int x, int y, Terrain map, int vie, int v, VueEnnemis vueEnnemis) {
+    private IntegerProperty directionAnimation;
+
+    public Ennemis(int x, int y, Terrain map, int vie, int v) {
         super(x, y, map, vie, v);
         this.map = map;
         this.enMarche = true;
         this.hauteurEnnemis = 60;
         this.largeurEnnemis = 30;
-        this.vueEnnemis = vueEnnemis;
         this.dijkstra = new Dijkstra(map);
-        // Par défaut, comportement aléatoire
         this.strategie = new DeplacementAleatoire();
+        this.directionAnimation = new SimpleIntegerProperty(ANIMATION_ARRET);
     }
 
     public boolean peutVoirJoueur(int ennemisX, int ennemisY, int joueurX, int joueurY, int distanceVision) {
@@ -55,7 +49,7 @@ public class Ennemis extends Entite {
 
         for (int n = 1 + dx + dy; n > 0; n--) {
             if (x != ennemisX || y != ennemisY) {
-                int idCase = map.codeTuile(y, x);
+                int idCase = map.codeTuile(y, x); // ligne, colonne
                 if (idCase != TUILE_VIDE && idCase != TUILE_BARBELE) {
                     return false;
                 }
@@ -87,7 +81,7 @@ public class Ennemis extends Entite {
         int ennemisY = getTileY();
 
         if (peutVoirJoueurAvecLigneDeVue(ennemisX, ennemisY, joueurTileX, joueurTileY, distanceVue)) {
-            setStrategie(new DeplacementVersJoueur(dijkstra, vueEnnemis));
+            setStrategie(new DeplacementVersJoueur(dijkstra));
         } else {
             setStrategie(new DeplacementAleatoire());
         }
@@ -113,32 +107,36 @@ public class Ennemis extends Entite {
     public void setEnMarche(boolean enMarche) {
         this.enMarche = enMarche;
     }
+
+    public IntegerProperty directionAnimationProperty() {
+        return directionAnimation;
+    }
 }
 
-// Interface du pattern Strategy
 interface StrategieDeplacement {
     void deplacer(Ennemis ennemi, int joueurX, int joueurY, int distanceVue);
 }
 
-// Stratégie 1 : Déplacement aléatoire
 class DeplacementAleatoire implements StrategieDeplacement {
     @Override
     public void deplacer(Ennemis ennemi, int joueurX, int joueurY, int distanceVue) {
         int dx = (int) (Math.random() * 3) - 1;
         int dy = (int) (Math.random() * 2);
         ennemi.deplacement(dx, dy);
+
+
+        if(dx == -1) ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_GAUCHE);
+        else if(dx == 1) ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_DROITE);
+        else ennemi.directionAnimationProperty().set(ANIMATION_ARRET);
     }
 }
 
-// Stratégie 2 : Déplacement vers le joueur (avec Dijkstra)
 class DeplacementVersJoueur implements StrategieDeplacement {
 
     private Dijkstra dijkstra;
-    private VueEnnemis vueEnnemis;
 
-    public DeplacementVersJoueur(Dijkstra dijkstra, VueEnnemis vueEnnemis) {
+    public DeplacementVersJoueur(Dijkstra dijkstra) {
         this.dijkstra = dijkstra;
-        this.vueEnnemis = vueEnnemis;
     }
 
     @Override
@@ -168,11 +166,11 @@ class DeplacementVersJoueur implements StrategieDeplacement {
                 }
 
                 if (dx == -1) {
-                    vueEnnemis.affichage(ANIMATION_MARCHE_GAUCHE);
+                    ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_GAUCHE);
                 } else if (dx == 1) {
-                    vueEnnemis.affichage(ANIMATION_MARCHE_GAUCHE);
+                    ennemi.directionAnimationProperty().set(ANIMATION_MARCHE_DROITE);
                 } else {
-                    vueEnnemis.affichage(ANIMATION_ARRET);
+                    ennemi.directionAnimationProperty().set(ANIMATION_ARRET);
                 }
 
                 ennemi.deplacement(dx, dy);

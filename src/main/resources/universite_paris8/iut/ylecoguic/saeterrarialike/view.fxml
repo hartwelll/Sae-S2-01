@@ -28,7 +28,7 @@
 
    <Pane fx:id="objetAffiche" focusTraversable="false" layoutX="10" layoutY="10" prefHeight="180.0" prefWidth="400.0" />
 
-   <TableView fx:id="inventaireTable" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_LEFT">
+   <TableView fx:id="inventaireTable" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" opacity="0.80" prefHeight="180.0" prefWidth="400.0" StackPane.alignment="TOP_RIGHT">
       <columns>
          <TableColumn fx:id="nomCol" text="Nom" />
          <TableColumn fx:id="descCol" text="Description" />
@@ -39,7 +39,7 @@
       </StackPane.margin>
    </TableView>
 
-   <HBox fx:id="coeurs" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_RIGHT"/>
+   <HBox fx:id="coeurs" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.90" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="TOP_LEFT"/>
 
    <Pane fx:id="craft" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="200" prefWidth="500" StackPane.alignment="CENTER">
       <HBox style="-fx-background-color: yellow;">

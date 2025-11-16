@@ -19,14 +19,6 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesE
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesTerrain.*;
 import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJeu.*;
 
-/**
- * Contrôleur principal de l'application JavaFX.
- * - Initialise le modèle et les vues
- * - Gère les entrées utilisateur
- * - Orchestration de la boucle de jeu (AnimationTimer)
- * - Gestion des menus et interfaces
- * - Lien entre le modèle et les vues
- */
 public class Controller implements Initializable {
 
     @FXML private Pane menu, panneauJoueur, craft, tuto, consignes, TableCraft, objetAffiche;
@@ -38,36 +30,23 @@ public class Controller implements Initializable {
 
     private Environnement env;
     private Terrain terrain;
-    private VueTerrain vueTerrain;
     private Joueur joueur;
-    private VueJoueur vueJoueur;
-    private Coeur coeur;
-    private VueCoeur vueCoeur;
     private Ennemis ennemis;
-    private VueEnnemis vueEnnemis;
     private ArrayList<Entite> entites;
-    private Set<KeyCode> touchesActives;
     private final Inventaire inventaire = new Inventaire();
+
+    private VueTerrain vueTerrain;
+    private VueCoeur vueCoeur;
+
+    private VueJoueur vueJoueur;
+    private VueEnnemis vueEnnemis;
+
+    private Set<KeyCode> touchesActives;
     private AnimationTimer gameTimer;
 
-    // ----- Gestion des menus -----
-
-    public void retourJeu() {
-        menu.setVisible(false);
-        if (gameTimer != null) gameTimer.start();
-    }
-
-    public void afficherTuto() {
-        tuto.setVisible(true);
-        menu.setVisible(false);
-        if (gameTimer != null) gameTimer.start();
-    }
-
-    public void quitterPartie() {
-        System.exit(0);
-    }
-
-    // ----- Gestion des entrées -----
+    public void retourJeu() { menu.setVisible(false); if (gameTimer != null) gameTimer.start(); }
+    public void afficherTuto() { tuto.setVisible(true); menu.setVisible(false); if (gameTimer != null) gameTimer.start(); }
+    public void quitterPartie() { System.exit(0); }
 
     public void setupInput() {
         panneauDeJeu.sceneProperty().addListener((obs, oldScene, sceneActuel) -> {
@@ -100,25 +79,27 @@ public class Controller implements Initializable {
         }
     }
 
-    // ----- Gestion des clics souris -----
-
     private void clickBlock(MouseEvent event) {
         int colTile = (int) (event.getX() / TAILLE_TUILE);
         int ligneTile = (int) (event.getY() / TAILLE_TUILE);
 
-
         if (event.getButton() == MouseButton.PRIMARY) {
-            joueur.clicGauche(colTile, ligneTile, ennemis);
-        } else if (event.getButton() == MouseButton.SECONDARY) {
-            joueur.clicDroit(colTile, ligneTile);
-        }
+            joueur.clicGauche(colTile, ligneTile, env);
 
+        } else if (event.getButton() == MouseButton.SECONDARY) {
+            Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
+
+            joueur.clicDroit(colTile, ligneTile, objetSelectionne);
+
+            int idBlocCible = terrain.codeTuile(ligneTile, colTile);
+            if (idBlocCible == TUILE_TABLE_CRAFT &&
+                    joueur.estDansPortee(colTile, ligneTile, joueur.getTileX(), joueur.getTileY(), PORTEE_TABLE_CRAFT)) {
+
+                TableCraft.setVisible(!TableCraft.isVisible() && !craft.isVisible());
+            }
+        }
         vueTerrain.miseAJourAffichage(ligneTile, colTile);
     }
-
-
-
-    // ----- Gestion du craft -----
 
     public void fabrication() {
         configurerBoutonCraft(tableDeCraft, "Table De Craft");
@@ -141,8 +122,6 @@ public class Controller implements Initializable {
         });
     }
 
-    // ----- Apparition d'objets -----
-
     private void apparitionObjets() {
         Objet objet = new Objet("Sabre Laser", "Un laser qui koupe !!!");
         VueObjet sabre = new VueObjet(objet, OBJET_SABRE_X, OBJET_SABRE_Y, TAILLE_OBJET_DROP, TAILLE_OBJET_DROP, "/Objet/lightSaberDrop.png");
@@ -152,14 +131,11 @@ public class Controller implements Initializable {
                 System.out.println("Ajout à l'inventaire : " + sabre.getObjet().getNom());
                 inventaire.ajouterObjet(sabre.getObjet(), 1);
                 objetAffiche.getChildren().remove(sabre);
-                System.out.println("Nombre d'objets dans l'inventaire : " + inventaire.getObjets().size());
             }
         });
 
         objetAffiche.getChildren().add(sabre);
     }
-
-    // ----- Boucle de jeu -----
 
     public void animationTimer() {
         gameTimer = new AnimationTimer() {
@@ -212,6 +188,7 @@ public class Controller implements Initializable {
     }
 
     private void verifierDistanceTableCraft() {
+
         double distX = Math.abs(joueur.getX() / TAILLE_TUILE - terrain.getColId(TUILE_TABLE_CRAFT));
         double distY = Math.abs(joueur.getY() / TAILLE_TUILE - terrain.getLigneId(TUILE_TABLE_CRAFT));
         if (distX >= PORTEE_TABLE_CRAFT + 2 || distY >= PORTEE_TABLE_CRAFT + 2) {
@@ -219,36 +196,40 @@ public class Controller implements Initializable {
         }
     }
 
-    // ----- Initialisation -----
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         terrain = new Terrain();
-        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
-        vueCoeur = new VueCoeur(coeurs);
-        coeur = new Coeur(vueCoeur);
-        vueJoueur = new VueJoueur(panneauJoueur);
-        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART, terrain,
-                JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire,
-                inventaireTable, craft, TableCraft, vueCoeur, coeur, vueJoueur);
 
-        vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
-        vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
-
-        vueEnnemis = new VueEnnemis(panneauJoueur);
-        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART,
-                terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE, vueEnnemis);
-
-        vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
-        vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+        joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART, terrain, JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire);
+        ennemis = new Ennemis(ENNEMI_POSITION_X_DEPART, ENNEMI_POSITION_Y_DEPART, terrain, ENNEMI_VIE_INITIALE, ENNEMI_VITESSE_BASE);
 
         entites = new ArrayList<>();
         entites.add(joueur);
         entites.add(ennemis);
 
         env = new Environnement(joueur);
-
         env.ajouterEnnemis(ennemis);
+
+        vueTerrain = new VueTerrain(panneauDeJeu, terrain);
+        vueCoeur = new VueCoeur(coeurs);
+
+        vueJoueur = new VueJoueur(panneauJoueur);
+        vueEnnemis = new VueEnnemis(panneauJoueur);
+
+        vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
+        vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
+        vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
+        vueEnnemis.getImageView().translateYProperty().bind(ennemis.getyProperty());
+
+        joueur.vieProperty().addListener((obs, oldVal, newVal) -> {
+            vueCoeur.mettreAJourAffichage(newVal.intValue());
+        });
+        vueCoeur.mettreAJourAffichage(joueur.getVie());
+
+        ennemis.directionAnimationProperty().addListener((obs, oldVal, newVal) -> {
+            vueEnnemis.affichage(newVal.intValue());
+        });
 
         craft.setVisible(false);
         TableCraft.setVisible(false);
@@ -260,6 +241,7 @@ public class Controller implements Initializable {
         nomCol.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantCol.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject().asString());
+
         inventaireTable.setItems(inventaire.getObjets());
 
         apparitionObjets();
