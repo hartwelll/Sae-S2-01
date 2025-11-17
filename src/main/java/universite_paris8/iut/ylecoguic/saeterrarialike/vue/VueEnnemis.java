@@ -19,9 +19,9 @@ public class VueEnnemis {
         this.imageView = new ImageView();
         imageView.setFitHeight(HAUTEUR_SPRITE);
         imageView.setFitWidth(LARGEUR_SPRITE);
-        this.pane.getChildren().add(imageView); // Ajout une seule fois
+        this.pane.getChildren().add(imageView);
         initialiserEnnemis();
-        affichage(0); // Image par défaut (statique)
+        affichage(0);
     }
 
     protected Image creerImage(String chemin) {

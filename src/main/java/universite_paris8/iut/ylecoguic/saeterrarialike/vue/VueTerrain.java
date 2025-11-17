@@ -11,11 +11,10 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 
 public class VueTerrain {
     private HashMap<Integer, Image> tileImages;
-    private Terrain map; // Sera initialisé via le Singleton
+    private Terrain map;
     private TilePane pane;
     private ImageView[][] imageViewsTiles;
 
-    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
     public VueTerrain(TilePane pane){
         this.tileImages = new HashMap<>();
         this.map = Terrain.getInstance(); // Utilise le Singleton
@@ -26,8 +25,6 @@ public class VueTerrain {
         initialiseTile();
         affichage();
     }
-
-    // ... (Toutes les autres méthodes de VueTerrain restent inchangées) ...
 
     public Image creerImage(String chemin){
         URL url = getClass().getResource(chemin);

@@ -10,11 +10,10 @@ import java.util.Set;
 
 public class Dijkstra {
 
-    private Terrain map; // Sera initialisé via le Singleton
+    private Terrain map;
     private int largeurMap;
     private int hauteurMap;
 
-    // ... (classe Noeud interne inchangée) ...
     private static class Noeud implements Comparable<Noeud> {
         int x, y;
         int distance;
@@ -33,7 +32,7 @@ public class Dijkstra {
         }
 
         @Override
-        public boolean equals(Object obj) {//2 noeurds au meme coordonée
+        public boolean equals(Object obj) {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
             Noeud noeud = (Noeud) obj;
@@ -50,14 +49,11 @@ public class Dijkstra {
         }
     }
 
-    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
     public Dijkstra() {
-        this.map = Terrain.getInstance(); // Utilise le Singleton
+        this.map = Terrain.getInstance();
         this.largeurMap = map.nbDeColonnes();
         this.hauteurMap = map.nbDeLignes();
     }
-
-    // ... (Toutes les autres méthodes de Dijkstra restent inchangées) ...
 
     public List<int[]> trouverChemin(int ennemisX, int ennemisY, int joueurX, int joueurY) {
 

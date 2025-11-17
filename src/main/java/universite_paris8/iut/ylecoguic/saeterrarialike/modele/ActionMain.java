@@ -15,7 +15,6 @@ public class ActionMain implements ActionOutil {
         boolean peutCasser = joueur.estDansPortee(col, ligne, joueur.getTileX(), joueur.getTileY(), PORTEE_CASSER_BLOC);
         boolean aToucheEnnemi = false;
 
-        // Cherche si un ennemi est aux coordonnées du clic
         for (Ennemis ennemi : env.getEnnemis()) {
             if (col == ennemi.getTileX() && ligne == ennemi.getTileY()) {
                 joueur.attaque(ennemi, DEGATS_ATTAQUE_JOUEUR);
@@ -24,7 +23,6 @@ public class ActionMain implements ActionOutil {
             }
         }
 
-        // Si aucun ennemi n'est touché, on casse le bloc
         if (!aToucheEnnemi) {
             joueur.casserBlock(col, ligne, peutCasser);
         }
@@ -33,10 +31,6 @@ public class ActionMain implements ActionOutil {
     @Override
     public void actionSecondaire(Joueur joueur, int col, int ligne, Objet objetSelectionne) {
         boolean peutPoser = joueur.estDansPortee(col, ligne, joueur.getTileX(), joueur.getTileY(), PORTEE_POSER_BLOC);
-
-        // La stratégie "ActionMain" ne fait que poser des blocs.
-        // La vérification de la table de craft est gérée par le Contrôleur
-        // car c'est une action de l'interface (Vue).
         joueur.poserBlock(col, ligne, peutPoser, objetSelectionne);
     }
 }

@@ -8,7 +8,7 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 
 public class Ennemis extends Entite {
 
-    Terrain map; // Sera initialisé via le Singleton
+    Terrain map;
     private boolean enMarche;
     private int hauteurEnnemis;
     private int largeurEnnemis;
@@ -17,19 +17,16 @@ public class Ennemis extends Entite {
 
     private IntegerProperty directionAnimation;
 
-    // Constructeur SIMPLIFIÉ : 'Terrain map' a été supprimé
     public Ennemis(int x, int y, int vie, int v) {
-        super(x, y, vie, v); // Appelle le constructeur simplifié de Entite
-        this.map = Terrain.getInstance(); // Utilise le Singleton
+        super(x, y, vie, v);
+        this.map = Terrain.getInstance();
         this.enMarche = true;
         this.hauteurEnnemis = 60;
         this.largeurEnnemis = 30;
-        this.dijkstra = new Dijkstra(); // Utilise le constructeur simplifié de Dijkstra
+        this.dijkstra = new Dijkstra();
         this.strategie = new DeplacementAleatoire();
         this.directionAnimation = new SimpleIntegerProperty(ANIMATION_ARRET);
     }
-
-    // ... (Toutes les autres méthodes de Ennemis restent inchangées) ...
 
     public boolean peutVoirJoueur(int ennemisX, int ennemisY, int joueurX, int joueurY, int distanceVision) {
         double distance = Math.sqrt(Math.pow(joueurX - ennemisX, 2) + Math.pow(joueurY - ennemisY, 2));
@@ -116,8 +113,6 @@ public class Ennemis extends Entite {
         return directionAnimation;
     }
 }
-
-// --- Stratégies (inchangées car elles obtiennent 'map' via 'ennemi.map') ---
 
 interface StrategieDeplacement {
     void deplacer(Ennemis ennemi, int joueurX, int joueurY, int distanceVue);

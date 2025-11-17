@@ -8,7 +8,7 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesT
 
 public abstract class Entite {
 
-    private Terrain terrain; // Sera initialisé via le Singleton
+    private Terrain terrain;
 
     private IntegerProperty xProperty;
     private IntegerProperty yProperty;
@@ -25,11 +25,10 @@ public abstract class Entite {
 
     private IntegerProperty vieProperty;
 
-    // Constructeur SIMPLIFIÉ : 'Terrain terrain' a été supprimé
     public Entite (int x, int y, int vie, int v){
         this.xProperty = new SimpleIntegerProperty(x);
         this.yProperty = new SimpleIntegerProperty(y);
-        this.terrain = Terrain.getInstance(); // Utilise le Singleton
+        this.terrain = Terrain.getInstance();
         this.v = v;
         this.vDeBase = v;
         this.vSautInitial = VITESSE_SAUT_INITIAL;
@@ -41,8 +40,6 @@ public abstract class Entite {
         this.sautEnCours = false;
         this.vieProperty = new SimpleIntegerProperty(vie);
     }
-
-    // ... (Toutes les autres méthodes de Entite restent inchangées) ...
 
     public void deplacement(int dx, int dy) {
         int nposx = getX() + v * dx;

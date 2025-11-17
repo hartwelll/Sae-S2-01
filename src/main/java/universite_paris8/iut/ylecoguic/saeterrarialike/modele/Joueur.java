@@ -11,21 +11,18 @@ public class Joueur extends Entite {
     private Inventaire inventaire;
     private CraftingSystem craftingSystem;
 
-    // NOUVEAU : Attribut pour la Stratégie
     private ActionOutil outilEquipe;
 
-    // Constructeur SIMPLIFIÉ (Singleton) et initialisation de la Stratégie
     public Joueur(int x, int y, int vie, int v, Inventaire inv) {
-        super(x, y, vie, v); // Appel au constructeur simplifié de Entite
-        this.map = Terrain.getInstance(); // Utilise le Singleton
+        super(x, y, vie, v);
+        this.map = Terrain.getInstance();
         this.hauteurJoueur = 60;
         this.largeurJoueur = 30;
         this.inventaire = inv;
         this.craftingSystem = new CraftingSystem();
-        this.outilEquipe = new ActionMain(); // Stratégie par défaut
+        this.outilEquipe = new ActionMain();
     }
 
-    // ... (deplacement, decrementerVie inchangés) ...
     public void deplacement(int dx, int dy){
         super.deplacement(dx, dy);
     }
@@ -34,9 +31,6 @@ public class Joueur extends Entite {
         super.decrementerVie(vieAenlever);
     }
 
-    // Les méthodes 'casserBlock' et 'poserBlock' restent ici,
-    // car elles définissent les *capacités* de base du joueur,
-    // que les stratégies pourront utiliser.
     public void casserBlock(int colTileClick, int ligneTileClick, boolean adjacent){
         int nbAajouter;
         if (adjacent) {
@@ -69,30 +63,21 @@ public class Joueur extends Entite {
                     }
                 }
             }
-            // La logique de la table de craft est gérée par le Contrôleur (Vue)
-            // et la stratégie (Interaction)
         }
     }
 
-    // --- MODIFIÉ : Délégation à la Stratégie ---
-
     public void clicGauche(int colTile, int ligneTile, Environnement env){
-        // La logique a été déplacée dans ActionMain.java
-        // Le joueur ne fait que DÉLÉGUER l'action à son outil équipé.
         outilEquipe.actionPrincipale(this, colTile, ligneTile, env);
     }
 
     public void clicDroit(int colTile, int ligneTile, Objet objetSelectionne){
-        // La logique a été déplacée dans ActionMain.java
         outilEquipe.actionSecondaire(this, colTile, ligneTile, objetSelectionne);
     }
 
-    // Setter pour changer de stratégie (par exemple, en équipant un outil)
     public void setOutilEquipe(ActionOutil outilEquipe) {
         this.outilEquipe = outilEquipe;
     }
 
-    // ... (Les autres méthodes utilitaires restent inchangées) ...
     public boolean estDansPortee(int x1, int y1, int x2, int y2, int portee) {
         return Math.abs(x1 - x2) <= portee && Math.abs(y1 - y2) <= portee;
     }

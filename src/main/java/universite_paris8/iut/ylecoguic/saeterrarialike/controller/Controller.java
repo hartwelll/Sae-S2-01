@@ -21,7 +21,6 @@ import static universite_paris8.iut.ylecoguic.saeterrarialike.modele.ConstantesJ
 
 public class Controller implements Initializable {
 
-    // ... (Attributs FXML inchangés) ...
     @FXML private Pane menu, panneauJoueur, craft, tuto, consignes, TableCraft, objetAffiche;
     @FXML private TilePane panneauDeJeu;
     @FXML private HBox coeurs;
@@ -29,21 +28,18 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Objet, String> nomCol, descCol, quantCol;
     @FXML private Button pioche, pelle, epee, tableDeCraft, caisse;
 
-    // --- Modèle ---
     private Environnement env;
-    private Terrain terrain; // Garde une référence au Singleton
+    private Terrain terrain;
     private Joueur joueur;
     private Ennemis ennemis;
     private ArrayList<Entite> entites;
     private final Inventaire inventaire = new Inventaire();
 
-    // --- Vue ---
     private VueTerrain vueTerrain;
     private VueJoueur vueJoueur;
     private VueCoeur vueCoeur;
     private VueEnnemis vueEnnemis;
 
-    // ... (Gestionnaires d'état et de menus inchangés) ...
     private Set<KeyCode> touchesActives;
     private AnimationTimer gameTimer;
     public void retourJeu() { menu.setVisible(false); if (gameTimer != null) gameTimer.start(); }
@@ -77,20 +73,17 @@ public class Controller implements Initializable {
         }
     }
 
-    // ----- Gestion des clics (Inchangée, mais appelle maintenant la Stratégie) -----
     private void clickBlock(MouseEvent event) {
         int colTile = (int) (event.getX() / TAILLE_TUILE);
         int ligneTile = (int) (event.getY() / TAILLE_TUILE);
 
 
         if (event.getButton() == MouseButton.PRIMARY) {
-            // Le contrôleur appelle le joueur, qui DÉLÈGUE à sa stratégie
             joueur.clicGauche(colTile, ligneTile, env);
 
         } else if (event.getButton() == MouseButton.SECONDARY) {
             Objet objetSelectionne = inventaireTable.getSelectionModel().getSelectedItem();
 
-            // Le contrôleur appelle le joueur, qui DÉLÈGUE à sa stratégie
             joueur.clicDroit(colTile, ligneTile, objetSelectionne);
 
             int idBlocCible = terrain.codeTuile(ligneTile, colTile);
@@ -103,7 +96,6 @@ public class Controller implements Initializable {
         vueTerrain.miseAJourAffichage(ligneTile, colTile);
     }
 
-    // ... (méthodes de fabrication, apparition, boucle de jeu, etc. inchangées) ...
     public void fabrication() {
         configurerBoutonCraft(tableDeCraft, "Table De Craft");
         configurerBoutonCraft(caisse, "Caisse En Bois");
@@ -182,14 +174,11 @@ public class Controller implements Initializable {
         }
     }
 
-    // ----- Initialisation (SIMPLIFIÉE grâce au Singleton) -----
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // --- 1. Initialisation du Modèle ---
-        terrain = Terrain.getInstance(); // Obtient l'instance Singleton
+        terrain = Terrain.getInstance();
 
-        // Constructeurs SIMPLIFIÉS (n'ont plus besoin de 'terrain')
         joueur = new Joueur(JOUEUR_POSITION_X_DEPART, JOUEUR_POSITION_Y_DEPART,
                 JOUEUR_VIE_INITIALE, JOUEUR_VITESSE_BASE, inventaire);
 
@@ -203,16 +192,11 @@ public class Controller implements Initializable {
         env = new Environnement(joueur);
         env.ajouterEnnemis(ennemis);
 
-        // --- 2. Initialisation de la Vue ---
-        // Constructeurs SIMPLIFIÉS (n'ont plus besoin de 'terrain')
         vueTerrain = new VueTerrain(panneauDeJeu);
         vueCoeur = new VueCoeur(coeurs);
         vueJoueur = new VueJoueur(panneauJoueur);
         vueEnnemis = new VueEnnemis(panneauJoueur);
 
-
-        // --- 3. "Collage" MVC (Bindings et Listeners) ---
-        // (Inchangé par rapport au refactor précédent)
         vueJoueur.getImageView().translateXProperty().bind(joueur.getxProperty());
         vueJoueur.getImageView().translateYProperty().bind(joueur.getyProperty());
         vueEnnemis.getImageView().translateXProperty().bind(ennemis.getxProperty());
@@ -227,7 +211,6 @@ public class Controller implements Initializable {
             vueEnnemis.affichage(newVal.intValue());
         });
 
-        // --- 4. Reste de l'initialisation (inchangé) ---
         craft.setVisible(false);
         TableCraft.setVisible(false);
         tuto.setVisible(false);
